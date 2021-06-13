@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}Sample High School{% endblock title %}</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  {% load static %}
+      <link rel="stylesheet" href= "{% static 'css/teacher_base.css' %}" type="text/css">
+</head>
+
+
+  <body>
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>STUDENT</h2>
+        <ul>
+            <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="/add_teacher"><i class="fas fa-teacher"></i>Change Password</a></li>
+            <li><a href="#"><i class="fas fa-students"></i>View Attendance</a></li>
+            <li><a href="#"><i class="fas fa-sections"></i>View Grades</a></li>
+            <li><a href="{%url 'student_subjects'%}"><i class="fas fa-grade_level"></i>View Subjects</a></li>
+            <li><a href="/logout"><i class="fas fa-subjects"></i>Logout</a></li>
+        </ul> 
+    </div>
+    <div class="main_content">
+        <div class="header">Sample High School.</div>  
+  </body>
+</html>

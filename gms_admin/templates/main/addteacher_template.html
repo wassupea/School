@@ -1,0 +1,85 @@
+{%load static%}
+{% include 'main/admin_dashboard.html' %}
+<head>
+    <script src="{% static 'js/jQuery.js' %}"></script>  
+     <link rel="stylesheet" href= "{% static 'css/styke.css' %}" type="text/css">
+    <script type="text/javascript" src="{% static 'js/add_js.js' %}"></script>  
+</head>
+
+  {% block main_content %}
+
+  <section class = "content">
+
+    <!-- multistep form -->
+    <div class="container">
+    <div class="wrapper2">
+      <ul class="steps">
+        <li class="is-active">Step 1</li>
+        <li>Step 2</li>
+      </ul>
+      {% url 'save_teacher' as action_execute%}
+      <form class="form-wrapper2" action= "{{action_execute}}" method="post">
+      {% csrf_token %} 
+        <fieldset class="section is-active">
+        <br> <br>
+          <h3>Teacher Details</h3>
+          <input type="text" name="fname" id="name" placeholder="First Name">
+          <input type="text" name="lname" id="email" placeholder="Last Name">
+          
+          <input type="text" name="address" id="name" placeholder="Address">
+          <br> <br>
+          <div class="button">Next</div>
+        </fieldset>
+        <fieldset class="section">
+        <br> <br>
+          <h3>Account Credentials</h3>
+          <input type="email" name="email" id="email" placeholder="Email">
+          <input type="text" name="username" id="name" placeholder="Username">
+          <input type="password" name="password" id="password" placeholder="Password">
+          <input class="submit button" type="submit" value="Sign Up">
+        </fieldset>
+     <fieldset class="section">
+          {% if messages %}
+        
+            {% for message in messages %}
+            {% if message.tags == 'error'%}
+            <span class = "alert alert-danger"> {{message}} </span>
+            {% endif %}
+            {% if message.tags == 'success'%}
+            <span class = "alert alert-danger"> {{message}} </span>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+        <br> <br>
+          <div class="button">Reset Form</div>
+        </fieldset>
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+  $(document).ready(function(){
+    $(".form-wrapper2 .button").click(function(){
+      var button = $(this);
+      var currentSection = button.parents(".section");
+      var currentSectionIndex = currentSection.index();
+      var headerSection = $('.steps li').eq(currentSectionIndex);
+      currentSection.removeClass("is-active").next().addClass("is-active");
+      headerSection.removeClass("is-active").next().addClass("is-active");
+  
+      $(".form-wrapper2").submit(function(e) {
+         if (e.target instanceof HTMLAnchorElement) e.preventDefault();
+      });
+  
+      if(currentSectionIndex === 3){
+        $(document).find(".form-wrapper2 .section").first().addClass("is-active");
+        $(document).find(".steps li").first().addClass("is-active");
+      }
+    });
+  });
+
+  
+  
+  </script>
+{% endblock main_content %}

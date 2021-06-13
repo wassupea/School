@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}Sample High School{% endblock title %}</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  {% load static %}
+      <link rel="stylesheet" href= "{% static 'css/teacher_base.css' %}" type="text/css">
+</head>
+
+
+  <body>
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>TEACHER</h2>
+        <ul>
+            {% url 'teacher_home' as teacher_home %}
+            {% url 'view_subjects' as view_subjects %}
+             {% url 'attendance' as attendance %}
+            <li><a href={{teacher_home}}><i class="fas fa-home"></i>Home</a></li>
+            <li><a href={{view_subjects}}><i class="fas fa-home"></i>Subjects</a></li>
+            <li><a href={{attendance}}><i class="fas fa-home"></i>Attendance</a></li>
+            <li><a href={% url 'update_attendance'%}><i class="fas fa-home"></i>Update Attendance</a></li>
+            <li><a href= {% url 'grade'%}></i>Grades</a></li>
+            <li><a href= "/"></i>Logout</a></li>
+        </ul> 
+    </div>
+    <div class="main_content">
+        <div class="header">Sample High School.</div>  
+  </body>
+</html>

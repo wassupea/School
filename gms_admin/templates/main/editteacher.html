@@ -1,0 +1,34 @@
+{% load static%}
+{% include 'main/admin_dashboard.html'%}
+<link rel="stylesheet" href= "{% static 'css/edit_teacher.css' %}" type="text/css">
+{% block main_content %}
+
+
+<div class="container">  
+  <form id="contact" action="{%url 'save_editteacher'%}" method="POST">
+  {% csrf_token %}
+   <center> <h3>Edit Teacher</h3> </center>
+   <input type ="hidden" name="teacher_id" value={{teacher.admin.id}}>
+    <fieldset>
+      <p> First Name   <input type="text" class="form-control" name="first_name" placeholder="First Name *" value="{{teacher.admin.first_name}}" /> </p>
+    </fieldset>
+    <fieldset>
+     <p> Last Name   <input type="text" class="form-control"  name="last_name"placeholder="Last Name *" value="{{teacher.admin.last_name}}" /> </p>
+    </fieldset>
+    <fieldset>
+      <p>Username <input type="text" class="form-control"   name="username" placeholder="Username *" value="{{teacher.admin.username}}" /> </p>
+    </fieldset>
+    <fieldset>
+    <p> Email  <input type="email" class="form-control" name="email" placeholder="Your Email *" value="{{teacher.admin.email}}" /> </p>
+    </fieldset>
+    <fieldset>
+     <p> Address <input type="text" name="address" maxlength="340" name="txtEmpPhone" class="form-control" placeholder="Address *" value="{{teacher.address}}" /> </p>
+    </fieldset>
+    <fieldset>
+      <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+    </fieldset>
+  </form>
+</div>
+
+
+{% endblock main_content %}

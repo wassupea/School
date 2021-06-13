@@ -1,0 +1,49 @@
+<html>
+{% load static %}
+<head>
+        <title> Sample High School </title>
+        <link rel="stylesheet" href= "{% static 'css/login.css' %}" type="text/css"> 
+</head>
+
+        <body>
+  <div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+    <h2 class="active"> Sign In </h2>
+    <h2 class="inactive underlineHover">Parent</h2>
+
+    <!-- Icon 
+    <div class="fadeIn first">
+      <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
+    </div> -->
+
+    <!-- Login Form -->
+    <form action ="/doLogin" id="login" method="post">  
+    {% csrf_token %}
+      <input type="email" name="email" class="fadeIn second" id="email" placeholder="email">
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+
+
+      {% if messages %}
+        <div class = "messages">
+            {% for message in messages %}
+            {% if message.tags == 'error'%}
+            <span class = "alert alert-danger"> {{message}} </span>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </form>
+
+    <!-- Remind Passowrd  -->
+    <div id="formFooter">
+      <a class="underlineHover" href="{% url 'password_reset'%}">Forgot Password?</a>
+    </div> 
+
+  </div>
+</div>
+</body>
+
+
+</html>

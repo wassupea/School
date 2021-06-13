@@ -1,0 +1,34 @@
+{%load static%}
+{% include 'teacher/base.html'%}
+  <head>
+    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+
+  </head>
+{% block 'main-content'%}
+
+
+    <div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+         <th scope="col">Grade Level</th>
+         <th scope="col">Section</th>
+         <th scope="col">Subject Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          {%for subject in subjects %}
+        <tr>
+                      <td>{{ subject.class_id.gradelevel_id_id }}</td>
+                      <td>{{ subject.class_id.class_name }}</td>
+                      <td>{{ subject.subject_name }}</td>
+        </tr>
+        {% endfor %}
+        </tr>
+        <tbody>
+    </table>
+</div>
+ {% endblock 'main-content'%}

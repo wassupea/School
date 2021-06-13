@@ -1,0 +1,24 @@
+{% load static%}
+
+ <link rel="stylesheet" href= "{% static 'css/messages.css' %}" type="text/css">
+
+
+{% block main_content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="alert alert_info"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button> <strong>Info!</strong> </div>
+            <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button> <strong>success!</strong> </div>
+            <div class="alert alert_warning"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button> <strong>warning!</strong> </div>
+            <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button> <strong>error!</strong> </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="alert fade_info .fade"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button> <strong>Info!</strong> </div>
+            <div class="alert fade_success .fade"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button> <strong>success!</strong> </div>
+            <div class="alert fade_warning .fade"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button> <strong>warning!</strong> </div>
+            <div class="alert fade_error .fade"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button> <strong>error!</strong> </div>
+        </div>
+    </div>
+</div>
+{% endblock main_content %}

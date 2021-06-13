@@ -1,0 +1,16 @@
+{%load static%}
+{% include 'main/admin_dashboard.html' %}
+<head>
+    <script src="{% static 'js/jQuery.js' %}"></script>  
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <script type="text/javascript" src="{% static 'js/add_js.js' %}"></script>  
+
+</head>
+{% block content %}
+  {% url 'save_student' as action_path %}
+  {% include 'main/forms.html' with messages=messages form=form action_path=action_path  button_text="Add Student"%}
+ 
+
+{% endblock content %}
+
+

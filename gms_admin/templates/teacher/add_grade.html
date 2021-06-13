@@ -1,0 +1,141 @@
+{%load static%}
+{% include 'teacher/base.html'%}
+  <head>
+    <link rel="stylesheet" href= "{% static 'css/attendance.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src = "{% static 'js/JQuery.js' %}"> </script>
+
+  </head>
+{% block 'main-content'%}
+
+<div class='grid-container'>
+<label for="subjects"></label>
+       <select name="subject" id="subject" class="select-css">
+        {% for subject in subjects %}
+         <option value = "{{subject.id}}"> {{subject.class_id.class_name}} - {{subject.subject_name}}</option>
+        {% endfor %}
+        </select>  
+        <button type = 'button' id='fetch_student'> Fetch Student </button>  
+        <button type = 'button' id='clear'> Clear </button>  
+</div>
+    <div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+         <th scope="col">Grade Level</th>
+         <th scope="col">Section</th>
+         <th scope="col">Subject Name</th>
+          <th scope="col">Student Name</th>
+          <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tbody>
+    </table>
+    <div class = 'footer'>
+
+ 
+    </div>
+  
+</div>
+  
+ {% endblock 'main-content'%}
+
+ {% block custom_js %}
+ <script>
+$(document).ready(function(){
+    $("#fetch_student").on('click',function(e){
+
+      //e.preventDefault();
+       //$("#fetch_student").attr("disabled", true);
+      var classes = $('#classes').val()
+      var subject = $('#subject').val()
+
+      $.ajax({
+
+        url: "{% url 'get_subject_students'%}",
+        type: 'POST',
+        data:{classes:classes, subject:subject},
+      })
+
+      .done(function(response){
+        alert('fetched')
+        var json_data = JSON.parse(response);
+
+        //var div = "<input type='date' name='attendance_date' id='attendance_date'>";
+        //$('grid-container').first().append(div);
+
+      var tr;
+      for (i in json_data) {
+      tr = $('<tr/>');
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity' style='color:black;padding:5px'>add subject report </a>");
+     
+      //tr.append("<input type='checkbox' checked='checked' name='section_data[]' value='"+json_data[i]['id']+"'>");
+      //tr.append("<input type='date' name='attendance_date' id='attendance_date'> '&emsp </input>");
+      //tr.html(div);
+      $('table').first().append(tr);
+    } 
+
+
+    })
+      .fail(function(){
+        alert("Error")
+      })
+
+      
+
+      })
+
+    $("#clear").on('click',function(e){
+   
+        $('table tbody' ).empty();
+         
+   
+         })
+
+      $("#save_attendance").on('click',function(){
+
+      var data =  $("input[name='section_data[]']").map(function(){ 
+
+        if($(this).is(":checked")) {
+          return {"id":$(this).val(), "status":1}; 
+        }
+
+        else {
+
+          return {"id":$(this).val(), "status":0}; 
+        }
+        }).get()
+      var attendance_date2=$("#attendance_date").val();
+      var class_id = $('#classes').val();
+      var session_year_id = $('#session_year').val();
+      console.log(data)
+      data=JSON.stringify(data)
+
+      $.ajax({
+        url: "{% url 'save_attendance'%}",
+        type: 'POST',
+        data:{student_ids:data, attendance_date:attendance_date2, class_id:class_id, session_year_id:session_year_id}
+      })
+      .done(function(response){       
+        alert("Added")
+    })
+
+    .fail(function(){
+        alert("Error")
+      }) 
+
+    })
+
+})
+
+
+ </script>
+
+{% endblock custom_js%}

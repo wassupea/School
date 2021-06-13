@@ -1,0 +1,23 @@
+{%load static%}
+{% include 'main/base.html' %}
+<head>
+    <script src="{% static 'js/jQuery.js' %}"></script>  
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <script type="text/javascript" src="{% static 'js/add_js.js' %}"></script>  
+
+{% block page_title%}
+
+Edit Student | Username: {{username}} | #ID: {{id}}
+
+{% endblock page_title%}
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+<!--<script src="https://kit.fontawesome.com/b99e675b6e.js"></script> -->	
+</head>
+{% block content %}
+  {% url 'save_editstudent' as action_path %}
+  {% include 'main/forms.html' with messages=messages form=form action_path=action_path  button_text="Edit Student"%}
+ 
+
+{% endblock content %}
+
+

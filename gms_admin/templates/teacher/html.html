@@ -1,0 +1,43 @@
+<html>
+  <head>
+  {%load static%}
+
+    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/attendance.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src = "{% static 'js/JQuery.js' %}"> </script>
+
+  </head>
+{% block 'main-content'%}
+  <button id='save_attendance' class='button' type='button'> Add Attendance </a>
+  <button id='fetch_student' class='button' type='button'>Fetch Student </a>
+ {% endblock 'main-content'%}
+
+ {% block custom_js %}
+ <script>
+$(document).ready(function(){
+    $("#fetch_student").on('click',function(e){
+
+        var div = ;
+        $("body").html(div)
+        alert("Hello")
+      
+    })
+
+
+    $(document).on('click', '#save_attendance', function(){
+
+      var data =  $("input[name='section_data[]']").map(function(){ return $(this).val(); }).get()
+      var attendance_date=$("#attendance_date");
+      console.log(attendance_date)
+      console.log(data); 
+})
+
+  })
+ </script>
+
+{% endblock custom_js%}
+
+</html>

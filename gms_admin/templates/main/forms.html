@@ -1,0 +1,32 @@
+<br> 
+  <div class = "container"> 
+      <ul class="steps">
+        <li class="is-active">Add a Student</li>
+      </ul>
+
+<form class="form-wrapper" action="{{ action_path }}" method="post">
+<br>
+
+  {% csrf_token %} 
+    {% for field in form %}
+        {{ field.errors  }}
+        {{ field.label_tag }}
+        {{ field}}
+    {% endfor%}
+
+        {% if messages %}
+        <div class = "messages">
+            {% for message in messages %}
+            {% if message.tags == 'error'%}
+            <span class = "alert alert-danger"> {{message}} </span>
+            {% endif %}
+            {% if message.tags == 'success'%}
+            <span class = "alert alert-danger"> {{message}} </span>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <input class="submit button" type="submit">
+    
+     </div>
+  </form>

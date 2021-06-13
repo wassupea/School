@@ -1,0 +1,66 @@
+{%load static%}
+{% include 'main/admin_dashboard.html'%}
+  <head>
+    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+
+  </head>
+  <style>
+  .button {
+  padding: 10px 20px;
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: black;
+  background-color: #04AA6D;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+  font-family:sans-serif;
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+  </style>
+{% block 'main-content'%}
+
+
+    <div class="table-wrapper">
+    <table class="fl-table">
+      <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Grade Level</th>
+      <th scope="col">Subject Name</th>
+      <th scope="col">Section</th>
+      <th scope="col">Action </th>
+    </tr>
+  </thead>
+  <tbody>
+
+      {% for subject in subjects%}
+        <tr>
+          <td> {{subject.id}} </td>
+          <td> {{subject.gradelevel_id.gradeLevel_no}} </td>
+          <td> {{subject.subject_name}} </td>
+          <td> {{subject.class_id.class_name}} </td>
+          <td> <a href = "/edit_subject/{{subject.id}} "> Edit </a></td>
+        </tr>
+      {% endfor %}
+        </tr>
+        <tbody>
+    </table>
+</div>
+<a href= "add_subjects" class="button"> Add a Subject </a>
+ {% endblock 'main-content'%}

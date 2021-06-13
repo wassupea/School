@@ -1,0 +1,119 @@
+{%load static%}
+{% include 'main/admin_dashboard.html'%}
+  <head>
+    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/attendance.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src = "{% static 'js/JQuery.js' %}"> </script>
+
+  </head>
+{% block 'main-content'%}
+
+<div class='grid-container'>
+<label for="classes">Classes</label>
+<div class="select">   
+       <select name="classes" id="classes" class="select-css">
+        {% for classes in classes %}
+         <option value = "{{classes.id}}"> {{classes.class_name}}</option>
+        {% endfor %}
+        </select>
+</div>
+      
+        <label for="session_year">School Year</label>
+       <select name="session_year" id="session_year">
+        {% for session_year in session_year %}
+         <option value = "{{session_year.id}}"> {{session_year.session_start_year}} to {{session_year.session_end_year}}</option>
+        {% endfor %}
+        </select> 
+         <button type = 'button' id='fetch_section'> Fetch Class </button>  
+</div>
+    <div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+         <th scope="col">Grade Level</th>
+         <th scope="col">Class Name</th>
+          <th scope="col">Student Name</th>
+          <th scope="col">Teacher Name</th>
+        </tr>
+        </thead>
+        <tbody>
+    <!--   <tr>
+          {%for section in section %}
+        <tr>
+                      <td>{{section.class_id.gradelevel_id_id }}</td>
+                      <td>{{ section.class_id.class_name }}</td>
+                      <td>{{ section.student_id.last_name }} , {{ section.student_id.first_name }}</td>
+                      <td><input type="checkbox" name="name1" value="section.student_id_id" />&nbsp;</td>
+                      
+        </tr>
+        {% endfor %}
+        </tr> -->
+        <tbody>
+    </table>
+ <button id='clear' class='button' type='button'> Clear </a>
+    <div class = 'footer'>
+
+ 
+    </div>
+  
+</div>
+  
+ {% endblock 'main-content'%}
+
+ {% block custom_js %}
+ <script>
+$(document).ready(function(){
+    $("#fetch_section").on('click',function(e){
+
+      e.preventDefault();
+       $("#fetch_student").attr("disabled", true);
+      var classes = $('#classes').val()
+
+      $.ajax({
+
+        url: "{% url 'get_section'%}",
+        type: 'POST',
+        data:{classes:classes},
+      })
+
+      .done(function(response){
+        alert('fetched')
+        var json_data = JSON.parse(response);
+        console.log(json_data)
+
+      var tr;
+      for (i in json_data) {
+      tr = $('<tr/>');
+      tr.append("<td>" + json_data[i].gradelevel + "</td>");
+      tr.append("<td>" + json_data[i].class_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<td>" + json_data[i].teacher_name + "</td>");
+      //tr.append("<input type='date' name='attendance_date' id='attendance_date'> '&emsp </input>");
+      //tr.html(div);
+      $('table').first().append(tr);
+    } 
+
+
+    })
+      .fail(function(){
+        alert("Error")
+        console.log(json_data)
+      })
+      })
+
+       $("#clear").on('click',function(e){
+   
+        $('table tbody' ).empty();
+         
+   
+         })
+
+    });
+
+
+ </script>
+
+{% endblock custom_js%}

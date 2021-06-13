@@ -1,0 +1,79 @@
+{%load static%}
+{% include 'main/admin_dashboard.html'%}
+  <head>
+    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+
+  </head>
+  <style>
+  .button {
+  padding: 10px 20px;
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: black;
+  background-color: #04AA6D;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+  font-family:sans-serif;
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+  </style>
+{% block 'main-content'%}
+
+
+    <div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+         <th scope="col">ID</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Grade Level</th>
+          <th scope="col">Address</th>
+          <th scope="col">Gender</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">School Year</th>
+          <th scope="col">Section</th>
+          <th scope="col">Action</th>
+          <th scope="col">Add Class Subjects</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          {%for student in students %}
+        <tr>
+                    <td>{{ student.admin.id }}</td>
+                      <td>{{ student.admin.first_name }}</td>
+                      <td>{{ student.admin.last_name }}</td>
+                      <td>{{ student.class_id.gradelevel_id_id }}</td>
+                      <td>{{ student.address }}</td>
+                      <td>{{ student.gender }}</td>
+                      <td>{{ student.admin.email }}</td>
+                      <td>{{ student.session_year_id.session_start_year }} to {{ student.session_year_id.session_end_year }}</td>
+                      <td> {{student.class_id.class_name}} </a></td>
+                      <td> <a href = "/edit_student/{{student.admin.id}} "> Edit </a></td>
+                      <td> <a href = "/add_sectionsubjects/{{student.admin.id}} "> Edit </a></td>
+        </tr>
+        {% endfor %}
+      
+        </tr>
+        <tbody>
+    </table>
+</div>
+<a href= "add_student" class="button"> Add Student </a>
+ {% endblock 'main-content'%}
