@@ -225,7 +225,7 @@ def add_homework(request):
               
                 homeworks.save()
                 messages.success(request,"Added Homework")
-                return HttpResponse()
+                return redirect(request.META.get('HTTP_REFERER'))
             else:
                 messages.error(request,"Invalid")
                 return redirect(request.META.get('HTTP_REFERER'))
@@ -253,7 +253,7 @@ def add_quiz(request):
         else:
             if qz1_grade_max >= qz1_grade:
                 qz1_score = (qz1_grade / qz1_grade_max) * 100
-                quizzes=Quizzes(name=qz1,section_subject_id = student_subject, raw_score =qz1_grade, item=qz1_grade_max, score=qz1_score,qtr=qz_qtr,date=date)
+                quizzes=Quizzes(name=qz1,section_subject_id = student_subject, raw_score =qz1_grade, items=qz1_grade_max, score=qz1_score,qtr=qz_qtr,date=date)
              
                 quizzes.save()
                 messages.success(request,"Added Quiz")
@@ -284,7 +284,7 @@ def add_seatwork(request):
         else:
             if sw1_grade_max >= sw1_grade:
                 sw1_score = (sw1_grade / sw1_grade_max) * 100
-                seatworks=Seatwork(name=sw1,section_subject_id = student_subject,raw_score=sw1_grade, item=sw1_grade_max,score=sw1_score,qtr=sw_qtr,date=date)
+                seatworks=Seatwork(name=sw1,section_subject_id = student_subject,raw_score=sw1_grade, items=sw1_grade_max,score=sw1_score,qtr=sw_qtr,date=date)
                 
                 seatworks.save()
                 messages.success(request,"Added Seatwork")
@@ -315,7 +315,7 @@ def add_exam(request):
         else:
             if exam_grade_max >= exam_grade:
                 exam_score = (exam_grade / exam_grade_max) * 100
-                exams=Examinations(name=exam,section_subject_id = student_subject, raw_score=exam_grade, item=exam_grade_max, score=exam_score,qtr=exam_qtr,date=date)
+                exams=Examinations(name=exam,section_subject_id = student_subject, raw_score=exam_grade, items=exam_grade_max, score=exam_score,qtr=exam_qtr,date=date)
                
                 exams.save()
                 messages.success(request,"Added Exam")
@@ -345,7 +345,7 @@ def add_performance(request):
         else:
             if pf_grade_max >= pf_grade:
                 pf_score = (pf_grade / pf_grade_max) * 100
-                pfs=Performance_Task(name=pf,section_subject_id = student_subject,raw_score=pf_grade,item=pf_grade_max, score=pf_score,qtr=pf_qtr,date=date)
+                pfs=Performance_Task(name=pf,section_subject_id = student_subject,raw_score=pf_grade,items=pf_grade_max, score=pf_score,qtr=pf_qtr,date=date)
                 
                 pfs.save()
                 messages.success(request,"Added Performance Task")
