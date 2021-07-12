@@ -114,35 +114,40 @@ def save_student(request):
                 return HttpResponseRedirect("/add_student")
                 
             else:
-                user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
-                gradelevel_obj = GradeLevel.objects.get(id=gradelevel_id)
-                class_id = Classes.objects.get(id=class_id)
-                session_year = SessionYearModel.objects.get(id=session_year_id)
-                user.students.address = address
-                user.students.gradelevel_id=gradelevel_obj
-                user.students.class_id = class_id
-                user.students.gender=gender
-                user.students.session_year_id=session_year
-                user.save()
+                try:
+                    user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
+                    gradelevel_obj = GradeLevel.objects.get(id=gradelevel_id)
+                    class_id = Classes.objects.get(id=class_id)
+                    session_year = SessionYearModel.objects.get(id=session_year_id)
+                    user.students.address = address
+                    user.students.gradelevel_id=gradelevel_obj
+                    user.students.class_id = class_id
+                    user.students.gender=gender
+                    user.students.session_year_id=session_year
+                    user.save()
 
-                print(class_id)
+                    print(class_id)
 
-                #add to section
-                add_section = Section(class_id = class_id, student_id= user)
-                add_section.save()
+                    #add to section
+                    add_section = Section(class_id = class_id, student_id= user)
+                    add_section.save()
 
 
-                #send an email
-                send_mail(
-                'Account Credentials for ' + last_name + ', ' +first_name,
-                'email: ' + email + ' password: ' +password,
-                'hwngryjn@gmail.com',
-                [email],
-                fail_silently=False,
-                )
+                    #send an email
+                    send_mail(
+                    'Account Credentials for ' + last_name + ', ' +first_name,
+                    'email: ' + email + ' password: ' +password,
+                    'hwngryjn@gmail.com',
+                    [email],
+                    fail_silently=False,
+                    )
 
-                messages.success(request,"Added Student")
-                return HttpResponseRedirect("manage_student")
+                    messages.success(request,"Added Student")
+                    return HttpResponseRedirect("manage_student")
+                except:
+                    messages.error(request,"Failed")
+                    return HttpResponseRedirect("manage_student")
+
     
 
 def student_home(request):
@@ -193,10 +198,15 @@ def save_subjects(request):
             return HttpResponseRedirect("/add_subjects")
         else:
             
-            subject__in=Subjects(subject_name=subject,gradelevel_id=gradelevel, class_id=class_id,teacher_id=teacher_id)
-            subject__in.save()
-            messages.success(request,"Added Subject")
-            return HttpResponseRedirect("/add_subjects")
+            try:
+                subject__in=Subjects(subject_name=subject,gradelevel_id=gradelevel, class_id=class_id,teacher_id=teacher_id)
+                subject__in.save()
+                messages.success(request,"Added Subject")
+                return HttpResponseRedirect("/add_subjects")
+            except:
+                messages.error(request,"Failed")
+                return HttpResponseRedirect("manage_subject")
+
         #return HttpResponse('ok')
 
 
@@ -219,10 +229,15 @@ def save_section(request):
             messages.error(request,"Failed to Add Section")
             return HttpResponseRedirect("add_section")
         else:
-            section=Section(class_id=class_id,student_id__in=student)
-            section.save()
-            messages.success(request,"Successfully Added Section")
-            return HttpResponseRedirect("manage_student")
+            try:
+                section=Section(class_id=class_id,student_id__in=student)
+                section.save()
+                messages.success(request,"Successfully Added Section")
+                return HttpResponseRedirect("manage_student")
+
+            except:
+                messages.error(request,"Failed")
+                return HttpResponseRedirect("manage_student")
             
 
 def add_class(request):
@@ -245,11 +260,14 @@ def save_class(request):
             messages.error(request,"Class exists")
             return HttpResponseRedirect(reverse("add_class"))
         else:
-            class2=Classes(teacher_id=teacher,gradelevel_id=gradelevel,class_name=class_name)
-            class2.save()
-            messages.success(request,"Successfully Added class")
-            return HttpResponseRedirect(reverse("add_class"))
-
+            try:
+                class2=Classes(teacher_id=teacher,gradelevel_id=gradelevel,class_name=class_name)
+                class2.save()
+                messages.success(request,"Successfully Added class")
+                return HttpResponseRedirect(reverse("add_class"))
+            except:
+                messages.error(request,"Failed")
+                return HttpResponseRedirect(reverse("add_class"))
 
 def add_sectionsubjects(request, student_id):
     student = Students.objects.get(admin_id=student_id)
@@ -278,12 +296,17 @@ def save_sectionsubjects(request):
             
             
         else:
-            class_sub=Section_subjects(subject_id=subject_id, student_id=student)
-            print(class_sub)
-            class_sub.save()
-            #return HttpResponse('OK')
-            messages.success(request,"Successfully Added Subject to students")
-            return HttpResponseRedirect(reverse("manage_student"))
+            try:
+                class_sub=Section_subjects(subject_id=subject_id, student_id=student)
+                print(class_sub)
+                class_sub.save()
+                #return HttpResponse('OK')
+                messages.success(request,"Successfully Added Subject to students")
+                return HttpResponseRedirect(reverse("manage_student"))
+            except:
+                messages.error(request,"Failed")
+                return HttpResponseRedirect(reverse("manage_student"))
+
     
 
 
@@ -486,10 +509,15 @@ def save_sessionyear(request):
             return HttpResponseRedirect(reverse("add_sessionyear"))
         
         else:
-            session = SessionYearModel(session_start_year =session_start_year,session_end_year=session_end_year )
-            session.save()
-            messages.success(request,"Added")
-            return HttpResponseRedirect(reverse("manage_school"))
+            try:
+                session = SessionYearModel(session_start_year =session_start_year,session_end_year=session_end_year )
+                session.save()
+                messages.success(request,"Added")
+                return HttpResponseRedirect(reverse("manage_school"))
+            except:
+                messages.error(request,"Failed")
+                return HttpResponseRedirect(reverse("manage_school"))
+
 
 
 def sections(request):
