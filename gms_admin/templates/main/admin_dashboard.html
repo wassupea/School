@@ -1,2 +1,38 @@
 {% load static %}
 {% include  'main/base.html' %}
+<head>
+      <link rel="stylesheet" href= "{% static 'css/base.css' %}" type="text/css">
+</head>
+
+{% block main_content%}
+  <div class="container">
+        <div class="card">
+          <div class="card-header">
+            <h3>Number of Teachers</h3>
+          </div>
+          <div class="card-body">
+            <h5>10</h5>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3>Number of Students</h3>
+          </div>
+          <div class="card-body">
+            <h5>100</h5>
+          </div>
+        </div>
+
+         <div class="card">
+        <div class="card-header">
+            <h3>Total Classes</h3>
+          </div>
+          <div class="card-body">
+            <h5> 10</h5>
+          </div>  
+          </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock main_content %}

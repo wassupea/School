@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <title>{% block title %}Sample High School{% endblock title %}</title>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   {% load static %}
       <link rel="stylesheet" href= "{% static 'css/base.css' %}" type="text/css">
@@ -19,7 +15,6 @@
             <li><a href="/admin_home"><i class="fas fa-home"></i>Home</a></li>
             {% url 'add_teacher' as add_teacher %}
             <li><a href= "{% url 'manage_teacher'%}" ><i class="fas fa-subjects"></i>Manage Teacher</a></li>
-          <!--  <li><a href= "{{ add_teacher }}" class="{% if request.path == add_teacher %} active {% endif %}"><i class="fas fa-teacher "></i>Add Teacher</a></li> -->
              <li><a href= "{% url 'manage_school'%}" ><i class="fas fa-subjects"></i>Manage School</a></li>
             <li><a href= "{% url 'manage_student'%}" ><i class="fas fa-subjects"></i>Manage Students</a></li>
             <li><a href= "{% url 'manage_subject'%}" ><i class="fas fa-subjects"></i>Manage Subjects</a></li>
@@ -29,5 +24,6 @@
     </div>
     <div class="main_content">
         <div class="header">Sample High School.</div>  
+    
   </body>
 </html>

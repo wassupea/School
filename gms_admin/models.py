@@ -1,9 +1,11 @@
 from django.db import models
 from django.db.models.base import Model
+from django.db.models.fields import IntegerField
 from django.db.models.fields.related import ForeignKey
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -76,6 +78,15 @@ class Subjects(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
+
+class Subject_Percentage(models.Model):
+    id = models.AutoField(primary_key=True)
+    subject_id= models.ForeignKey(GradeLevel, on_delete=models.CASCADE)
+    sw_percentage = models.IntegerField()
+    hw_percentage = models.IntegerField()
+    qz_percentage = models.IntegerField()
+    objects = models.Manager()
+
 class Section_subjects(models.Model):
     id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -136,61 +147,98 @@ class AttendanceReport(models.Model):
 
 class Quizzes(models.Model):
     id = models.AutoField(primary_key =True)
-    subject_id =  models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=100)
-    score = models.IntegerField
+    raw_score = models.IntegerField()
+    score = models.IntegerField()
+    items = models.IntegerField()
+    qtr = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    objects = models.Manager()
 
 class Homework(models.Model):
     id = models.AutoField(primary_key =True)
-    subject_id =  models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=100)
-    score = models.IntegerField
+    raw_score = models.IntegerField()
+    items = models.IntegerField()
+    score = models.IntegerField()
+    qtr = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    objects = models.Manager()
+
+class Seatwork(models.Model):
+    id = models.AutoField(primary_key =True)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=100)
+    raw_score = models.IntegerField()
+    items = models.IntegerField()
+    score = models.IntegerField()
+    qtr = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    objects = models.Manager()
 
 class Examinations(models.Model):
     id = models.AutoField(primary_key =True)
-    subject_id =  models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=100)
-    score = models.IntegerField
+    raw_score = models.IntegerField()
+    items = models.IntegerField()
+    score = models.IntegerField()
+    qtr = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    objects = models.Manager()
 
-class Activities(models.Model):
+class Performance_Task (models.Model):
     id = models.AutoField(primary_key =True)
-    subject_id =  models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=100)
-    score = models.IntegerField
+    raw_score = models.IntegerField()
+    items = models.IntegerField()
+    score = models.IntegerField()
+    qtr = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    objects = models.Manager()
+
 
 class First_Qtr(models.Model):
     id = models.AutoField(primary_key =True)
-    subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
-    student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
     grade= models.IntegerField()
-
-
-class Student_Grade(models.Model):
-    id = models.AutoField(primary_key =True)
-    subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
-    student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
-    #section_id = models.ForeignKey(Section, on_delete=models.CASCADE)
-    #student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
-    FirstQtr = models.IntegerField()
-    SecondQtr = models.IntegerField()
-    ThirdQtr = models.IntegerField()
-    FourthQtr = models.IntegerField()
-    Average = models.IntegerField()
-    Gwa = models.IntegerField()
-    status = models.BooleanField(default =False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-class SubjectReport(models.Model):
+class Second_Qtr(models.Model):
     id = models.AutoField(primary_key =True)
-    teacher_id = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING)
-    subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
-    student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
-    section_id = models.ForeignKey(Section, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
+    grade= models.IntegerField()
     objects = models.Manager()
+
+class Third_Qtr(models.Model):
+    id = models.AutoField(primary_key =True)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
+    grade= models.IntegerField()
+    objects = models.Manager()
+
+class Fourth_Qtr(models.Model):
+    id = models.AutoField(primary_key =True)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
+    grade= models.IntegerField()
+    objects = models.Manager()
+
+
+
+
+
+
+class Announcements(models.Model):
+    id = models.AutoField(primary_key =True)
+    subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
+    title = models.TextField()
+    content = RichTextField(blank=True,null=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
+
+    ordering = ['date_added']
 
 
 

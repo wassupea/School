@@ -1,0 +1,47 @@
+{% include 'student/base.html'%}
+{%load static%}
+  <head>
+    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+
+  </head>
+{% block 'main-content'%}
+
+    <div class="table-wrapper">
+        <br> <center>
+<caption> Attendance Report for {{user.last_name}} , {{user.first_name}}  </caption>
+    <table class="fl-table">
+        <thead>
+      <tr>
+          <th scope="col">Attendance Date</th>
+          <th scope="col">Status</th>
+   
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          {%for attendance_report in attendance_report %}
+
+        {% if attendance_report.status is True%}
+        <tr>
+                      <td>{{ attendance_report.attendance_id.attendance_date }}</td>
+                      <td><input type='checkbox' value='attendance_report.status'  checked='checked' disabled></td>
+                      
+        </tr>
+        {% endif %}
+
+
+        {% if attendance_report.status is False %}
+        <tr>
+                      <td>{{ attendance_report.attendance_id.attendance_date }}</td>
+                      <td><input type='checkbox' value='attendance_report.status' disabled></td>
+                      
+        </tr>
+        {% endif %}
+        {% endfor %}
+        </tr>
+        <tbody>
+    </table>
+</div>
+ {% endblock 'main-content'%}

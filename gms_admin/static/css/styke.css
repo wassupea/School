@@ -28,6 +28,19 @@ input{
   padding: 0;
   border: none;
 }
+button {
+        position: absolute;
+        top: 65%;
+        border-radius: 5px;
+        right: 17%;
+        z-index: 3;
+        border: none;
+        height: 30px;
+        cursor: pointer;
+        color: white;
+        background-color: #1e90ff;
+        transform: translateX(2px);
+}
 
 /* GRID */
 
@@ -145,6 +158,24 @@ input{
 }
 
 .form-wrapper2 .section.is-active{
+  opacity: 1;
+  
+  -webkit-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+
+.form-wrapper2 .section.is-next{
+  opacity: 1;
+  
+  -webkit-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+
+.form-wrapper2 .section.is-done{
   opacity: 1;
   
   -webkit-transform: scale(1, 1);

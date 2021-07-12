@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     #'admin',
     'gms_admin',
     'jquery',
+    'ckeditor',
+    'djrichtextfield',
 ]
 
 MIDDLEWARE = [
@@ -141,5 +143,20 @@ AUTHENTICATION_BACKENDS =['gms_admin.accounts_backend.EmailBackEnd']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND="django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH=os.path.join(BASE_DIR,"sent_mails")
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'hwngryjn@gmail.com'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+DJRICHTEXTFIELD_CONFIG = {
+    'js': ['//cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js'],
+    'init_template': 'djrichtextfield/init/tinymce.js',
+    'settings': {
+        'menubar': False,
+        'plugins': 'link image',
+        'toolbar': 'bold italic | link image | removeformat',
+        'width': 700
+    }
+}

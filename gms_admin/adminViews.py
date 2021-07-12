@@ -1,14 +1,14 @@
 from django.http.response import JsonResponse
 from gms_admin.forms import *
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect, HttpResponse
 from gms_admin.models import *
 from django.contrib import messages
 from django.urls import reverse
-import datetime
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.core import serializers
+from django.core.mail import send_mail
 
 def admin_home(request):
     return render(request, 'main/admin_dashboard.html')
@@ -31,17 +31,33 @@ def save_teacher(request):
         password=request.POST.get("password")
         address=request.POST.get("address")
 
-        if CustomUser.objects.filter(last_name = last_name).exists() and CustomUser.objects.filter(first_name = first_name).exists():
+        if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists():
             messages.error(request,"Failed to Add Teacher")
             return HttpResponseRedirect(reverse('add_teacher'))
+
+        if CustomUser.objects.filter(email = email).exists() and CustomUser.objects.filter(username = username).exists():
+            messages.error(request,"Failed to Add Teacher")
+            return HttpResponseRedirect(reverse('add_teacher'))
+
             
         else:
             user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=2)
             user.teacher.address = address
             user.teacher.fname=first_name
-            user.save()
-        
+            user.save()        
             messages.success(request,"Added Teacher")
+
+            #send an email
+            send_mail(
+                'Account Credentials for ' + last_name + ', ' +first_name,
+                'email: ' + email + ' password: ' +password,
+                'hwngryjn@gmail.com',
+                [email],
+                fail_silently=False,
+            )
+
+
+
             return HttpResponseRedirect(reverse("manage_teacher"))
            
 def add_gradelevel(request):
@@ -54,7 +70,7 @@ def save_gradelevel(request):
     else:
         grade_level =request.POST.get("grade_level")
         if GradeLevel.objects.filter(gradeLevel_no = grade_level).exists():
-            messages.success(request,"Failed to add Grade Level")
+            messages.error(request,"Failed to add Grade Level")
             return HttpResponseRedirect(reverse("add_gradelevel"))
 
         else:
@@ -89,9 +105,14 @@ def save_student(request):
             session_year_id = form.cleaned_data["session_year_id"]
            
 
-            if CustomUser.objects.filter(last_name = last_name).exists() and CustomUser.objects.filter(first_name = first_name).exists():
+            if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists():
                 messages.error(request,"Failed to add Student")
                 return HttpResponseRedirect("/add_student")
+
+            if CustomUser.objects.filter(email = email).exists() and CustomUser.objects.filter(username = username).exists():
+                messages.error(request,"Failed to add Student")
+                return HttpResponseRedirect("/add_student")
+                
             else:
                 user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
                 gradelevel_obj = GradeLevel.objects.get(id=gradelevel_id)
@@ -106,8 +127,19 @@ def save_student(request):
 
                 print(class_id)
 
+                #add to section
                 add_section = Section(class_id = class_id, student_id= user)
                 add_section.save()
+
+
+                #send an email
+                send_mail(
+                'Account Credentials for ' + last_name + ', ' +first_name,
+                'email: ' + email + ' password: ' +password,
+                'hwngryjn@gmail.com',
+                [email],
+                fail_silently=False,
+                )
 
                 messages.success(request,"Added Student")
                 return HttpResponseRedirect("manage_student")
@@ -154,8 +186,9 @@ def save_subjects(request):
         #print(section_id)
         teacher = request.POST.get("teacher")
         teacher_id = CustomUser.objects.get(id=teacher)
+        print(teacher)
     
-        if Subjects.objects.filter(subject_name = subject).exists() and Subjects.objects.filter(class_id = class_id).exists():
+        if Subjects.objects.filter(subject_name = subject).filter(class_id = class_id).exists():
             messages.error(request,"Existing Subject")
             return HttpResponseRedirect("/add_subjects")
         else:
@@ -241,7 +274,7 @@ def save_sectionsubjects(request):
 
         if Section_subjects.objects.filter(subject_id=subject_id).exists() and Section_subjects.objects.filter(student_id=student).exists():
             messages.error(request,"Existing Subject")
-            return HttpResponseRedirect("add_sectionsubjects")
+            return redirect(request.META.get('HTTP_REFERER'))
             
             
         else:
@@ -260,7 +293,6 @@ def edit_teacher(request, teacher_id):
 
 
 def save_editteacher(request):
-
     if request.method!="POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
     else:
@@ -456,7 +488,7 @@ def save_sessionyear(request):
         else:
             session = SessionYearModel(session_start_year =session_start_year,session_end_year=session_end_year )
             session.save()
-            messages.success(request,"Successfully Edited Section")
+            messages.success(request,"Added")
             return HttpResponseRedirect(reverse("manage_school"))
 
 

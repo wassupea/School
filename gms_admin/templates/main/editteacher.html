@@ -1,6 +1,7 @@
 {% load static%}
-{% include 'main/admin_dashboard.html'%}
+{% include  'main/base.html' %}
 <link rel="stylesheet" href= "{% static 'css/edit_teacher.css' %}" type="text/css">
+<script src = "{% static 'js/JQuery.js' %}"> </script>
 {% block main_content %}
 
 
@@ -25,7 +26,7 @@
      <p> Address <input type="text" name="address" maxlength="340" name="txtEmpPhone" class="form-control" placeholder="Address *" value="{{teacher.address}}" /> </p>
     </fieldset>
     <fieldset>
-      <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+      <button name="submit" type="submit" id="contact-submit" onclick="return confirm('Do you really want to submit the form?');">Submit</button>
     </fieldset>
   </form>
 </div>

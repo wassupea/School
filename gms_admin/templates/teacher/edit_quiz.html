@@ -1,0 +1,66 @@
+{% include 'teacher/base.html'%}
+{%load static%}
+<head>
+
+     <link rel="stylesheet" href= "{% static 'css/table_of_grade.css' %}" type="text/css">
+     <link rel="stylesheet" href= "{% static 'css/edit_homework.css' %}" type="text/css">
+      <link rel="stylesheet" href= "{% static 'css/messages.css' %}" type="text/css">
+     <script src = "{% static 'js/JQuery.js' %}"> </script>
+</head>
+
+{% block main_content %}
+<div class="container2" id="container2">
+<div class="table-wrapper">
+    <div id ="quizzes" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <thead>
+        <form action="{%url 'save_editquiz'%}" method="POST">
+        {% csrf_token %}
+        <tr>
+          <th scope="col">Quiz Name</th>
+    <th scope="col">Raw Score</th>
+          <th scope="col">No. of Items</th>
+          <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>  <input type="text" name="qz1" value="{{quiz.name}}"> </td>
+        <td> <input type="text" name="qz1_grade" value="{{quiz.raw_score}}"> </td>
+        <td> <input type="text" name="qz1_grade_max" value="{{quiz.items}}"> </td>
+        <td> <input type="date" name="qz1_date" value="{{quiz.date}}"> </td>
+       </tbody>
+          <tbody>
+          <td> <select name="qtr" id="qtr">
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select></td>
+        <td>  <input type="hidden" name='student_subject_id' value={{quiz.section_subject_id.id}}> </td>
+        
+        <td><input type="hidden" name='quiz_id' value="{{quiz.id}}"></td>
+        <td> <input class="table-submit" type="submit" id="quiz_button"> </td>
+        <tbody> 
+    </table>
+    <div class = 'footer'>
+    </div>
+  
+</div>
+</form>
+
+</div>
+  {% if messages %}
+   <div class = "messages">
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% if message.tags == 'success'%}
+      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+   {% endif %}
+{% endblock main_content %}
+

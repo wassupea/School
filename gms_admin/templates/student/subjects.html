@@ -10,21 +10,23 @@
 
 
     <div class="table-wrapper">
+        <br> <center>
+<caption> Subjects Held by {{user.last_name}} </caption>
     <table class="fl-table">
         <thead>
       <tr>
-         <th scope="col">Grade Level</th>
           <th scope="col">Subject Name</th>
           <th scope="col">Teacher</th>
+          <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
         <tr>
           {%for subject in subjects %}
         <tr>
-                      <td>{{ subject.class_id_id }}</td>
-                      <td>{{ subject.subject_name }}</td>
-                      <td>{{ subject.teacher_id.last_name}} , {{ subject.teacher_id.first_name}} </td>
+                      <td>{{ subject.subject_id.subject_name }}</td>
+                      <td>{{ subject.subject_id.teacher_id.last_name}} , {{ subject.subject_id.teacher_id.first_name}} </td>
+                      <td><a href = "/view_activities/{{subject.id}} "> View Details </a></td>
         </tr>
         {% endfor %}
         </tr>

@@ -1,0 +1,268 @@
+* { box-sizing: border-box; }
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Economica', 'Arial', sans-serif;
+  font-size: 14px;
+  
+}
+
+.container11   {
+  position: relative;
+  width: 30%;
+  max-width:100%;
+  left:35%;
+}
+form {
+    position: relative;
+    width: 110%;
+    margin: 20% -5%;
+    padding: 14%;
+    background: white;
+    text-align: center;
+  }
+
+label {
+color: #4d4a48;
+font-weight: bold;
+display: block;
+width: 23%;
+}
+
+.label2 {
+  color: #4d4a48;
+  font-weight: bold;
+  display: block;
+  width: 30%;
+  }
+
+select {
+  width: 100%;
+  padding: 5px;
+}
+
+input {
+  display: inline-block;
+  width: 100%;
+  margin: 20px 0;
+  padding: 10px;
+  border: 2px dashed lightblue;
+  outline: none;
+  font-size: 14px;
+  font-family: 'Economica', 'Arial', sans-serif;
+  font-weight: 400;
+  transition: all 0.2s ease;
+}
+
+input:focus { border-color: deepskyblue; }
+
+button {
+  position: absolute;
+  left: calc(50% - 120px / 2);
+  bottom: calc(- 10px / 2);
+  width: 120px;
+  height: 30px;
+  padding: 10px 10px;
+  margin-top: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: white;
+  font-family: 'Economica', 'Arial', sans-serif;
+  font-size: 74%;
+  font-weight: 700;
+  background: mediumblue;
+  transition: all 0.2s ease;
+}
+
+
+.button2 {
+    position: absolute;
+    left: calc(50% - 120px / 2);
+    bottom: calc(- 20px / 2);
+    width: 120px;
+    height: 30px;
+    padding: 10px 10px;
+    margin-top: 40px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    font-family: 'Economica', 'Arial', sans-serif;
+    font-size: 74%;
+    font-weight: 700;
+    background: rgb(88, 75, 75);
+    transition: all 0.2s ease;
+
+}
+
+.button3 {
+  position: absolute;
+    left: calc(50% - 120px / 2);
+    bottom: calc(- 20px / 2);
+    width: 120px;
+    height: 30px;
+    padding: 10px 10px;
+    margin-top: 80px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    font-family: 'Economica', 'Arial', sans-serif;
+    font-size: 74%;
+    font-weight: 700;
+    background: rgb(88, 75, 75);
+    transition: all 0.2s ease;
+}
+button:hover { background: rgb(203, 203, 240); }
+
+button.valid,
+button.valid:hover { background: mediumseagreen; }
+
+svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+svg path {
+  stroke-width: 10px;
+  stroke: mediumseagreen;
+  fill: none;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+svg path.hidden { opacity: 0; }
+
+svg path.animate { animation: drawBorder 1s linear; }
+
+@keyframes drawBorder {
+  from {
+    stroke-dasharray: 4000;
+    stroke-dashoffset: 4000;
+  }
+  
+  to {
+    stroke-dasharray: 4000;
+    stroke-dashoffset: 0;
+  }
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+
+.alert {
+    padding: 0.5%;
+    height: 5%;
+    width: 20%;
+    top: 55%;
+    border-radius: 4%;
+    left:48%;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 12px;
+    position: fixed;
+    text-align: center;
+}
+
+.alert_info {
+    background-color: #4285f4;
+    border: 2px solid #4285f4
+}
+
+button.close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0
+}
+
+.close {
+    font-size: 20px;
+    color: #fff;
+    opacity: 0.9;
+    font-weight: normal
+}
+
+.alert_success {
+    background-color: #09c97f;
+    border: 2px solid #09c97f
+}
+
+.alert_warning {
+    background-color: #f8b15d;
+    border: 2px solid #f8b15d
+}
+
+.alert_error {
+    background-color: #f95668;
+    border: 2px solid #f95668
+}
+
+.fade_info {
+    background-color: #d9e6fb;
+    border: 1px solid #4285f4
+}
+
+.fade_info .close {
+    color: #4285f4
+}
+
+.fade_info strong {
+    color: #4285f4
+}
+
+.fade_success {
+    background-color: #c9ffe5;
+    border: 1px solid #09c97f
+}
+
+.fade_success .close {
+    color: #09c97f
+}
+
+.fade_success strong {
+    color: #09c97f
+}
+
+.fade_warning {
+    background-color: #fff0cc;
+    border: 1px solid #f8b15d
+}
+
+.fade_warning .close {
+    color: #f8b15d
+}
+
+.fade_warning strong {
+    color: #f8b15d
+}
+
+.fade_error {
+    background-color: #ffdbdb;
+    border: 1px solid #f95668
+}
+
+.fade_error .close {
+    color: #f95668
+}
+
+.fade_error strong {
+    color: #f95668
+}

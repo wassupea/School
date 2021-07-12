@@ -1,5 +1,7 @@
-from gms_admin.models import Classes, GradeLevel, SessionYearModel
+from gms_admin.models import *
 from django import forms
+from ckeditor.fields import RichTextField
+from ckeditor.widgets import CKEditorWidget
 
 class DateInput(forms.DateInput):
     input_type ="date"
@@ -111,4 +113,20 @@ class EditStudentForm(forms.Form):
     session_year_id = forms.ChoiceField(label='School Year', choices=session_list,widget=forms.Select(attrs={"class":'form-wrapper'}))
 
 
+class AddAnnouncement(forms.Form):
+    subject_list =[]
+    try:
+        subjectlist = Subjects.objects.all()
+        
+        for subject in subjectlist:
+            small_subjectlist=(subject.id, str(subject.class_id_id)+"-"+str(subject.subject_name))
+            subject_list.append(small_subjectlist)
+    except:
+        pass
+    subject_id =forms.ChoiceField(label='Subject', choices=subject_list,widget=forms.Select())
+    title = forms.CharField(label='Title', max_length=50, widget=forms.TextInput())
+    content = forms.CharField(widget=CKEditorWidget())
 
+    class Meta:
+        model = Announcements
+        fields = ['subject_id', 'title', 'content']

@@ -1,12 +1,12 @@
 {% load static%}
-{% include 'main/admin_dashboard.html'%}
+{% include  'main/base.html' %}
 
 <head>
 <link rel="stylesheet" href= "{% static 'css/forms.css' %}" type="text/css">
 </head>
 
 {% block main_content%}
-<div class="container">
+<div class="container6">
 {% url 'save_sectionsubjects' as action_path %}
   <form action= "{{action_path}}" method ="POST">
   {% csrf_token %}

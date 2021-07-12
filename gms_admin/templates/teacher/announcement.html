@@ -1,0 +1,21 @@
+{%load static%}
+{% include 'teacher/base.html'%}
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href= "{% static 'css/form_announcement.css' %}" type="text/css">
+    <script type="text/javascript" src="{% static 'js/add_js.js' %}"></script>  
+
+</head>
+
+{%block 'main_content'%}
+
+ <form method ="POST" class="form-wrapper" action="{%url 'save_announcement'%}">
+ {% csrf_token %}
+<center>
+ {{form.as_p}}
+{{ form.media }}
+  <input type="Submit" value="Post">
+{% endblock %}
+
+

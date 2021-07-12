@@ -1,0 +1,86 @@
+{% include  'teacher/base.html'%}
+{%load static%}
+<head>
+<link rel="stylesheet" href= "{% static 'css/grade2.css' %}" type="text/css">
+<script src = "{% static 'js/JQuery.js' %}"> </script>
+</head>
+<br><br>
+<center>
+<p> Add {{student_subject.subject_id.subject_name}} Grade for {{student_subject.student_id.last_name}}</p>
+<ul class="tabrow">
+  <li class=""> <input type="submit" value="Homework" id="homework_tab"></li>
+
+  <li class=""><input type="submit" value="Quiz" id="quiz_tab">  </li>
+
+  <li class=""><input type="submit" value="Seatworks" id="sw_tab">  </li>
+
+  <li class=""><input type="submit" value="Examinations" id="exam_tab"> </li>
+
+  <li class=""> <input type="submit" value="Performance Tasks" id="performance_tab"></li>
+
+  <li class=""><input type="submit" value="Calculate Grade" id="calculate_tab">  </li>
+</ul>
+<div class="container">
+<form = "{% url 'add_quiz' %}" method="POST" id="quiz_form">
+{% csrf_token %}
+<div class="input_fields_wrap">
+    <select id="qtr" name="qtr">
+    <option value="1">First Quarter</option>
+    <option value="2">Second Quarter</option>
+    <option value="3">Third Quarter</option>
+    <option value="4">Fourth Quarter</option>
+   </select>
+    <input type="submit" value="Add Quiz" id="quiz_btn" name="quiz_btn" placeholder="Add Quiz"> 
+    <br>
+    <div class="text" id="field">
+      <input type="text" id="quizz_name" name="mytext1" placeholder="quiz name"> 
+      <input type="text" id="grade" name="myGrade1" placeholder="grade"> 
+      <input type="text" id="over" name="myOver1" placeholder="over"> 
+      <button class="add_field_button">+</button>
+    </div>
+      <div class="text2" id="field2">
+      <input type="text" id="quiz2_name" name="mytext2" placeholder="quiz name"> 
+      <input type="text" id="grade2" name="myGrade2" placeholder="grade"> 
+      <input type="text" id="over2" name="myOver2" placeholder="over"> 
+      <a href="#" class="remove_field">Remove</a>
+    </div>
+  </div>
+</div>
+</form>
+</div>
+
+
+<script>
+$(document).ready(function() {
+    var max_fields      = 5; //maximum input boxes allowed
+    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+    var add_button      = $(".add_field_button"); //Add button ID
+    
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            $(wrapper).append('<div>  &nbsp &nbsp &nbsp<input type="text"  placeholder="quiz name" name="mytext[' + x + ']"/> <input type="text" id="grade" placeholder="grade" name="myGrade[' + x + ']"/>  <input type="text" id="over" name="myOver[' + x + ']" placeholder="over"> <a href="#" class="remove_field">Remove</a> </div>'); // add input boxes.
+        }
+    });
+    
+    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+
+ $("#quiz_btn").on('click',function(e){
+     var names = document.getElementById('quiz_form');
+     var texts = document.getElementsByTagName('mytext[1]');
+     console.log(texts);
+     for(i=0;i<names.length;i++) {
+        
+     }
+     e.preventDefault()
+    var texts ="";
+    $('input[type=text]').each((i, input) => {
+  })
+    })
+
+});
+</script>

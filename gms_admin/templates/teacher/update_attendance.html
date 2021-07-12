@@ -24,10 +24,13 @@
    <label for="attendance_date">Attendance Date</label>
   <select name="attendance_date" id="attendance_date">
    </select>
+   <br>
    <!-- <label for="attendance_date">Attendance Date</label>
       <input type='date' name='attendance_date' id='attendance_date'> -->
    <button type = 'button' id='fetch_attendance'> Fetch Attendance </button>  
     <button type = 'button' id='fetch_student'> Fetch Students </button> 
+    <button type = 'button' id='clear'> Clear </button> 
+
 </div>
 
 <div class='alert alert-danger' id='error_attendance' style='display:none'>
@@ -197,6 +200,14 @@
          }) 
    
        })
+
+       
+       $("#clear").on('click',function(e){
+   
+        $('table tbody' ).empty();
+         
+   
+         })
    
    })
    

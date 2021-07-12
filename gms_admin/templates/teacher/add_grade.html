@@ -4,7 +4,6 @@
     <link rel="stylesheet" href= "{% static 'css/attendance.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src = "{% static 'js/JQuery.js' %}"> </script>
 
   </head>
@@ -24,6 +23,7 @@
     <table class="fl-table">
         <thead>
         <tr>
+        <th scope="col">ID</th>
          <th scope="col">Grade Level</th>
          <th scope="col">Section</th>
          <th scope="col">Subject Name</th>
@@ -40,13 +40,16 @@
     </div>
   
 </div>
-  
+
+
  {% endblock 'main-content'%}
 
  {% block custom_js %}
  <script>
 $(document).ready(function(){
     $("#fetch_student").on('click',function(e){
+
+    $(this).prop('disabled', true);
 
       //e.preventDefault();
        //$("#fetch_student").attr("disabled", true);
@@ -64,39 +67,132 @@ $(document).ready(function(){
         alert('fetched')
         var json_data = JSON.parse(response);
 
-        //var div = "<input type='date' name='attendance_date' id='attendance_date'>";
-        //$('grid-container').first().append(div);
-
       var tr;
       for (i in json_data) {
+      var id = json_data[i].id;
+      const myJSON = JSON.stringify(id);
+
+      if(id == 1) {
+    
       tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
       tr.append("<td>" + json_data[i].grade_level + "</td>");
       tr.append("<td>" + json_data[i].section + "</td>");
       tr.append("<td>" + json_data[i].subject_name + "</td>");
       tr.append("<td>" + json_data[i].name + "</td>");
-      tr.append("<a href='/add_activity' style='color:black;padding:5px'>add subject report </a>");
-     
-      //tr.append("<input type='checkbox' checked='checked' name='section_data[]' value='"+json_data[i]['id']+"'>");
-      //tr.append("<input type='date' name='attendance_date' id='attendance_date'> '&emsp </input>");
-      //tr.html(div);
+      tr.append("<a href='/add_activity/1' style='color:black;padding:5px'>add subject report </td>");
       $('table').first().append(tr);
-    } 
-
-
+    }
+    if(id == 2) {
+    
+      tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity/2' style='color:black;padding:5px'>add subject report </td>");
+      $('table').first().append(tr);
+    }
+    if(id == 3) {
+    
+      tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity/3' style='color:black;padding:5px'>add subject report </td>");
+      $('table').first().append(tr);
+    }
+    if(id == 4) {
+    
+      tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity/4' style='color:black;padding:5px'>add subject report </td>");
+      $('table').first().append(tr);
+    }
+    if(id == 5) {
+    
+      tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity/5' style='color:black;padding:5px'>add subject report </td>");
+      $('table').first().append(tr);
+    }
+    if(id == 6) {
+    
+      tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity/6' style='color:black;padding:5px'>add subject report </td>");
+      $('table').first().append(tr);
+    }
+    if(id == 7) {
+    
+      tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity/7' style='color:black;padding:5px'>add subject report </td>");
+      $('table').first().append(tr);
+    }
+    if(id == 8) {
+    
+      tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity/8' style='color:black;padding:5px'>add subject report </td>");
+      $('table').first().append(tr);
+    }
+    if(id == 9) {
+    
+      tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity/9' style='color:black;padding:5px'>add subject report </td>");
+      $('table').first().append(tr);
+    }
+    if(id == 10) {
+    
+      tr = $('<tr/>');
+      tr.append("<td value=id>" + json_data[i].id + "</td>");
+      tr.append("<td>" + json_data[i].grade_level + "</td>");
+      tr.append("<td>" + json_data[i].section + "</td>");
+      tr.append("<td>" + json_data[i].subject_name + "</td>");
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<a href='/add_activity/10' style='color:black;padding:5px'>add subject report </td>");
+      $('table').first().append(tr);
+    }
+    }
     })
       .fail(function(){
         alert("Error")
       })
-
-      
-
       })
 
     $("#clear").on('click',function(e){
-   
+      var fetch_button =
+      $("#fetch_student").removeAttr('disabled');
         $('table tbody' ).empty();
-         
-   
          })
 
       $("#save_attendance").on('click',function(){
@@ -130,11 +226,11 @@ $(document).ready(function(){
     .fail(function(){
         alert("Error")
       }) 
-
     })
 
-})
+    
 
+})
 
  </script>
 

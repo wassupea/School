@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from gms_admin import studentViews, teacherViews, views, adminViews
+from gms_admin import studentViews, teacherViews, adminViews, views
 from School import settings
 
 urlpatterns = [
@@ -58,7 +58,7 @@ urlpatterns = [
     path('save_sessionyear', adminViews.save_sessionyear, name='save_sessionyear'),
     path('add_sectionsubjects/<str:student_id>', adminViews.add_sectionsubjects, name='add_sectionsubjects'), 
     path('save_sectionsubjects', adminViews.save_sectionsubjects, name='save_sectionsubjects'),
-
+    path('djrichtextfield/', include('djrichtextfield.urls')),
 
     #TEACHER
 
@@ -73,13 +73,47 @@ urlpatterns = [
     path('save_update_attendance', teacherViews.save_update_attendance, name="save_update_attendance"), 
     path('grade', teacherViews.grade, name="grade"),
     path('get_subject_students', teacherViews.get_subject_students, name="get_subject_students"),
+    path('add_activity/<str:section_subject_id>', teacherViews.add_activity, name ="add_activity"),
+    path('add_quiz', teacherViews.add_quiz, name='add_quiz'),
+    path('get_sectionsubject', teacherViews.get_sectionsubject, name='get_sectionsubject'),
+    path('announcement', teacherViews.announcement, name='announcement'),
+    path('chat', teacherViews.chat, name='chat'),
+    path('save_announcement', teacherViews.save_announcement, name='save_announcement'),
+
+    path('add_homework', teacherViews.add_homework, name='add_homework'),
+    path('add_seatwork', teacherViews.add_seatwork, name='add_seatwork'),
+    path('add_exam', teacherViews.add_exam, name='add_exam'),
+    path('add_performance', teacherViews.add_performance, name='add_performance'),
 
 
+    path('get_homework', teacherViews.get_homework, name='get_homework'),
+    path('get_quiz', teacherViews.get_quiz, name='get_quiz'),
+    path('get_seatwork', teacherViews.get_seatwork, name='get_seatwork'),
+    path('get_performance', teacherViews.get_performance, name='get_performance'),
+    path('get_exam', teacherViews.get_exam, name='get_exam'),
+
+    path('save_grade', teacherViews.save_grade, name='save_grade'),
+
+    path('edit_homework/<str:homework_id>', teacherViews.edit_homework, name='edit_homework' ),
+    path('edit_quiz/<str:quiz_id>', teacherViews.edit_quiz, name='edit_quiz' ),
+    path('edit_seatwork/<str:seatwork_id>', teacherViews.edit_seatwork, name='edit_seatwork' ),
+    path('edit_exam/<str:exam_id>', teacherViews.edit_exam, name='edit_exam' ),
+    path('edit_performance/<str:performance_id>', teacherViews.edit_performance, name='edit_performance' ),
+
+    path('save_edithomework', teacherViews.save_edithomework, name='save_edithomework'),
+    path('save_editquiz', teacherViews.save_editquiz, name='save_editquiz'),
+    path('save_editseatwork', teacherViews.save_editseatwork, name='save_editseatwork'),
+    path('save_editexam', teacherViews.save_editexam, name='save_editexam'),
+    path('save_editperformance', teacherViews.save_editperformance, name='save_editperformance'),
     #STUDENT
 
     path('student_home', studentViews.student_home, name='student_home'),
     path('student_subjects', studentViews.student_subjects, name='student_subjects'),
-    path('view_attendance', studentViews.view_attendance, name='view_attendance')
+    path('view_attendance', studentViews.view_attendance, name='view_attendance'),
+    path('view_announcement', studentViews.view_announcements, name='view_announcements'),
+    path('view_grades', studentViews.view_grades, name='view_grades'),
+    path('view_grades_details/<str:section_subject_id>', studentViews.view_grades_details, name='view_grades_details'),
+    path('view_activities/<str:section_subject_id>', studentViews.view_activities, name='view_activities'),
 
 
 

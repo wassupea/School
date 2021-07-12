@@ -1,5 +1,5 @@
 {%load static%}
-{% include 'main/admin_dashboard.html'%}
+{% include  'main/base.html' %}
   <head>
     <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/attendance.css' %}" type="text/css">
@@ -12,14 +12,12 @@
 {% block 'main-content'%}
 
 <div class='grid-container'>
-<label for="classes">Classes</label>
-<div class="select">   
+<label for="classes">Classes</label> 
        <select name="classes" id="classes" class="select-css">
         {% for classes in classes %}
          <option value = "{{classes.id}}"> {{classes.class_name}}</option>
         {% endfor %}
         </select>
-</div>
       
         <label for="session_year">School Year</label>
        <select name="session_year" id="session_year">

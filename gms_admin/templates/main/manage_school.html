@@ -1,8 +1,8 @@
 {%load static%}
-{% include 'main/admin_dashboard.html'%}
+{% include  'main/base.html' %}
 <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
-<link rel="stylesheet" href= "{% static 'css/table.css' %}" type="text/css">
 <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+
 {% block 'main_content' %}
 
 <div class="cards-list">
@@ -54,7 +54,7 @@
       <!--<th scope="col">#</th>-->
       <th scope="col">Start Date</th>
       <th scope="col">End Date</th>
-      <th scope="col">Action</th>
+
       
     </tr>
   </thead>
@@ -65,7 +65,7 @@
         <tr>
           <td> {{school_year.session_start_year}} </td>
           <td> {{school_year.session_end_year}} </td>
-          <td>  Edit </a></td>
+
         </tr>
       {% endfor %}
     </table>
@@ -78,7 +78,7 @@
       <!--<th scope="col">#</th>-->
       <th scope="col">Grade Level</th>
       <th scope="col">Created at</th>
-      <th scope="col">Action</th>
+
       
     </tr>
   </thead>
@@ -89,7 +89,7 @@
         <tr>
           <td> {{gradelevel.gradeLevel_no}} </td>
           <td> {{gradelevel.created_at}} </td>
-          <td> <a href = "/delete_gradelevel/{{gradelevel.id}} "> Edit </a></td>
+  
         </tr>
       {% endfor %}
     </table>
@@ -98,8 +98,9 @@
 
 <br> <br>
   <div class="table-wrapper2">
-  <caption> Sections </caption>
+ 
     <table class="fl-table">
+     <caption> Sections </caption>
         <thead>
    <tr>
       <th scope="col">Grade Level</th>

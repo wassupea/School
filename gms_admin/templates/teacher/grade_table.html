@@ -1,0 +1,823 @@
+{% include 'teacher/base.html'%}
+{%load static%}
+<head>
+
+     <link rel="stylesheet" href= "{% static 'css/table_of_grade.css' %}" type="text/css">
+     <link rel="stylesheet" href= "{% static 'css/table_of_grade_style.css' %}" type="text/css">
+     <script src = "{% static 'js/JQuery.js' %}"> </script>
+     <script src = "{% static 'js/grade.js' %}"> </script>
+</head>
+
+{%block 'main_content'%}
+
+
+<ul class="tabrow">
+<input type="hidden" name='student' value={{student_subject.id}} id='student'>
+  <li class=""> <input type="submit" value="Add Activity" id="add_tab"></li>
+  <li class=""> <input type="submit" value="Review Records" id="review_tab"></li>
+  <li class=""><input type="submit" value="Calculate Grade" id="calculate_tab">  </li>
+</ul>
+<center>
+
+
+<div class='select-container' id='select-id'>
+<select name="qtr" id="activity" class='select-tag'>
+      <option value="0">Select Activity</option>
+      <option value="1">Homework</option>
+      <option value="2">Quizzes</option>
+      <option value="3">Seatwork</option>
+      <option value="4">Examination</option>
+      <option value="5">Performance Task</option>
+</select>
+</div>
+
+<!-- Add Homework -->
+<div class="container" id="container1">
+ <div class="table-wrapper">
+    <div id ="homework" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <thead>
+        <form action="{% url 'add_homework'%}" method="POST">
+        {% csrf_token %}
+        <tr>
+          <th scope="col">Homework Name</th>
+          <th scope="col">Raw Score</th>
+          <th scope="col">No. of Items</th>
+          <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>  <input type="text" name="hw1"> </td>
+        <td> <input type="text" name="hw1_grade" id="hw1_grade"> </td>
+        <td> <input type="text" name="hw1_grade_max" id="hw1_grade_max"> </td>
+        <td> <input type="date" name="hw1_date"></td>
+        </tbody>
+          <tbody>
+          <td>   <select name="qtr" id="qtr">
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select> </td>
+        <td>  <input type="hidden" name='student_subject_id' value={{student_subject.id}}> </td>
+        <td><label>  <input type="hidden"> </td>
+        <td> <input class='table-submit' type="submit" id="homework_button"> </td>
+        </tbody>
+    </table> 
+    <div class = 'footer'>
+    </div>  
+    {% if messages %}
+   <div class = "messages">
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% if message.tags == 'success'%}
+      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+   {% endif %}
+</div>
+</form>
+</div>
+
+<!-- Add Quiz -->
+<div class="container2" id="container2">
+<div class="table-wrapper">
+    <div id ="quizzes" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <thead>
+        <form action="{%url 'add_quiz'%}" method="POST">
+        {% csrf_token %}
+        <tr>
+          <th scope="col">Quiz Name</th>
+    <th scope="col">Raw Score</th>
+          <th scope="col">No. of Items</th>
+          <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>  <input type="text" name="qz1"> </td>
+        <td> <input type="text" name="qz1_grade"> </td>
+        <td> <input type="text" name="qz1_grade_max"> </td>
+        <td> <input type="date" name="qz1_date"> </td>
+       </tbody>
+          <tbody>
+          <td> <select name="qtr" id="qtr">
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select></td>
+        <td>  <input type="hidden" name='student_subject_id' value={{student_subject.id}}> </td>
+        
+        <td><input type="hidden"></td>
+        <td> <input class="table-submit" type="submit" id="quiz_button"> </td>
+        <tbody> 
+    </table>
+    <div class = 'footer'>
+    </div>
+  
+</div>
+</form>
+</div>
+
+<!-- Add Seatwork -->
+<div class="container3" id="container3">
+<div class="table-wrapper3">
+    <div id ="seatwork" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <thead>
+        <form action="{%url 'add_seatwork'%}" method="POST">
+        {% csrf_token %}
+        <tr>
+          <th scope="col">Seatwork Name</th>
+            <th scope="col">Raw Score</th>
+          <th scope="col">No. of Items</th>
+          <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>  <input type="text" name="sw1"> </td>
+        <td> <input type="text" name="sw1_grade"> </td>
+        <td> <input type="text" name="sw1_grade_max"> </td>
+        <td> <input type="date" name="sw1_date"> </td>
+        </tbody>
+          <tbody>
+            <td> <select name="qtr" id="qtr">
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select></td>
+        <td>  <input type="hidden" name='student_subject_id' value={{student_subject.id}}> </td>
+        <td><input type="hidden"> </td>
+        <td> <input class="table-submit" type="submit" id="seatwork_button"> </td>
+        </tbody>
+    </table>
+    <div class = 'footer'>
+    </div>
+  
+</div>
+</form>
+</div>
+
+<!-- Add Examination -->
+<div class="container4" id="container4">
+<div class="table-wrapper4">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <thead>
+        <form action="{%url 'add_exam'%}" method="POST">
+        {% csrf_token %}
+        <tr>
+          <th scope="col">Examination Name</th>
+           <th scope="col">Raw Score</th>
+          <th scope="col">No. of Items</th>
+          <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>  <input type="text" name="exam1"> </td>
+        <td> <input type="text" name="exam1_grade"> </td>
+        <td> <input type="text" name="exam1_grade_max"> </td>
+        <td> <input type="date" name="exam1_date"> </td>
+        <tbody>
+          <tbody>
+            <td> <select name="qtr" id="qtr">
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select></td>
+        <td>  <input type="hidden" name='student_subject_id' value={{student_subject.id}}> </td>
+        <td><label> <input type="hidden"> </td>
+        <td> <input class="table-submit" type="submit" id="exam_button"> </td>
+        <tbody>
+    </table>
+    <div class = 'footer'>
+    </div>
+  
+</div>
+</form>
+</div>
+
+<!-- Add Performance -->
+<div class="container5" id="container5">
+<div class="table-wrapper-performance">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <thead>
+        <form action="{%url 'add_performance'%}" method="POST">
+        {% csrf_token %}
+        <tr>
+          <th scope="col">Performance Name</th>
+         <th scope="col">Raw Score</th>
+          <th scope="col">No. of Items</th>
+          <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>  <input type="text" name="pf1"> </td>
+        <td> <input type="text" name="pf1_grade"> </td>
+        <td> <input type="text" name="pf1_grade_max"> </td>
+        <td> <input type="date" name="pf1_date"> </td>
+        </tbody>
+            <td> <select name="qtr" id="qtr">
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select></td>
+        <td>  <input type="hidden" name='student_subject_id' value={{student_subject.id}}> </td>
+        <td><input type="hidden"> </td>
+        <td> <input class="table-submit" type="submit" id="performance_button"> </td>
+        </tbody>
+    </table>
+    <div class = 'footer'>
+    </div>
+  
+</div>
+</form>
+</div>
+
+<!-- Review Records -->
+<div id = 'review'>
+    <div class="container21" id="container21">
+    <div class="table-wrapper5">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='hw_table'>
+        <thead>
+        <tr>
+         <th scope="col">Homework Name</th>
+         <th scope="col">Raw Score</th>
+          <th scope="col">Percent Grade</th>
+          <th scope="col">Quarter</th>
+           <th scope="col">Date</th>
+           <th scope="col">Action</th>
+        </tr>
+        </thead>
+  
+        {% for homework in homework%}
+         <tbody>
+         <td> {{homework.name}}</td>
+         <td> {{homework.raw_score}} </td>
+         <td> {{homework.score}}</td>
+         <td> {{homework.qtr}}</td>
+          <td> {{homework.date}}</td>
+         <td> <a href = "/edit_homework/{{homework.id}} "> Edit </a></td>
+        </tbody>
+        {%endfor%} 
+    </table>
+    <div class = 'footer'>
+    </div>
+</div>
+</div>
+
+    <div class="container22" id="container22">
+    <br><br>
+    <div class="table-wrapper5">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='hw_table'>
+        <thead>
+        <tr>
+         <th scope="col">Quiz Name</th>
+         <th scope="col">Raw Score</th>
+          <th scope="col">Percent Grade</th>
+          <th scope="col">Quarter</th>
+           <th scope="col">Date</th>
+           <th scope="col">Action</th>
+        </tr>
+        </thead>
+  
+        {% for quiz in quiz%}
+         <tbody>
+         <td> {{quiz.name}}</td>
+         <td> {{quiz.raw_score}} </td>
+         <td> {{quiz.score}}</td>
+         <td> {{quiz.qtr}}</td>
+          <td> {{quiz.date}}</td>
+         <td> <a href = "/edit_quiz/{{quiz.id}} "> Edit </a></td>
+        </tbody>
+        {%endfor%} 
+    </table>
+    <div class = 'footer'>
+    </div>
+</div>
+</div>
+
+    <div class="container23" id="container23">
+    <br><br>
+    <div class="table-wrapper5">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='hw_table'>
+        <thead>
+        <tr>
+         <th scope="col">Seatwork Name</th>
+         <th scope="col">Raw Score</th>
+          <th scope="col">Percent Grade</th>
+          <th scope="col">Quarter</th>
+           <th scope="col">Date</th>
+           <th scope="col">Action</th>
+        </tr>
+        </thead>
+  
+        {% for sw in sw%}
+         <tbody>
+         <td> {{sw.name}}</td>
+         <td> {{sw.raw_score}} </td>
+         <td> {{sw.score}}</td>
+         <td> {{sw.qtr}}</td>
+          <td> {{sw.date}}</td>
+         <td> <a href = "/edit_seatwork/{{sw.id}} "> Edit </a></td>
+        </tbody>
+        {%endfor%} 
+    </table>
+    <div class = 'footer'>
+    </div>
+</div>
+</div>
+
+    <div class="container24" id="container24">
+    <br><br>
+    <div class="table-wrapper5">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='hw_table'>
+        <thead>
+        <tr>
+         <th scope="col">Examination Name</th>
+         <th scope="col">Raw Score</th>
+          <th scope="col">Percent Grade</th>
+          <th scope="col">Quarter</th>
+           <th scope="col">Date</th>
+           <th scope="col">Action</th>
+        </tr>
+        </thead>
+  
+        {% for exam in exam%}
+         <tbody>
+         <td> {{exam.name}}</td>
+         <td> {{exam.raw_score}} </td>
+         <td> {{exam.score}}</td>
+         <td> {{exam.qtr}}</td>
+          <td> {{exam.date}}</td>
+         <td> <a href = "/edit_exam/{{exam.id}} "> Edit </a></td>
+        </tbody>
+        {%endfor%} 
+    </table>
+    <div class = 'footer'>
+    </div>
+</div>
+</div>
+
+
+    <div class="container25" id="container25">
+    <br><br>
+    <div class="table-wrapper5">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='hw_table'>
+        <thead>
+        <tr>
+         <th scope="col">Performance Name</th>
+         <th scope="col">Raw Score</th>
+          <th scope="col">Percent Grade</th>
+          <th scope="col">Quarter</th>
+           <th scope="col">Date</th>
+           <th scope="col">Action</th>
+        </tr>
+        </thead>
+  
+        {% for performance in performance%}
+         <tbody>
+         <td> {{performance.name}}</td>
+         <td> {{performance.raw_score}} </td>
+         <td> {{performance.score}}</td>
+         <td> {{performance.qtr}}</td>
+          <td> {{performance.date}}</td>
+         <td> <a href = "/edit_performance/{{performance.id}} "> Edit </a></td>
+        </tbody>
+        {%endfor%} 
+    </table>
+    <div class = 'footer'>
+    </div>
+</div>
+</div>
+
+</div>
+
+
+<!-- Calculate Grade -->
+<div class="container6" id="container6">
+
+<div class="table-wrapper5">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='hw_table'>
+        <thead>
+        <tr>
+         <th scope="col">Homework Name</th>
+          <th scope="col">Percent Grade</th>
+        </tr>
+        </thead>
+  
+         <tbody id="dito" name="dito">
+
+        </tbody>
+          
+    </table>
+    <div class = 'footer'>
+    </div>
+</div>
+<div class="container12" id="container12">
+ <div class="table-wrapper12">
+    <div id ="homework12" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <tbody>
+        <td> <center> <select name="homework_qtr" id="calculate_qtr">
+       <option value="0">Select Quarter</option>
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select> </td>
+        <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
+        <td> <label> Average <input type='text' id='hw_ave_view' disabled></label></td>
+        <td> <input type="submit" id="hw_calculate"> </td>
+        </tbody>
+    </table> 
+    <div class = 'footer'>
+    </div>  
+</div>
+</form>
+</div>
+<div class="container7" id="container7">
+<div class="table-wrapper6">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='quiz_table'>
+        <thead>
+        <tr>
+         <th scope="col">Quiz Name</th>
+          <th scope="col">Percent Grade</th>
+        </tr>
+        </thead>
+
+         <tbody id="dito2" name="dito">
+
+        </tbody>
+      
+            
+    </table>
+    <div class = 'footer'>
+    </div>
+    </form>
+</div>
+
+<div class="container13" id="container13">
+ <div class="table-wrapper13">
+    <div id ="homework13" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <tbody>
+        <td>  <select name="quiz_qtr" id="quiz_qtr">
+       <option value="0">Select Quarter</option>
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select> </td>
+        <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
+        <td> <label> Average <input type='text' id='qz_ave_view' disabled></label></td>
+        <td> <input type="submit" id="quiz_average"> </td>
+        </tbody>
+    </table> 
+    <div class = 'footer'>
+    </div>  
+</div>
+</form>
+</div>
+
+
+<div class="container9" id="container9">
+<div class="table-wrapper7">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='sw_table'>
+        <thead>
+        <tr>
+         <th scope="col">Seatwork</th>
+          <th scope="col">Percent Grade</th>
+        </tr>
+        </thead>
+         <tbody id="dito3" name="dito">
+
+        </tbody>
+  
+    </table>
+</div>
+
+
+<div class="container14" id="container14">
+ <div class="table-wrapper13">
+    <div id ="homework13" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <tbody>
+        <td>  <select name="sw_qtr" id="sw_qtr">
+       <option value="0">Select Quarter</option>
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select> </td>
+        <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
+        <td> <label> Average <input type='text' id='sw_ave_view' disabled></label></td>
+        <td> <input type="submit" id="calculate_sw_btn"> </td>
+        </tbody>
+    </table> 
+    <div class = 'footer'>
+    </div>  
+</div>
+</form>
+</div>
+
+<div class="container10" id="container10">
+<form action="" method="POST">
+{% csrf_token %}
+<div class="table-wrapper8">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='perf_table'>
+        <thead>
+        <tr>
+         <th scope="col">Performance Task</th>
+          <th scope="col">Percent Grade</th>
+        </tr>
+        </thead>
+         <tbody id="performance_view" name="performance_view">
+
+        </tbody>
+    </table>
+    <div class = 'footer'>
+    </div>
+    </form>
+</div>
+
+<div class="container15" id="container15">
+ <div class="table-wrapper13">
+    <div id ="homework13" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <tbody>
+        <td>  <select name="perf_qtr" id="perf_qtr">
+       <option value="0">Select Quarter</option>
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select> </td>
+        <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
+        <td> <label> Average <input type='text' id='perf_ave_view' disabled></label></td>
+        <td> <input type="submit" id="calculate_perf_btn"> </td>
+        </tbody>
+    </table> 
+    <div class = 'footer'>
+    </div>  
+</div>
+</form>
+</div>
+
+<div class="container10" id="container10">
+<form action="" method="POST">
+{% csrf_token %}
+<div class="table-wrapper9">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='exam_table'>
+        <thead>
+        <tr>
+         <th scope="col">Examination</th>
+          <th scope="col">Percent Grade</th>
+        </tr>
+        </thead>
+         <tbody id="exam_view" name="exam_view">
+
+        </tbody>
+    <div class = 'footer'>
+    </div>
+    </form>
+</div>
+
+
+<div class="container16" id="container16">
+ <div class="table-wrapper16">
+    <div id ="homework13" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <tbody>
+        <td>  <select id="exam_qtr">
+       <option value="0">Select Quarter</option>
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select> </td>
+        <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
+        <td> <label> Score <input type='text' id='exam_ave_view' disabled></label></td>
+        <td> <input type="submit" id="calculate_exam_btn"> </td>
+        </tbody>
+    </table> 
+    <div class = 'footer'>
+    </div>  
+</div>
+</form>
+</div>
+
+
+
+<div class="container8" id="container8">
+<form action="" method="POST">
+{% csrf_token %}
+<div class="table-wrapper10">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='written_table'>
+        <thead>
+        <tr>
+         <th scope="col">Written Task</th>
+          <th scope="col">Average</th>
+           <th scope="col">Percent Percentage</th>
+        </tr>
+        </thead>
+         <tbody id="hw_total_ave" name="dito">
+          <td> Homework</td>
+          <td> <input type ="text" id = 'hw_ave' name='hw_ave' disabled></td>
+           <td> <input type ="text" id = 'hw_percentage' name='hw_percentage'></td>
+        </tbody>
+          <tbody id="qz_total_ave" name="dito">
+          <td> Quiz</td>
+          <td> <input type ="text" id = 'qz_ave'name='qz_ave' disabled></td>
+           <td> <input type ="text" id = 'qz_percentage' name='qz_percentage'></td>
+        </tbody>
+        <tbody id="sw_total_ave" name="dito">
+          <td> Seatwork</td>
+          <td> <input type ="text" id = 'sw_ave'name='sw_ave' disabled></td>
+           <td> <input type ="text" id = 'sw_percentage' name='sw_percentage'></td>
+        </tbody>
+        </tbody>
+        <td> <li class="" ><select name="qtr" id="written_qtr">
+      <option value="0">Select Quarter</option>
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select> </li> </td>
+    <td> <input type ="hidden"> </td>
+        <td> <input class="table-submit" type="submit" id="calculate_written_btn"> </td>
+        </tbody>
+        <tbody id='written_ave_view'>
+          <td> </td>
+          <td id="written_ave_"> Average </td>
+        </tbody>
+
+         <tbody>
+        <td> <input type ="hidden"> </td>
+        <td> <input type="hidden" name='student' value={{student_subject.id}} id='student'></td>
+        </tbody>
+       
+        
+    </table>
+    <div class = 'footer'>
+    </div>
+    </form>
+</div>
+
+
+<div class="container11" id="container11">
+<form action="" method="POST">
+{% csrf_token %}
+<div class="table-wrapper11">
+    <div id ="exam" class="tab-style">
+    </div>
+    <table class="fl-table" id='written_table'>
+        <thead>
+        <tr>
+         <th scope="col">Activity Name</th>
+          <th scope="col">Average</th>
+           <th scope="col">Percent Percentage</th>
+        </tr>
+        </thead>
+         <tbody id="written_total_ave" name="dito">
+          <td> Written Task</td>
+          <td> <input type ="text" id = 'written_ave' name='written_ave' disabled></td>
+           <td> <input type ="text" id = 'written_percentage' name='written_percentage'></td>
+        </tbody>
+          <tbody id="exam_total_ave" name="dito">
+          <td> Examination </td>
+          <td> <input type ="text" id = 'exam_ave'disabled></td>
+           <td> <input type ="text" id = 'exam_percentage' name='exam_percentage'></td>
+        </tbody>
+        <tbody id="performance_total_ave" name="dito">
+          <td> Performance</td>
+          <td> <input type ="text" id = 'performance_ave'name='performance_ave'  disabled></td>
+           <td> <input type ="text" id = 'perf_percentage' name='perf_percentage'></td>
+        </tbody>
+        </tbody>
+        <td> <li class="" ><select name="qtr" id="all_qtr">
+      <option value="0">Select Quarter</option>
+      <option value="1">First Quarter</option>
+      <option value="2">Second Quarter</option>
+      <option value="3">Third Quarter</option>
+      <option value="4">Fourth Quarter</option>
+    </select> </li> </td>
+    <td> <input type ="hidden"> </td>
+        <td> <input class="table-submit" type="submit" id="calculate_grade_btn"> </td>
+        </tbody>
+        <tbody id='grade_ave_view'>
+        <td> </td>
+        <td id='grade_view'> Average </td>
+       <!-- <td> <input type="submit" id="save"> </td> -->
+        </tbody>
+
+         <tbody>
+        <td> <input type ="hidden"> </td>
+        <td> <input type="hidden" name='student' value={{student_subject.id}} id='student'></td>
+        </tbody>
+       
+        
+    </table>
+    <div class = 'footer'>
+    </div>
+    </form>
+</div>
+
+<div class="container20" id="container20">
+ <div class="table-wrapper20">
+    <div id ="final" class="tab-style">
+    </div>
+    <table class="fl-table">
+        <thead>
+        <form action="{% url 'save_grade'%}" method="POST">
+        {% csrf_token %}
+        <tr>
+          <th scope="col">Final Grade</th>
+          <th scope="col">Score</th>
+          <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>  <select name="qtr" id="qtr">
+         <option value="0">Select Quarter</option>
+          <option value="1">First Quarter</option>
+          <option value="2">Second Quarter</option>
+          <option value="3">Third Quarter</option>
+          <option value="4">Fourth Quarter</option>
+         </select> </td>
+        <td> <input type="text" name="final_grade" id="final_grade"> </td>
+        <td> <input type="submit" name="grade_button"> </td>
+        </tbody>
+          <tbody>
+        <td>  <input type="hidden" name='student_subject_id' value={{student_subject.id}}> </td>
+        <td><label>  <input type="hidden"> </td>
+        <td> </td>
+        </tbody>
+    </table> 
+    <div class = 'footer'>
+    </div>  
+    {% if messages %}
+   <div class = "messages">
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% if message.tags == 'success'%}
+      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+   {% endif %}
+</div>
+</form>
+</div>
+
+
+
+
+
+<script>
+</script>
+
+{%endblock 'main_content'%}
+

@@ -1,0 +1,35 @@
+{% extends 'student/base.html'%}
+{%load static%}
+  <head>
+    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
+    <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+
+  </head>
+{% block 'main-content'%}
+<p>  Attendance Report for {{user.last_name}} , {{user.first_name}}  </p>
+    <div class="table-wrapper">
+        <br> <center>
+<caption> Attendance Report for {{user.last_name}} , {{user.first_name}}  </caption>
+    <table class="fl-table">
+        <thead>
+      <tr>
+          <th scope="col">Grade Level</th>
+          <th scope="col">Subject Name</th>
+          <th scope="col">Teacher</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          {%for subject in subjects %}
+        <tr>
+                      <td>{{ subject.class_id_id }}</td>
+                      <td>{{ subject.subject_name }}</td>
+                      <td>{{ subject.teacher_id.last_name}} , {{ subject.teacher_id.first_name}} </td>
+        </tr>
+        {% endfor %}
+        </tr>
+        <tbody>
+    </table>
+</div>
+ {% endblock 'main-content'%}

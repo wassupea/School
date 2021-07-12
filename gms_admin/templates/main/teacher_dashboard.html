@@ -2,3 +2,48 @@
    {% load static %}
   <link rel="stylesheet" href= "{% static 'css/teacher_base.css' %}" type="text/css">
   {% include 'teacher/base.html'%}
+
+ {% block main_content %}
+ 
+<div class="container">
+        <!-- Insert loop statement here -->
+        <div class="card">
+          <div class="card-header">
+            <h1>Subject</h1>
+          </div>
+          <div class="card-body">
+            <p>Math</p>
+          </div>
+
+          
+        </div>
+        <div class="card">
+        <div class="card-header">
+            <h1>Classes</h1>
+          </div>
+          <div class="card-body">
+            <p> 1-Sampaguita</p>
+          </div>  
+          </div>
+           <div class="card">
+        <div class="card-header">
+            <h1>Total Students</h1>
+          </div>
+          <div class="card-body">
+            <p> 90</p>
+          </div>  
+          </div>
+           <div class="card">
+        <div class="card-header">
+            <h1>Total Subjects</h1>
+          </div>
+          <div class="card-body">
+            <p> 5</p>
+          </div>  
+          </div>
+        <!-- End loop -->
+      </div>
+    </div>
+  </div>
+ 
+ {% endblock main_content %}

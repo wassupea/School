@@ -1,5 +1,5 @@
 {% load static%}
-{% include  'main/admin_dashboard.html' %}
+{% include  'main/base.html' %}
 
 <head>
 <link rel="stylesheet" href= "{% static 'css/forms.css' %}" type="text/css">
@@ -7,7 +7,7 @@
 </head>
 
 {% block main_content%}
-<div class="container">
+<div class="container4">
 {% url 'save_editsubject' as action_path %}
   <form action= "{{action_path}}" method ="POST">
   {% csrf_token %}
@@ -26,19 +26,16 @@
       <input type="text" class="form-control" name="subject_name" placeholder="First Name *" value="{{subject.subject_name}}" />
          <label for="class_id">Class</label>
           <select name="class_id" id="class_id">
-         {% for classes in classes %}
-         <option value = "{{classes.id}}"> {{classes.gradelevel_id_id}} - {{classes.class_name}} </option>
-         {% endfor %}
+         <option value = "{{subject.class_id_id}}"> {{subject.class_id_id}} - {{subject.class_id.class_name}} </option>
       </select>
       <br> <br>
       <label for="teacher">Teacher:</label>
       <select name="teacher" id="teacher">
-         {% for teacher in teacher %}
-         <option value = "{{teacher.admin.id}}"> {{teacher.admin.last_name}} {{teacher.admin.first_name}}</option>
-         {% endfor %}
+         <option value = "{{subject.teacher_id_id}}"> {{subject.teacher_id.last_name}} {{subject.teacher_id.first_name}}</option>
+
       </select>
     <br>
-    <button type="submit" class='button2'>Edit</button>
+    <button type="submit" class='button2' onclick="return confirm('Do you really want to submit the form?');">Edit</button>
   </form>
 
    {% if messages %}

@@ -5,7 +5,6 @@
     <link rel="stylesheet" href= "{% static 'css/attendance.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src = "{% static 'js/JQuery.js' %}"> </script>
 
   </head>
@@ -29,6 +28,7 @@
         <label for="attendance_date">Attendance Date</label>
         <input type='date' name='attendance_date' id='attendance_date'>
         <button type = 'button' id='fetch_student'> Fetch Student </button>  
+        <button type = 'button' id='clear'> Clear </button>  
 </div>
     <div class="table-wrapper">
     <table class="fl-table">
@@ -110,6 +110,14 @@ $(document).ready(function(){
       function showDiv() {
       document.getElementById('welcomeDiv').style.display = "block";
     }
+
+        $("#clear").on('click',function(e){
+      var fetch_button =
+      $("#fetch_student").removeAttr('disabled');
+        $('table tbody' ).empty();
+         
+   
+         })
 
       $("#save_attendance").on('click',function(){
 

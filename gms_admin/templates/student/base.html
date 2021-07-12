@@ -17,10 +17,10 @@
         <h2>STUDENT</h2>
         <ul>
             <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="/add_teacher"><i class="fas fa-teacher"></i>Change Password</a></li>
-            <li><a href="#"><i class="fas fa-students"></i>View Attendance</a></li>
-            <li><a href="#"><i class="fas fa-sections"></i>View Grades</a></li>
+            <li><a href="{%url 'view_attendance'%}"><i class="fas fa-students"></i>View Attendance</a></li>
+            <li><a href="{%url 'view_grades'%}"><i class="fas fa-sections"></i>View Grades</a></li>
             <li><a href="{%url 'student_subjects'%}"><i class="fas fa-grade_level"></i>View Subjects</a></li>
+            <li><a href="{%url 'view_announcements'%}"><i class="fas fa-grade_level"></i>Announcements</a></li>
             <li><a href="/logout"><i class="fas fa-subjects"></i>Logout</a></li>
         </ul> 
     </div>

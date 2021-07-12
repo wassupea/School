@@ -1,0 +1,134 @@
+<link rel="stylesheet" href= "{% static 'css/grade_table.css' %}" type="text/css">
+
+@csrf_exempt
+def calculate(request):
+    student_subject = request.POST.get('student')
+    print(student_subject)
+    student_subject_id = Section_subjects.objects.get(id=student_subject)
+    qtr= request.POST.get("selectedVal")
+    hw_qtr = int(qtr)
+    print(hw_qtr)
+    seatwork = Seatwork.objects.all().filter(section_subject_id=student_subject)
+    performance_task = Performance_Task.objects.all().filter(section_subject_id=student_subject)
+    exams = Examinations.objects.all().filter(section_subject_id=student_subject)
+    hw_ave = Homework.objects.all().filter(section_subject_id__in=student_subject, qtr=hw_qtr).values('score').aggregate(Avg('score'))
+    ave=[]
+    ave.append(hw_ave)
+    
+    for ave in ave:
+        average = (float(ave['score__avg']))
+
+    if Homework_Ave.objects.filter(qtr=hw_qtr).filter(section_subject_id = student_subject_id).exists():
+        messages.error(request, 'Existing')
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    else:
+        if Homework_Ave.objects.filter(qtr=hw_qtr).filter(section_subject_id = student_subject_id).exists():
+            homework_ave = Homework_Ave(section_subject_id = student_subject_id, Ave=average,qtr=hw_qtr)
+            print(homework_ave)
+            homework_ave.save()
+            hwave = Homework_Ave.objects.all().filter(section_subject_id = student_subject_id).filter(qtr=hw_qtr)
+            list_data =[]
+
+            for hwave in hwave:
+                data_small ={"avg":hwave.Ave}
+                list_data.append(data_small)
+                print(list_data)
+                return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
+
+@csrf_exempt
+def calculate_quiz(request):
+    student_subject = request.POST.get('student')
+    print(student_subject)
+    student_subject_id = Section_subjects.objects.get(id=student_subject)
+    qtr= request.POST.get("selectedVal")
+    qz_qtr = int(qtr)
+    quiz = Quizzes.objects.all().filter(section_subject_id=student_subject)
+    qz_ave = Quizzes.objects.all().filter(section_subject_id__in=student_subject, qtr=qz_qtr).values('score').aggregate(Avg('score'))
+    ave=[]
+    ave.append(qz_ave)
+    
+    for ave in ave:
+        average = (float(ave['score__avg']))
+
+    if Quizzes_Ave.objects.filter(qtr=qz_qtr).filter(section_subject_id = student_subject_id).exists():
+        messages.error(request, 'Existing')
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    else:
+        quiz_ave = Quizzes_Ave(section_subject_id = student_subject_id, Ave=average,qtr=qz_qtr)
+        print(quiz_ave)
+        quiz_ave.save()
+        hwave = Quizzes_Ave.objects.all().filter(section_subject_id = student_subject_id).filter(qtr=qz_qtr)
+        list_data =[]
+        for hwave in hwave:
+            data_small ={"avg":hwave.Ave}
+            list_data.append(data_small)
+            print(list_data)
+            return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
+
+
+@csrf_exempt
+def calculate_seatwork(request):
+    student_subject = request.POST.get('student')
+    print(student_subject)
+    student_subject_id = Section_subjects.objects.get(id=student_subject)
+    qtr= request.POST.get("selectedVal")
+    sw_qtr = int(qtr)
+    seatwork = Seatwork.objects.all().filter(section_subject_id=student_subject)
+    sw_ave = Homework.objects.all().filter(section_subject_id__in=student_subject, qtr=sw_qtr).values('score').aggregate(Avg('score'))
+    ave=[]
+    ave.append(sw_ave)
+    
+    for ave in ave:
+        average = (float(ave['score__avg']))
+
+    if Seatwork_Ave.objects.filter(qtr=sw_qtr).filter(section_subject_id = student_subject_id).exists():
+        messages.error(request, 'Existing')
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    else:
+        if Seatwork.objects.filter(qtr=sw_qtr).filter(section_subject_id = student_subject_id).exists():
+            seatwork_ave = Seatwork_Ave(section_subject_id = student_subject_id, Ave=average,qtr=sw_qtr)
+            print(seatwork)
+            seatwork_ave.save()
+            swave = Seatwork_Ave.objects.all().filter(section_subject_id = student_subject_id).filter(qtr=sw_qtr)
+            list_data =[]
+
+            for hwave in swave:
+                data_small ={"avg":hwave.Ave}
+                list_data.append(data_small)
+                print(list_data)
+                return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
+
+
+def calculate_performance(request):
+    student_subject = request.POST.get('student')
+    student_subject_id = Section_subjects.objects.get(id=student_subject)
+    qtr= request.POST.get("selectedVal")
+    hw_qtr = int(qtr)
+    perf_ave = Performance_Task.objects.all().filter(section_subject_id__in=student_subject, qtr=hw_qtr).values('score').aggregate(Avg('score'))
+    ave=[]
+    ave.append(perf_ave)
+    
+    for ave in ave:
+        average = (float(ave['score__avg']))
+
+    if Performance_Ave.objects.filter(qtr=hw_qtr).filter(section_subject_id = student_subject_id).exists():
+        messages.error(request, 'Existing')
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    else:
+        if Performance_Ave.objects.filter(qtr=hw_qtr).filter(section_subject_id = student_subject_id).exists():
+            performance_ave = Performance_Ave(section_subject_id = student_subject_id, Ave=average,qtr=hw_qtr)
+            print(performance_ave)
+            performance_ave.save()
+            hwave = Performance_Ave.objects.all().filter(section_subject_id = student_subject_id).filter(qtr=hw_qtr)
+            list_data =[]
+
+            for hwave in hwave:
+                data_small ={"avg":hwave.Ave}
+                list_data.append(data_small)
+                print(list_data)
+                return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
+

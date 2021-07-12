@@ -1,0 +1,24 @@
+{%load static%}
+{% include 'student/base.html' %}
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href= "{% static 'css/view_announcement.css' %}" type="text/css">
+    <script type="text/javascript" src="{% static 'js/add_js.js' %}"></script>  
+
+</head>
+
+{% block 'main_content' %}
+{%for post in post%}
+<div class='post-card'>
+  <div class='img text-center'> 
+  </div>
+  <p class="p1"> {{post.subject_id.teacher_id.last_name}} {{post.subject_id.teacher_id.first_name}} </p>
+  <p class="p2">{{post.subject_id.subject_name}} <p>
+  &nbsp
+
+  <p class="p4">{{post.content | safe}}</p>
+</div>
+ <button id="reply"> </button>
+    
+ {% endfor %}
+{% endblock 'main_content' %}

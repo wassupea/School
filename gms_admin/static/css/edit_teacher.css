@@ -3,11 +3,12 @@
 
 .container {
   font-family: "Roboto", Helvetica, Arial, sans-serif;
-  max-width: 400px;
-  width: 100%;
+  max-width: 500%;
+  width: 140%;
   margin: 0 auto;
   top: -110px;
   position: relative;
+  left:30%;
 }
 
 #contact input[type="text"],

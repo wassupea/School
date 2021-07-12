@@ -1,37 +1,31 @@
 {%load static%}
-{% include 'main/admin_dashboard.html'%}
+{% include  'main/base.html' %}
   <head>
-    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
-    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
-    <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+     <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
 
   </head>
   <style>
-  .button {
-  padding: 10px 20px;
-  font-size: 15px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: black;
-  background-color: #04AA6D;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-  font-family:sans-serif;
-  position: absolute;
-  bottom: 8px;
-  right: 16px;
-
-}
-
-.button:hover {background-color: #3e8e41}
-
-.button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
+    .button_href {
+    background-color: rgb(133, 132, 132);
+    box-shadow: 0 5px 0 rgb(133, 132, 132);
+    color: white;
+    width:5%;
+    height:55%;
+    padding:1%;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    left:80%;
+  }
+  
+  .button_href:hover {
+    background-color: rgb(133, 132, 132);
+  }
+  
+  .button_href:active {
+    box-shadow: none;
+    top: 5px;
+  }
   </style>
 {% block 'main-content'%}
 
@@ -40,11 +34,10 @@
     <table class="fl-table">
         <thead>
         <tr>
-         <th scope="col">ID</th>
+
           <th scope="col">First Name</th>
           <th scope="col">Last Name</th>
           <th scope="col">Address</th>
-          <th scope="col">E-mail</th>
           <th scope="col">Last Login</th>
           <th scope="col">Action</th>
         </tr>
@@ -53,11 +46,10 @@
         <tr>
           {%for teacher in teachers %}
         <tr>
-                    <td>{{ teacher.admin.id }}</td>
+               
                       <td>{{ teacher.admin.first_name }}</td>
                       <td>{{teacher.admin.last_name }}</td>
                       <td>{{ teacher.address }}</td>
-                      <td>{{ teacher.admin.email }}</td>
                       <td>{{ teacher.admin.last_login }}</td>
                       <td> <a href = "/edit_teacher/{{teacher.admin.id}} "> Edit </a></td>
         </tr>
@@ -66,5 +58,5 @@
         <tbody>
     </table>
 </div>
-<a href= "add_teacher" class="button"> Add Teacher </a>
+<a href= "add_teacher" class='button_href'> Add Teacher </a>
  {% endblock 'main-content'%}

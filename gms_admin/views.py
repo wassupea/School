@@ -1,3 +1,4 @@
+from gms_admin.models import Announcements
 from django.shortcuts import render
 import datetime
 from django.http import HttpResponseRedirect, HttpResponse
@@ -6,6 +7,7 @@ from gms_admin.accounts_backend import EmailBackEnd
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 import os
+from django.views.generic import CreateView
 # Create your views here.
 
 def adminHome(request):
@@ -46,5 +48,6 @@ def GetUser(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect("/")
+
 
     
