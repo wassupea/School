@@ -7,12 +7,32 @@ from django.contrib import messages
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from django.core import serializers
 from django.core.mail import send_mail
+from .filters import *
 
 def admin_home(request):
     return render(request, 'main/admin_dashboard.html')
     #return render (request,"main/sidebar")
+
+def admin_chat(request):
+    user = request.user.id
+    all_users = CustomUser.objects.all()
+    sent = Msg.objects.filter(sender_id = user).order_by('-date')
+    receive = Msg.objects.filter(receiver_id = user).order_by('-date')
+    return render(request, 'main/chat.html', {'all_users':all_users, 'sent':sent, 'receive':receive})
+
+def adminsend_message(request):
+    user_id = request.user.id
+    sender = CustomUser.objects.get(id=user_id)
+    receiver_id = request.POST.get('receiver')
+    receiver = CustomUser.objects.get(id=receiver_id)
+    body = request.POST.get('my_textarea')
+    print(body)
+
+    message_send = Msg(sender=sender, receiver=receiver, body=body)
+    message_send.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+
 
 def add_teacher(request):
     teachers = Teacher.objects.all()
@@ -30,6 +50,9 @@ def save_teacher(request):
         email=request.POST.get("email")
         password=request.POST.get("password")
         address=request.POST.get("address")
+        SpecialSym=['$','@','#']
+
+ 
 
         if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists():
             messages.error(request,"Failed to Add Teacher")
@@ -39,26 +62,44 @@ def save_teacher(request):
             messages.error(request,"Failed to Add Teacher")
             return HttpResponseRedirect(reverse('add_teacher'))
 
+        if (len(password) < 8 ):
+            messages.error(request,"Password too short")
+            return HttpResponseRedirect(reverse('add_teacher'))
+            
+        if not any(char in SpecialSym for char in password):
+            messages.error(request,"Please provide special characters on your password")
+            return HttpResponseRedirect(reverse('add_teacher'))
+
+        if first_name[0].islower() or last_name[0].islower():
+            messages.error(request,"Invalid Name Format")
+            return HttpResponseRedirect(reverse('add_teacher'))
+            
+
             
         else:
-            user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=2)
-            user.teacher.address = address
-            user.teacher.fname=first_name
-            user.save()        
-            messages.success(request,"Added Teacher")
+            try:
+                user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=2)
+                user.teacher.address = address
+                user.teacher.fname=first_name
+                user.teacher.status = 1
+                user.save()        
+                messages.success(request,"Added Teacher")
 
-            #send an email
-            send_mail(
-                'Account Credentials for ' + last_name + ', ' +first_name,
-                'email: ' + email + ' password: ' +password,
-                'hwngryjn@gmail.com',
-                [email],
-                fail_silently=False,
-            )
+                    #send an email
+                send_mail(
+                        'Account Credentials for ' + last_name + ', ' +first_name,
+                        'email: ' + email + ' password: ' + password,
+                        'hwngryjn@gmail.com',
+                        [email],
+                        fail_silently=False,
+                    )
 
 
 
-            return HttpResponseRedirect(reverse("manage_teacher"))
+                return HttpResponseRedirect(reverse("manage_teacher"))
+            except:
+                messages.error(request, 'Failed')
+                return HttpResponseRedirect(reverse("manage_teacher"))
            
 def add_gradelevel(request):
     gradelevels = GradeLevel.objects.all()
@@ -73,12 +114,20 @@ def save_gradelevel(request):
             messages.error(request,"Failed to add Grade Level")
             return HttpResponseRedirect(reverse("add_gradelevel"))
 
-        else:
-            gradelevel_model = GradeLevel(gradeLevel_no=grade_level)
-            print(grade_level)
-            gradelevel_model.save()
-            messages.success(request,"Added Grade Level")
+        if not grade_level.isdigit():
+            messages.error(request,"Invalid")
             return HttpResponseRedirect(reverse("add_gradelevel"))
+
+        else:
+            try:
+                gradelevel_model = GradeLevel(gradeLevel_no=grade_level, status=1)
+                print(grade_level)
+                gradelevel_model.save()
+                messages.success(request,"Added Grade Level")
+                return HttpResponseRedirect(reverse("add_gradelevel"))
+            except:
+                messages.error(request,"Invalid")
+                return HttpResponseRedirect(reverse("add_gradelevel"))
 
 def add_student(request):
     GradeLevels = GradeLevel.objects.all()
@@ -103,6 +152,7 @@ def save_student(request):
             password=form.cleaned_data["password"]
             address=form.cleaned_data["address"]
             session_year_id = form.cleaned_data["session_year_id"]
+            SpecialSym=['$','@','#', '!']
            
 
             if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists():
@@ -112,29 +162,41 @@ def save_student(request):
             if CustomUser.objects.filter(email = email).exists() and CustomUser.objects.filter(username = username).exists():
                 messages.error(request,"Failed to add Student")
                 return HttpResponseRedirect("/add_student")
+
+            if (len(password) < 8 ):
+                messages.error(request,"Password too short")
+                return HttpResponseRedirect("/add_student")
+                
+            if not any(char in SpecialSym for char in password):
+                messages.error(request,"Please provide special characters on your password")
+                return HttpResponseRedirect("/add_student")
+
+            if first_name[0].islower() or last_name[0].islower():
+                messages.error(request,"Invalid Name Format")
+                return HttpResponseRedirect("/add_student")
                 
             else:
-                try:
-                    user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
-                    gradelevel_obj = GradeLevel.objects.get(id=gradelevel_id)
-                    class_id = Classes.objects.get(id=class_id)
-                    session_year = SessionYearModel.objects.get(id=session_year_id)
-                    user.students.address = address
-                    user.students.gradelevel_id=gradelevel_obj
-                    user.students.class_id = class_id
-                    user.students.gender=gender
-                    user.students.session_year_id=session_year
-                    user.save()
+                user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
+                gradelevel_obj = GradeLevel.objects.get(id=gradelevel_id)
+                class_id = Classes.objects.get(id=class_id)
+                session_year = SessionYearModel.objects.get(id=session_year_id)
+                user.students.address = address
+                user.students.gradelevel_id=gradelevel_obj
+                user.students.class_id = class_id
+                user.students.gender=gender
+                user.students.session_year_id=session_year
+                user.students.status = 1
+                user.save()
 
-                    print(class_id)
+                print(class_id)
 
                     #add to section
-                    add_section = Section(class_id = class_id, student_id= user)
-                    add_section.save()
+                add_section = Section(class_id = class_id, student_id= user)
+                add_section.save()
 
 
                     #send an email
-                    send_mail(
+                send_mail(
                     'Account Credentials for ' + last_name + ', ' +first_name,
                     'email: ' + email + ' password: ' +password,
                     'hwngryjn@gmail.com',
@@ -142,11 +204,11 @@ def save_student(request):
                     fail_silently=False,
                     )
 
-                    messages.success(request,"Added Student")
-                    return HttpResponseRedirect("manage_student")
-                except:
-                    messages.error(request,"Failed")
-                    return HttpResponseRedirect("manage_student")
+                messages.success(request,"Added Student")
+                return HttpResponseRedirect("manage_student")
+                #else:
+                    #messages.error(request,"Failed")
+                    #return HttpResponseRedirect("manage_student")
 
     
 
@@ -157,17 +219,23 @@ def manage_student(request):
     students = Students.objects.all()
     classes = Classes.objects.all()
     sections = Section.objects.all()
-    return render(request, 'main/manage_students.html',{'students':students,'classes':classes, 'sections':sections})
+    myFilter = StudentFilter(request.GET, queryset=students)
+    students = myFilter.qs
+    return render(request, 'main/manage_students.html',{'students':students,'classes':classes, 'sections':sections, 'myFilter':myFilter})
 
 def manage_teacher(request):
     teachers = Teacher.objects.all()
-    return render(request, 'main/manage_teacher.html',{'teachers':teachers})
+    myFilter = TeacherFilter(request.GET, queryset=teachers)
+    teachers = myFilter.qs
+    return render(request, 'main/manage_teacher.html',{'teachers':teachers, 'myFilter':myFilter})
 
 def manage_subject(request):
     GradeLevels = GradeLevel.objects.all()
     teachers = CustomUser.objects.filter(user_type=2)
     subjects = Subjects.objects.all()
-    return render(request, 'main/manage_subject.html',{"GradeLevels":GradeLevels, "teachers":teachers,'subjects':subjects})
+    myFilter = SubjectFilter(request.GET, queryset=subjects)
+    subjects = myFilter.qs
+    return render(request, 'main/manage_subject.html',{"GradeLevels":GradeLevels, "teachers":teachers,'subjects':subjects, 'myFilter':myFilter})
 
 def add_subjects(request):
     GradeLevels = GradeLevel.objects.all()
@@ -199,7 +267,7 @@ def save_subjects(request):
         else:
             
             try:
-                subject__in=Subjects(subject_name=subject,gradelevel_id=gradelevel, class_id=class_id,teacher_id=teacher_id)
+                subject__in=Subjects(subject_name=subject,gradelevel_id=gradelevel, class_id=class_id,teacher_id=teacher_id, status=1)
                 subject__in.save()
                 messages.success(request,"Added Subject")
                 return HttpResponseRedirect("/add_subjects")
@@ -261,7 +329,7 @@ def save_class(request):
             return HttpResponseRedirect(reverse("add_class"))
         else:
             try:
-                class2=Classes(teacher_id=teacher,gradelevel_id=gradelevel,class_name=class_name)
+                class2=Classes(teacher_id=teacher,gradelevel_id=gradelevel,class_name=class_name, status=1)
                 class2.save()
                 messages.success(request,"Successfully Added class")
                 return HttpResponseRedirect(reverse("add_class"))
@@ -325,6 +393,7 @@ def save_editteacher(request):
         email=request.POST.get("email")
         username=request.POST.get("username")
         address=request.POST.get("address")
+        status = request.POST.get("status")
 
 
         try:
@@ -338,7 +407,9 @@ def save_editteacher(request):
             teacher_model=Teacher.objects.get(admin=teacher_id)
             print(teacher_id)
             teacher_model.address=address
+            teacher_model.status=status
             teacher_model.save()
+
             messages.success(request,"Successfully Edited Teacher")
             return HttpResponseRedirect(reverse("manage_teacher"))
         
@@ -430,6 +501,7 @@ def save_editsubject(request):
         subject_name=request.POST.get("subject_name")
         teacher_id=request.POST.get("teacher")
         gradelevel_id=request.POST.get("grade_level")
+        status = request.POST.get("status")
         try:
 
             subject=Subjects.objects.get(id=subject_id)
@@ -438,6 +510,7 @@ def save_editsubject(request):
             subject.teacher_id=teacher
             gradelevel=GradeLevel.objects.get(id=gradelevel_id)
             subject.gradelevel_id=gradelevel
+            subject.status = status
             subject.save()
             messages.success(request,"Successfully Edited Subject")
             return HttpResponseRedirect(reverse("manage_subject"))
@@ -461,14 +534,16 @@ def save_editclass(request):
         class_name=request.POST.get("class_name")
         teacher_id=request.POST.get("teacher")
         gradelevel_id=request.POST.get("grade_level")
+        status=request.POST.get("status")
         try:
 
             classes=Classes.objects.get(id=class_id)
-            classes.section_name=class_name
+            classes.class_name=class_name
             teacher=CustomUser.objects.get(id=teacher_id)
             classes.teacher_id=teacher
             gradelevel=GradeLevel.objects.get(id=gradelevel_id)
             classes.gradelevel_id=gradelevel
+            classes.status = status
             classes.save()
             messages.success(request,"Successfully Edited Class")
             return HttpResponseRedirect(reverse("manage_school"))
@@ -477,12 +552,83 @@ def save_editclass(request):
             messages.error(request,"Failed to Edit Class")
             return HttpResponseRedirect(reverse("edit_class"))
 
+def edit_gradelevel(request, gradelevel_id):
+    gradelevel = GradeLevel.objects.get(id=gradelevel_id)
+    return render(request, "main/edit_gradelevel.html/", {"gradelevel":gradelevel})
+
+def save_editgradelevel(request):
+    gradelevel_id=request.POST.get("gradelevel_id")
+    grade_level=request.POST.get("grade_level")
+    status=request.POST.get("status")
+    try:
+
+            gradelevels=GradeLevel.objects.get(id=gradelevel_id)
+            gradelevels.gradeLevel_no=grade_level
+            gradelevels.status = status
+            gradelevels.save()
+            messages.success(request,"Successfully Edited Grade Level")
+            return HttpResponseRedirect(reverse("manage_school"))
+
+    except:
+            messages.error(request,"Failed to Grade Level")
+            return HttpResponseRedirect(reverse("manage_school"))
+
+
+
+
 def delete_gradelevel(request, gradelevel_id):
     gradelevel = GradeLevel.objects.get(id=gradelevel_id)
-    gradelevel.delete()
-    messages.success(request,"Deleted")
-    return HttpResponseRedirect(reverse("add_gradelevel"))
+    try:
+        gradelevel.delete()
+        messages.success(request,"Deleted")
+    except:
+        messages.error(request, 'Failed to delete')
+    return HttpResponseRedirect(reverse("manage_school"))
 
+def delete_class(request,class_id):
+    gradelevel = Classes.objects.get(id=class_id)
+    try:
+        gradelevel.delete()
+        messages.success(request,"Deleted")
+    except:
+        messages.error(request, 'Failed to delete')
+    return HttpResponseRedirect(reverse("manage_school"))
+
+def delete_year(request,schoolyear_id):
+    gradelevel = SessionYearModel.objects.get(id=schoolyear_id)
+    try:
+        gradelevel.delete()
+        messages.success(request,"Deleted")
+    except:
+        messages.error(request, 'Failed to delete')
+    return HttpResponseRedirect(reverse("manage_school"))
+
+def delete_subject(request,subject_id):
+    gradelevel = Subjects.objects.get(id=subject_id)
+    try:
+        gradelevel.delete()
+        messages.success(request,"Deleted")
+    except:
+        messages.error(request, 'Failed to delete')
+    return HttpResponseRedirect(reverse("manage_subject"))
+
+def delete_student(request,student_id):
+    gradelevel = CustomUser.objects.get(id=student_id)
+    try:
+        gradelevel.delete()
+        messages.success(request,"Deleted")
+    except:
+        messages.error(request, 'Failed to delete')
+    return HttpResponseRedirect(reverse("manage_student"))
+
+def delete_teacher(request,teacher_id):
+    gradelevel = CustomUser.objects.get(id=teacher_id)
+    try:
+        gradelevel.delete()
+        messages.success(request,"Deleted")
+    except:
+        messages.error(request, 'Failed to delete')
+    return HttpResponseRedirect(reverse("manage_teacher"))
 
 def manage_school(request):
     gradelevels = GradeLevel.objects.all()

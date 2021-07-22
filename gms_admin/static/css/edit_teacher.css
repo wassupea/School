@@ -10,6 +10,10 @@
   position: relative;
   left:30%;
 }
+select{
+  width: 100%;
+  text-align: center;
+}
 
 #contact input[type="text"],
 #contact input[type="email"],

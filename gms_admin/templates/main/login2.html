@@ -6,11 +6,13 @@
 </head>
 
         <body>
+
+
+
   <div class="wrapper fadeInDown">
   <div id="formContent">
     <!-- Tabs Titles -->
     <h2 class="active"> Sign In </h2>
-    <h2 class="inactive underlineHover">Parent</h2>
 
     <!-- Icon 
     <div class="fadeIn first">
@@ -22,7 +24,10 @@
     {% csrf_token %}
       <input type="email" name="email" class="fadeIn second" id="email" placeholder="email">
       <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+       <input type="text" id="otp" class="fadeIn third" name="otp" placeholder="OTP">
       <input type="submit" class="fadeIn fourth" value="Log In">
+
+  
 
 
       {% if messages %}
@@ -39,11 +44,54 @@
     <!-- Remind Passowrd  -->
     <div id="formFooter">
       <a class="underlineHover" href="{% url 'password_reset'%}">Forgot Password?</a>
+      <input class="underlineHover" type="submit" value="GET OTP" id='myBtn'>
     </div> 
 
   </div>
 </div>
+  <div id='modal'>
+    <!-- Tabs Titles -->
+    <div class="wrapper fadeInDown">
+  <div id="formContent">
+
+ <span class="close">&times;</span>
+<form action="{%url 'send_otp'%}"method='POST'>   
+{%csrf_token%} 
+<div id="email_div" style="display: block;" >
+    <label for="email">Email</label>
+    <input type="text" name="email_otp" id="email_otp">
+    <button>Send OTP</button>
+</div>
+</div>
+</div> </div>
 </body>
 
 
 </html>
+<script>
+var modal = document.getElementById("modal");
+ modal.style.display = "none";
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>

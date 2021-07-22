@@ -1,5 +1,5 @@
 {%load static%}
-{%include 'teacher/base.html'%}
+{%include 'main/base.html'%}
 <head>
      <link rel="stylesheet" href= "{% static 'css/teacher_chat.css' %}" type="text/css">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -50,6 +50,7 @@
 {%endfor%}
 </div>
 
+
 <div id = 'container_receive'>
 <h2> INBOX </h2>
 <center>
@@ -64,6 +65,8 @@
 </div>
 {%endfor%}
 </div>
+
+
 
 <div class="container card message-container " id='replyModal'>
  <span class="close">&times;</span>

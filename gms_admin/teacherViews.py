@@ -2,7 +2,7 @@ from django.forms.models import ModelForm
 from django.http import request
 from django.urls.base import reverse
 from django.views.decorators import csrf
-from gms_admin.forms import AddAnnouncement
+from gms_admin.forms import AddAnnouncement, EditAnnouncement, SendMessage
 from gms_admin.studentViews import student_subjects
 from django.db.models.aggregates import Avg, Count
 from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -67,14 +67,19 @@ def save_attendance(request):
 
     class_model = Classes.objects.get(id=class_id)
     session_model = SessionYearModel.objects.get(id=session_year_id)
-    attendance = Attendance(class_id=class_model, session_year_id=session_model,attendance_date=attendance_date)
-    attendance.save()
 
-    for student in dict_student:
-        students = Students.objects.get(admin=student['id'])
-        attendance_report = AttendanceReport(student_id=students, attendance_id=attendance,status=student['status'])
-        attendance_report.save()
-    return HttpResponse('OK')
+    if Attendance.objects.filter(attendance_date = attendance_date).exists():
+        messages.error(request,'Existing date')
+        return HttpResponse('NO')
+    else:
+        attendance = Attendance(class_id=class_model, session_year_id=session_model,attendance_date=attendance_date)
+        attendance.save()
+
+        for student in dict_student:
+            students = Students.objects.get(admin=student['id'])
+            attendance_report = AttendanceReport(student_id=students, attendance_id=attendance,status=student['status'])
+            attendance_report.save()
+        return HttpResponse('OK')
 
 def update_attendance(request):
     current_user = request.user
@@ -178,9 +183,23 @@ def get_sectionsubject(request):
     return HttpResponse('<h1>list_data</h1>')
 
 def announcement(request):
+    id = request.user.id
+    print(id)
     subjects = Subjects.objects.all()
+    subject_id = Subjects.objects.filter(teacher_id = id)
+    print(subject_id)
     form = AddAnnouncement()
-    return render(request, 'teacher/announcement.html', {subjects:subjects,'form':form})
+    announcement = Announcements.objects.filter(subject_id__in = subject_id).last()
+    return render(request, 'teacher/announcement.html', {subjects:subjects,'form':form, 'announcement':announcement})
+
+def edit_announcement(request, announcement_id):
+    request.session['announcement_id']=(announcement_id)
+    announcement = Announcements.objects.get(id=announcement_id)
+    form = EditAnnouncement()
+    form.fields['subject_id'].initial=announcement.subject_id
+    form.fields['title'].initial=announcement.title
+    form.fields['content'].initial=announcement.content
+    return render(request, 'teacher/edit_announcement.html', {'announcement':announcement, 'form':form, "id":announcement_id})
 
 def save_announcement(request):
     if request.method!="POST":
@@ -195,10 +214,59 @@ def save_announcement(request):
             
             announce = Announcements(subject_id=subject_id, title=title,content=content)
             announce.save()
-            return HttpResponse ('OK')
+            return HttpResponseRedirect(reverse('announcement')) 
+
+def save_editannouncement(request):
+    if request.method!="POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        announcement_id=request.session.get("announcement_id")
+        if announcement_id==None:
+            return HttpResponseRedirect("announcement")
+        form = EditAnnouncement(request.POST)
+        if form.is_valid():
+            subject_id = form.cleaned_data["subject_id"]
+            title=form.cleaned_data["title"]
+            content=form.cleaned_data["content"]
+            try:
+                announce = Announcements.objects.get(id=announcement_id)
+                subject = Subjects.objects.get(id=subject_id)
+                announce.subject_id = subject
+                announce.title = title
+                announce.content = content
+                announce.save()
+                del request.session['announcement_id']
+                messages.success(request,"Successfully Edited Announcement")
+                return HttpResponseRedirect(reverse("announcement"))
+                
+            except:
+                messages.error(request,"Failed to Edit Announcement")
+                return HttpResponseRedirect(reverse("edit_announcement",kwargs={"announcement_id":announcement_id}))
+        
+        else:
+            form = EditAnnouncement(request.POST)
+            announce =Announcements.objects.get(id=announcement_id)
+            return render(request, "teacher/edit_announcement.html/", {"form":form, "id":announcement_id})
+
 
 def chat(request):
-    return render(request, 'teacher/chat.html')
+    user = request.user.id
+    all_users = CustomUser.objects.all()
+    sent = Msg.objects.filter(sender_id = user).order_by('-date')
+    receive = Msg.objects.filter(receiver_id = user).order_by('-date')
+    return render(request, 'teacher/chat.html', {'all_users':all_users, 'sent':sent, 'receive':receive})
+
+def send_message(request):
+    user_id = request.user.id
+    sender = CustomUser.objects.get(id=user_id)
+    receiver_id = request.POST.get('receiver')
+    receiver = CustomUser.objects.get(id=receiver_id)
+    body = request.POST.get('my_textarea')
+    print(body)
+
+    message_send = Msg(sender=sender, receiver=receiver, body=body)
+    message_send.save()
+    return redirect(request.META.get('HTTP_REFERER'))
 
 def add_homework(request):
     if request.method == 'POST':
@@ -446,39 +514,43 @@ def save_grade(request):
         qtr = int(qtr)
 
         if qtr == 1:
-            if First_Qtr.objects.filter(qtr=qtr).exists():
+            if First_Qtr.objects.filter(section_subject_id=student_subject).exists():
                 messages.error('Existing')
                 return redirect(request.META.get('HTTP_REFERER'))
             else:
                 first_qtr = First_Qtr(section_subject_id = student_subject, grade=int_grade )
                 first_qtr.save()
+                messages.success('Added Grade')
                 return redirect(request.META.get('HTTP_REFERER'))
 
         elif qtr == 2:
-            if First_Qtr.objects.filter(qtr=qtr).exists():
+            if Second_Qtr.objects.filter(section_subject_id=student_subject).exists():
                 messages.error('Existing')
                 return redirect(request.META.get('HTTP_REFERER'))
             else:
                 second_qtr = Second_Qtr(section_subject_id = student_subject, grade=int_grade )
                 second_qtr.save()
+                messages.success('Added Grade')
                 return redirect(request.META.get('HTTP_REFERER'))
 
         elif qtr == 3:
-            if First_Qtr.objects.filter(qtr=qtr).exists():
+            if Third_Qtr.objects.filter(section_subject_id=student_subject).exists():
                 messages.error('Existing')
                 return redirect(request.META.get('HTTP_REFERER'))
             else:
                 third_qtr = Third_Qtr(section_subject_id = student_subject, grade=int_grade )
                 third_qtr.save()
+                messages.success('Added Grade')
                 return redirect(request.META.get('HTTP_REFERER'))
 
         elif qtr == 4:
-            if First_Qtr.objects.filter(qtr=qtr).exists():
+            if Fourth_Qtr.objects.filter(section_subject_id=student_subject).exists():
                 messages.error('Existing')
                 return redirect(request.META.get('HTTP_REFERER'))
             else:
                 fourth_qtr = Fourth_Qtr(section_subject_id = student_subject, grade=int_grade )
                 fourth_qtr.save()
+                messages.success('Added Grade')
                 return redirect(request.META.get('HTTP_REFERER'))
 
         else:
@@ -689,5 +761,10 @@ def save_editperformance(request):
         else:
             messages.error(request,"Invalid")
             return redirect(request.META.get('HTTP_REFERER'))
+
+def view_grades(request, subject_id):
+    section = Section_subjects.objects.filter(subject_id__in = subject_id)
+    first = First_Qtr.objects.filter(section_subject_id__in = section)
+    return render(request, 'teacher/view_grade.html', {'first':first})
 
 

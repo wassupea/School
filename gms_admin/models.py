@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.db.models.aggregates import Max
 from django.db.models.base import Model
@@ -7,7 +8,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from ckeditor.fields import RichTextField
-
+from django.utils import timezone
 # Create your models here.
 
 
@@ -36,6 +37,7 @@ class GradeLevel(models.Model):
     id = models.AutoField(primary_key=True)
     gradeLevel_no = models.IntegerField(default=1)
     gradelevel_name = models.CharField(max_length=50)
+    status = models.BooleanField(default =True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
@@ -47,6 +49,7 @@ class Teacher(models.Model):
     lname = models.CharField(max_length=100)
     gender = models.CharField(max_length=50)
     address = models.CharField(max_length=255)
+    status = models.BooleanField(default =True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
@@ -56,6 +59,7 @@ class Classes(models.Model):
     gradelevel_id = models.ForeignKey(GradeLevel, on_delete=models.CASCADE)
     teacher_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     class_name = models.CharField(max_length=50)
+    status = models.BooleanField(default =True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
@@ -75,35 +79,16 @@ class Subjects(models.Model):
     #section_id = models.ForeignKey(Section,blank=True, on_delete=models.CASCADE)
     class_id =  models.ForeignKey(Classes, on_delete=models.CASCADE)
     teacher_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    status = models.BooleanField(default =True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-
-class Subject_Percentage(models.Model):
-    id = models.AutoField(primary_key=True)
-    subject_id= models.ForeignKey(GradeLevel, on_delete=models.CASCADE)
-    sw_percentage = models.IntegerField()
-    hw_percentage = models.IntegerField()
-    qz_percentage = models.IntegerField()
-    objects = models.Manager()
 
 class Section_subjects(models.Model):
     id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     subject_id = models.ForeignKey(Subjects, on_delete=models.CASCADE)
-    objects = models.Manager()
-
-
-class Parents(models.Model):
-    id = models.AutoField(primary_key =True)
-    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    fname = models.CharField(max_length=100)
-    lname = models.CharField(max_length=100)
-    gender = models.CharField(max_length=50)
-    address = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
 
@@ -116,6 +101,7 @@ class Students(models.Model):
     class_id = models.ForeignKey(Classes, on_delete=models.DO_NOTHING)
     gender = models.CharField(max_length=50)
     address = models.CharField(max_length=255)
+    status = models.BooleanField(default =True)
     session_year_id = models.ForeignKey(SessionYearModel, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -227,10 +213,6 @@ class Fourth_Qtr(models.Model):
     objects = models.Manager()
 
 
-
-
-
-
 class Announcements(models.Model):
     id = models.AutoField(primary_key =True)
     subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
@@ -240,6 +222,15 @@ class Announcements(models.Model):
     objects = models.Manager()
 
     ordering = ['date_added']
+
+
+class Msg(models.Model):
+    id = models.AutoField(primary_key =True)
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='receiver')
+    body = models.TextField(max_length=1000, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
 
 
 class Message(models.Model):
@@ -277,6 +268,25 @@ class Message(models.Model):
 				'unread': Message.objects.filter(user=user, recipient__pk=message['recipient'], is_read=False).count()
 				})
 		return users
+
+
+class OTP(models.Model):
+    id = models.AutoField(primary_key =True)
+    otp = models.CharField(max_length=4)
+    date_added = models.DateTimeField( default=timezone.now, blank=True)
+    objects = models.Manager()
+
+
+
+    @property
+    def delete_after_two_minutes(instance):
+        if instance.date_added < datetime.datetime.now() - datetime.timedelta(minutes=5):
+            print(instance.date_added)
+            e = OTP.objects.get(pk=instance.pk)
+            e.delete()
+            return True
+        else:
+            return False
 
 
 

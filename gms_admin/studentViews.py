@@ -1,6 +1,6 @@
 from django.contrib import admin
 from gms_admin.models import*
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 
 def student_home(request):
@@ -38,7 +38,7 @@ def view_announcements(request):
     class_id = Classes.objects.get(id=student)
   
     subjects = Subjects.objects.filter(class_id=class_id)
-    post = Announcements.objects.filter(subject_id__in=subjects)
+    post = Announcements.objects.filter(subject_id__in=subjects).order_by('-date_added')
     print(post)
     return render(request, 'student/view_announcements.html', {'post':post})
 
@@ -79,3 +79,22 @@ def view_activities(request,section_subject_id):
     exams = Examinations.objects.filter(section_subject_id__in = student)
     performance = Performance_Task.objects.filter(section_subject_id__in = student)
     return render(request, 'student/view_grade_details.html',{'section_subject':section_subject,'homework':homework,'quizzes':quizzes,'seatwork':seatwork,'exams':exams,'performance':performance})
+
+def chat(request):
+    user = request.user.id
+    all_users = CustomUser.objects.all()
+    sent = Msg.objects.filter(sender_id = user).order_by('-date')
+    receive = Msg.objects.filter(receiver_id = user).order_by('-date')
+    return render(request, 'student/chat.html', {'all_users':all_users, 'sent':sent, 'receive':receive})
+
+def send_message(request):
+    user_id = request.user.id
+    sender = CustomUser.objects.get(id=user_id)
+    receiver_id = request.POST.get('receiver')
+    receiver = CustomUser.objects.get(id=receiver_id)
+    body = request.POST.get('my_textarea')
+    print(body)
+
+    message_send = Msg(sender=sender, receiver=receiver, body=body)
+    message_send.save()
+    return redirect(request.META.get('HTTP_REFERER'))

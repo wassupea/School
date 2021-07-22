@@ -42,7 +42,7 @@ class AddStudentForm(forms.Form):
         classlist = Classes.objects.all()
         
         for classes in classlist:
-            small_classlist=(classes.id, str(classes.gradelevel_id_id)+"-"+str(classes.class_name))
+            small_classlist=(classes.id, str(classes.gradelevel_id.gradeLevel_no)+"-"+str(classes.class_name))
             class_list.append(small_classlist)
     except:
         pass
@@ -119,6 +119,24 @@ class AddAnnouncement(forms.Form):
         subjectlist = Subjects.objects.all()
         
         for subject in subjectlist:
+            small_subjectlist=(subject.id, str(subject.class_id_id)+"-"+str(subject.subject_name)+ "-" +str(subject.class_id.class_name))
+            subject_list.append(small_subjectlist)
+    except:
+        pass
+    subject_id =forms.ChoiceField(label='Subject', choices=subject_list,widget=forms.Select())
+    title = forms.CharField(label='Title', max_length=50, widget=forms.TextInput())
+    content = forms.CharField(widget=CKEditorWidget())
+
+    class Meta:
+        model = Announcements
+        fields = ['subject_id', 'title', 'content']
+
+class EditAnnouncement(forms.Form):
+    subject_list =[]
+    try:
+        subjectlist = Subjects.objects.all()
+        
+        for subject in subjectlist:
             small_subjectlist=(subject.id, str(subject.class_id_id)+"-"+str(subject.subject_name))
             subject_list.append(small_subjectlist)
     except:
@@ -130,3 +148,21 @@ class AddAnnouncement(forms.Form):
     class Meta:
         model = Announcements
         fields = ['subject_id', 'title', 'content']
+
+class SendMessage(forms.Form):
+    user_list = []
+    try:
+        users = CustomUser.objects.all()
+        
+        for user in users:
+            small_subjectlist=(user.id, str(user.last_name)+"-"+str(user.first_name))
+            user_list.append(small_subjectlist)
+    except:
+        pass
+    user_id =forms.ChoiceField(label='Subject', choices=user_list,widget=forms.Select())
+    body = forms.CharField(widget=CKEditorWidget())
+
+    class Meta:
+        model = Msg
+        fields = ['user_id', 'body']
+

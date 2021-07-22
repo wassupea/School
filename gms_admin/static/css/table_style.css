@@ -6,9 +6,14 @@
 body{
     font-family: Helvetica;
     -webkit-font-smoothing: antialiased;
-    background: #e5e5e5;
+    background: #e5e5e5 !important;
 }
 
+p {
+    font-size: medium;
+    font-family: 'Courier New', Courier, monospace;
+    display: inline-block;
+}
 /* Table Styles */
 
 .table-wrapper{
@@ -17,8 +22,8 @@ body{
 }
 
 .fl-table {
-    border-radius: 10%;
-    font-size: 62%;
+    border-radius: 12%;
+    font-size: 75%;
     font-weight: normal;
     border: none;
     border-collapse: collapse;

@@ -17,13 +17,18 @@ from django.contrib import admin
 from django.urls import path, include
 from gms_admin import studentViews, teacherViews, adminViews, views
 from School import settings
+import gms_admin
 
 urlpatterns = [
 
     #ADMIN
     path('admin/', admin.site.urls),
     path('accounts/',include('django.contrib.auth.urls')),
-    path('',views.loginPage, name='show_login'),
+    path('',views.otp_view, name='otp_view'),
+    path('login',views.loginPage, name='show_login'),
+    path('send_otp',views.send_otp, name='send_otp'),
+    path('verify_otp',views.verify_otp, name='verify_otp'),
+    path('confirm_otp',views.confirm_otp, name='confirm_otp'),
     path('dashboard/', views.adminHome, name='admin_home'),
     path('get_user ',views.GetUser),
     path('logout',views.logout_user, name='logout'),
@@ -49,7 +54,14 @@ urlpatterns = [
     path('save_editsubject', adminViews.save_editsubject, name='save_editsubject'),
     path('edit_class/<str:class_id>', adminViews.edit_class, name='edit_class'),
     path('save_editclass', adminViews.save_editclass, name="save_editclass"),
+    path('edit_gradelevel/<str:gradelevel_id>',adminViews.edit_gradelevel, name='edit_gradelevel'),
+    path('save_editgradelevel',adminViews.save_editgradelevel, name='save_editgradelevel'),
     path('delete_gradelevel/<str:gradelevel_id>', adminViews.delete_gradelevel),
+    path('delete_class/<str:class_id>', adminViews.delete_class),
+    path('delete_year/<str:schoolyear_id>', adminViews.delete_year),
+    path('delete_subject/<str:subject_id>', adminViews.delete_subject),
+    path('delete_student/<str:student_id>', adminViews.delete_student),
+    path('delete_teacher/<str:teacher_id>', adminViews.delete_teacher),
     path('manage_student', adminViews.manage_student, name='manage_student'),
     path('manage_teacher', adminViews.manage_teacher, name='manage_teacher'),
     path('manage_subject', adminViews.manage_subject, name='manage_subject'),
@@ -59,11 +71,17 @@ urlpatterns = [
     path('add_sectionsubjects/<str:student_id>', adminViews.add_sectionsubjects, name='add_sectionsubjects'), 
     path('save_sectionsubjects', adminViews.save_sectionsubjects, name='save_sectionsubjects'),
     path('djrichtextfield/', include('djrichtextfield.urls')),
-
+    path('admin_chat', adminViews.admin_chat, name='admin_chat'),
+    path('admin_send_message', adminViews.adminsend_message, name='admin_send_message'),
+    
+    
     #TEACHER
+    path('send_message', teacherViews.send_message, name='send_message'),
 
     path('teacher_home', teacherViews.teacher_home, name='teacher_home'),
     path('view_subjects', teacherViews.view_subjects, name='view_subjects'),
+
+    path('view_grades/<str:subject_id>', teacherViews.view_grades, name='view_grades'),
     path('attendance', teacherViews.attendance, name='attendance'),
     path('get_students', teacherViews.get_students, name="get_students"),
     path('save_attendance', teacherViews.save_attendance, name="save_attendance"),
@@ -77,8 +95,9 @@ urlpatterns = [
     path('add_quiz', teacherViews.add_quiz, name='add_quiz'),
     path('get_sectionsubject', teacherViews.get_sectionsubject, name='get_sectionsubject'),
     path('announcement', teacherViews.announcement, name='announcement'),
-    path('chat', teacherViews.chat, name='chat'),
+    path('edit_announcement/<str:announcement_id>', teacherViews.edit_announcement, name='edit_announcement'),
     path('save_announcement', teacherViews.save_announcement, name='save_announcement'),
+    path('save_editannouncement', teacherViews.save_editannouncement, name='save_editannouncement'),
 
     path('add_homework', teacherViews.add_homework, name='add_homework'),
     path('add_seatwork', teacherViews.add_seatwork, name='add_seatwork'),
@@ -105,6 +124,9 @@ urlpatterns = [
     path('save_editseatwork', teacherViews.save_editseatwork, name='save_editseatwork'),
     path('save_editexam', teacherViews.save_editexam, name='save_editexam'),
     path('save_editperformance', teacherViews.save_editperformance, name='save_editperformance'),
+    path('chat', teacherViews.chat, name='chat'),
+    #path('inbox/',include('gms_admin.urls')),
+    #path("send_otp",views.send_otp,name="send otp"),
     #STUDENT
 
     path('student_home', studentViews.student_home, name='student_home'),
@@ -114,6 +136,8 @@ urlpatterns = [
     path('view_grades', studentViews.view_grades, name='view_grades'),
     path('view_grades_details/<str:section_subject_id>', studentViews.view_grades_details, name='view_grades_details'),
     path('view_activities/<str:section_subject_id>', studentViews.view_activities, name='view_activities'),
+    path('student_chat', studentViews.chat, name='student_chat'),
+    path('student_send_message', studentViews.send_message, name='student_send_message'),
 
 
 

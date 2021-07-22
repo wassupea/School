@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,17 +45,27 @@ INSTALLED_APPS = [
     'jquery',
     'ckeditor',
     'djrichtextfield',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_hotp',
+    'django_otp.plugins.otp_static',
+    'django_email_verification',
+    'django_filters',
+     'crispy_forms',
+      'widget_tweaks',
 ]
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'gms_admin.CheckMiddleware.LoginCheckMiddleWare',
+
 ]
 
 ROOT_URLCONF = 'School.urls'
@@ -75,6 +86,8 @@ TEMPLATES = [
     },
 ]
 
+
+ASGI_APPLICATION = 'School.routing.application'
 WSGI_APPLICATION = 'School.wsgi.application'
 
 
@@ -149,6 +162,10 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'hwngryjn@gmail.com'
 EMAIL_HOST_PASSWORD = '@P@ssword123'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_MAIL_SUBJECT = 'Confirm Email'
+EMAIL_MAIL_HTML = 'mail_body.html'
+EMAIL_MAIL_PLAIN = 'mail_body.txt'
+EMAIL_PAGE_TEMPLATE = 'confirm_template.html'
 
 DJRICHTEXTFIELD_CONFIG = {
     'js': ['//cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js'],

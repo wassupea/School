@@ -11,7 +11,7 @@
 
 {%block 'main_content'%}
 
- <form method ="POST" class="form-wrapper" action="{%url 'save_announcement'%}">
+ <form method ="POST" class="form-wrapper" action="{%url 'save_editannouncement'%}">
  {% csrf_token %}
 <center>
  {{form.as_p}}
@@ -23,11 +23,9 @@
   <div class='img text-center'> 
   </div>
   <p class="p1"> {{announcement.subject_id.teacher_id.last_name}} {{announcement.subject_id.teacher_id.first_name}} </p>
-  <p class="p2">{{announcement.subject_id.subject_name}} {{announcement.subject_id.class_id.class_name}}<p>
-  
-    
-    <p class="p3"> <a href = "/edit_announcement/{{announcement.id}} ">  {{announcement.title}}</p>
-
+  <p class="p2">{{announcement.subject_id.subject_name}} <p>
+  &nbsp
+    <a href = "/edit_announcement/{{announcement.id}} ">  
   <p class="p4">{{announcement.content | safe}}</p>
  
 </div>

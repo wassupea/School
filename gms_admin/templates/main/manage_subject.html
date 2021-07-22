@@ -1,9 +1,9 @@
 {%load static%}
 {% include  'main/base.html' %}
   <head>
-    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
-    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   </head>
   <style>
@@ -35,6 +35,22 @@
   </style>
 {% block 'main-content'%}
 
+<center>
+<div class="row" style="padding:10px;font-size:12px;">
+	<div class="col" style="padding:10px;font-size:12px;">
+		<div class="card card-body" style="padding:10px;font-size:12px;">
+
+			<form method="get">
+				{{myFilter.form.as_p}}
+
+		    <button class="btn btn-info" type="submit">Search</button>
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<center>
 
     <div class="table-wrapper">
     <table class="fl-table">
@@ -45,6 +61,7 @@
       <th scope="col">Subject Name</th>
       <th scope="col">Section</th>
       <th scope="col">Action </th>
+      <th scope="col">Delete </th>
     </tr>
   </thead>
   <tbody>
@@ -56,6 +73,7 @@
           <td> {{subject.subject_name}} </td>
           <td> {{subject.class_id.class_name}} </td>
           <td> <a href = "/edit_subject/{{subject.id}} "> Edit </a></td>
+          <td> <a href = "/delete_subject/{{subject.id}} "> Delete </a></td>
         </tr>
       {% endfor %}
         </tr>

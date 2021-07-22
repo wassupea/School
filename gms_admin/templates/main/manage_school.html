@@ -2,8 +2,22 @@
 {% include  'main/base.html' %}
 <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
 <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+       <link rel="stylesheet" href= "{% static 'css/messages.css' %}" type="text/css">
 
 {% block 'main_content' %}
+
+{% if messages %}
+   <div class = "messages">
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% if message.tags == 'success'%}
+      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+{% endif %}
 
 <div class="cards-list">
   
@@ -54,6 +68,7 @@
       <!--<th scope="col">#</th>-->
       <th scope="col">Start Date</th>
       <th scope="col">End Date</th>
+      <th scope="col">Delete</th>
 
       
     </tr>
@@ -65,6 +80,7 @@
         <tr>
           <td> {{school_year.session_start_year}} </td>
           <td> {{school_year.session_end_year}} </td>
+            <td> <a href = "/delete_year/{{school_year.id}}"> Delete </a> </td>
 
         </tr>
       {% endfor %}
@@ -78,6 +94,7 @@
       <!--<th scope="col">#</th>-->
       <th scope="col">Grade Level</th>
       <th scope="col">Created at</th>
+       <th scope="col">Edit</th>
 
       
     </tr>
@@ -89,6 +106,7 @@
         <tr>
           <td> {{gradelevel.gradeLevel_no}} </td>
           <td> {{gradelevel.created_at}} </td>
+          <td> <a href = "/edit_gradelevel/{{gradelevel.id}}"> Edit </a> </td>
   
         </tr>
       {% endfor %}
@@ -107,6 +125,7 @@
       <th scope="col">Section Name</th>
       <th scope="col">Advisor </th>
       <th scope="col">Action </th>
+       <th scope="col">Delete</th>
     </tr>
         </thead> 
         <tbody>
@@ -117,6 +136,8 @@
           <td> {{class.class_name}} </td>
           <td> {{class.teacher_id.first_name}} {{class.teacher_id.last_name}} </td>
           <td> <a href = "/edit_class/{{class.id}} "> Edit </a></td>
+          <td> <a href = "/delete_class/{{class.id}}"> Delete </a> </td>
+  
         </tr>
       {% endfor %}
         </tr>

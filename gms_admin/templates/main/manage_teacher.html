@@ -2,7 +2,8 @@
 {% include  'main/base.html' %}
   <head>
      <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
-
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   </head>
   <style>
     .button_href {
@@ -15,7 +16,7 @@
     position: relative;
     text-decoration: none;
     text-transform: uppercase;
-    left:80%;
+    left:43%;
   }
   
   .button_href:hover {
@@ -28,7 +29,23 @@
   }
   </style>
 {% block 'main-content'%}
+<center>
+<div class="row" style="padding:10px;font-size:12px;">
+	<div class="col" style="padding:10px;font-size:12px;">
+		<div class="card card-body" style="padding:10px;font-size:12px;">
 
+			<form method="get">
+				{{myFilter.form.as_p}}
+
+		    <button class="btn btn-info" type="submit">Search</button>
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+
+<center>
 
     <div class="table-wrapper">
     <table class="fl-table">

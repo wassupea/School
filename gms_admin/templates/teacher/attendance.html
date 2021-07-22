@@ -91,7 +91,7 @@ $(document).ready(function(){
       tr = $('<tr/>');
       tr.append("<td>" + json_data[i].gradelevel + "</td>");
       tr.append("<td>" + json_data[i].name + "</td>");
-      tr.append("<input type='checkbox' checked='checked' name='section_data[]' value='"+json_data[i]['id']+"'>");
+      tr.append("<center><input type='checkbox' checked='checked' name='section_data[]' value='"+json_data[i]['id']+"'>");
       //tr.append("<input type='date' name='attendance_date' id='attendance_date'> '&emsp </input>");
       //tr.html(div);
       $('table').first().append(tr);

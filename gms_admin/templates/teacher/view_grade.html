@@ -11,25 +11,21 @@
 
     <div class="table-wrapper">
     <br> <center>
-<caption> Subjects Held by {{user.last_name}} </caption>
+<caption> First Qtr Grades for {{first.section_subject_id.subject_id.subject_name}} </caption>
 <br>
     <table class="fl-table">
         <thead>
         <tr>
-         <th scope="col">Grade Level</th>
-         <th scope="col">Section</th>
-         <th scope="col">Subject Name</th>
-         <th scope="col">View Grades</th>
+         <th scope="col">Student Name</th>
+         <th scope="col">Grade</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          {%for subject in subjects %}
+          {%for first in first %}
         <tr>
-                      <td>{{ subject.class_id.gradelevel_id_id }}</td>
-                      <td>{{ subject.class_id.class_name }}</td>
-                      <td>{{ subject.subject_name }}</td>
-                      <td><a href = "/view_grades/{{subject.id}} "> View </a></td>
+                      <td>{{ first.section_subject_id.student_id.last_name }}</td>
+                      <td>{{ first.grade }}</td>
         </tr>
         {% endfor %}
         </tr>

@@ -33,6 +33,11 @@
     <option value = "{{teacher.id}}" {%if teacher.id == classes.teacher.id %} selected {% endif %}>{{teacher.first_name}} {{teacher.last_name}} </option>
     {% endfor %}
     </select>
+ <label > Status</label>
+    <select name="status">
+         <option value = "1"> Active </option>
+          <option value = "0"> Inactive </option>
+      </select>
     <button type="submit" class='button3' onclick="return confirm('Do you really want to submit the form?');">Edit!</button>
   </form>
 

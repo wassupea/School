@@ -25,6 +25,12 @@
     <fieldset>
      <p> Address <input type="text" name="address" maxlength="340" name="txtEmpPhone" class="form-control" placeholder="Address *" value="{{teacher.address}}" /> </p>
     </fieldset>
+      <fieldset>
+     <p> Status   <select name="status">
+         <option value = "1"> Active </option>
+          <option value = "0"> Inactive </option>
+      </select> </p>
+    </fieldset>
     <fieldset>
       <button name="submit" type="submit" id="contact-submit" onclick="return confirm('Do you really want to submit the form?');">Submit</button>
     </fieldset>

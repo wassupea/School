@@ -1,9 +1,10 @@
 {%load static%}
 {% include  'main/base.html' %}
   <head>
-    <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
-    <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+       <link rel="stylesheet" href= "{% static 'css/messages.css' %}" type="text/css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   </head>
   <style>
@@ -34,7 +35,35 @@
 }
   </style>
 {% block 'main-content'%}
-<br>
+
+<center>
+<div class="row" style="padding:8px;font-size:12px;">
+	<div class="col" style="padding:8px;font-size:12px;">
+		<div class="card card-body" style="padding:10px;font-size:12px;">
+
+			<form method="get">
+				{{myFilter.form.as_p}}
+
+		    <button class="btn btn-info" type="submit">Search</button>
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<center>
+{% if messages %}
+   <div class = "messages">
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% if message.tags == 'success'%}
+      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+{% endif %}
 <center>
 <caption> Manage Student </caption>
     <div class="table-wrapper">
@@ -51,6 +80,7 @@
           <th scope="col">Section</th>
           <th scope="col">Action</th>
           <th scope="col">Add Class Subjects</th>
+          <th scope="col">Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -66,7 +96,8 @@
                       <td>{{ student.session_year_id.session_start_year }} to {{ student.session_year_id.session_end_year }}</td>
                       <td> {{student.class_id.class_name}} </a></td>
                       <td> <a href = "/edit_student/{{student.admin.id}} "> Edit </a></td>
-                      <td> <a href = "/add_sectionsubjects/{{student.admin.id}} "> Edit </a></td>
+                      <td> <a href = "/add_sectionsubjects/{{student.admin.id}} "> Add </a></td>
+                       <td> <a href = "/delete_student/{{student.admin.id}} "> Delete </a></td>
         </tr>
         {% endfor %}
       
