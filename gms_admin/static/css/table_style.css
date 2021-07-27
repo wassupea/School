@@ -1,11 +1,11 @@
 *{
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+    box-sizing: border-box !important;
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
 }
 body{
     font-family: Helvetica;
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased !important;
     background: #e5e5e5 !important;
 }
 
@@ -17,121 +17,125 @@ p {
 /* Table Styles */
 
 .table-wrapper{
-    margin: 2% 10% 10%;
-    box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+    margin: 2% 10% 10% !important;
+    box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 ) !important;
 }
 
 .fl-table {
-    border-radius: 12%;
-    font-size: 75%;
-    font-weight: normal;
-    border: none;
-    border-collapse: collapse;
-    width: 100%;
-    max-width: 100%;
-    white-space: nowrap;
+    border-radius: 12% !important; 
+    font-size: 75% !important;
+    font-weight: normal !important;
+    border: none !important;
+    border-collapse: collapse !important;
+    width: 100% !important;
+    max-width: 100% ;
+    white-space: nowrap !important;
     background-color: white;
 }
 
 .fl-table td, .fl-table th {
-    text-align: center;
-    width: 5%;
-    padding: 1%;
+    text-align: center !important;
+    width: 5% !important;
+    padding: 1% !important;
 }
 
 .fl-table td {
-    border-right: 2% solid #f8f8f8;
-    font-size: 110%;
+    border-right: 2% solid #f8f8f8 !important;
+    font-size: 110% !important;
 }
 
 .fl-table thead th {
-    color: #ffffff;
-    background: #4FC3A1;
+    color: #ffffff !important;
+    background: #4FC3A1 !important;
 }
 
 
 .fl-table thead th:nth-child(odd) {
-    color: #ffffff;
-    background: #324960;
+    color: #ffffff  !important;
+    background: #324960 !important;
 }
 
 .fl-table tr:nth-child(even) {
-    background: #F8F8F8;
+    background: #F8F8F8 !important;
 }
 
 /* Responsive */
 
 @media (max-width: 1000px) {
     .fl-table {
-        display: block;
-        width: 100%;
+        display: block !important ;
+        width: 100% !important;
     }
     .table-wrapper:before{
-        content: "Scroll horizontally >";
-        display: block;
-        text-align: right;
-        font-size: 11px;
-        color: white;
-        padding: 0 0 10px;
+        content: "Scroll horizontally >"  !important;
+        display: block !important;
+        text-align: right !important;
+        font-size: 11px !important;
+        color: white !important;
+        padding: 0 0 10px !important;
     }
     .fl-table thead, .fl-table tbody, .fl-table thead th {
-        display: block;
+        display: block !important;
     }
     .fl-table thead th:last-child{
-        border-bottom: none;
+        border-bottom: none !important;
     }
     .fl-table thead {
-        float: left;
+        float: left !important;
     }
     .fl-table tbody {
-        width: auto;
-        position: relative;
-        overflow-x: auto;
+        width: auto !important;
+        position: relative !important;
+        overflow-x: auto !important;
     }
     .fl-table td, .fl-table th {
-        padding: 20px .625em .625em .625em;
-        height: 60px;
-        vertical-align: middle;
-        box-sizing: border-box;
-        overflow-x: hidden;
-        overflow-y: auto;
-        width: 120px;
-        font-size: 13px;
-        text-overflow: ellipsis;
+        padding: 20px .625em .625em .625em !important;
+        height: 60px !important;
+        vertical-align: middle !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        width: 120px !important;
+        font-size: 13px !important;
+        text-overflow: ellipsis !important;
     }
     .fl-table thead th {
-        text-align: left;
-        border-bottom: 1px solid #f7f7f9;
+        text-align: left !important;
+        border-bottom: 1px solid #f7f7f9 !important;
     }
     .fl-table tbody tr {
-        display: table-cell;
+        display: table-cell !important;
     }
     .fl-table tbody tr:nth-child(odd) {
-        background: none;
+        background: none !important;
     }
     .fl-table tr:nth-child(even) {
-        background: transparent;
+        background: transparent !important;
     }
     .fl-table tr td:nth-child(odd) {
-        background: #F8F8F8;
-        border-right: 1px solid #E6E4E4;
+        background: #F8F8F8 !important;
+        border-right: 1px solid #E6E4E4 !important;
     }
     .fl-table tr td:nth-child(even) {
-        border-right: 1px solid #E6E4E4;
+        border-right: 1px solid #E6E4E4 !important;
     }
     .fl-table tbody td {
-        display: block;
-        text-align: center;
+        display: block !important;
+        text-align: center !important;
     }
 
     .table-wrapper2{
-        margin: 10px 70px 70px;
-        box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+        margin: 10px 70px 70px !important;
+        box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 ) !important;
     }
 
+    .table-wrapper4{
+        margin: 10px 70px 70px !important;
+        box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 ) !important;
+    }
     .table-wrapper3 {
-        margin: 10px 70px 70px;
-        box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+        margin: 10px 70px 70px !important ;
+        box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 ) !important;
     }
     .table a {
         color:black;

@@ -9,11 +9,13 @@
         <!-- Insert loop statement here -->
         <div class="card">
           <div class="card-header">
-            <h1>Subject</h1>
+            <h1>Welcome</h1>
           </div>
           <div class="card-body">
-            <p>Math</p>
+          {%for teachers in teacher %}
+            <p>{{teachers.admin.first_name}}, {{teachers.admin.last_name}} </p>
           </div>
+          {%endfor%}
 
           
         </div>
@@ -21,16 +23,18 @@
         <div class="card-header">
             <h1>Classes</h1>
           </div>
+          {%for classes in classes%}
           <div class="card-body">
-            <p> 1-Sampaguita</p>
+            <p> {{classes.gradelevel_id.gradeLevel_no}} - {{classes.class_name}}</p>
           </div>  
+          {%endfor%}
           </div>
            <div class="card">
         <div class="card-header">
             <h1>Total Students</h1>
           </div>
           <div class="card-body">
-            <p> 90</p>
+            <p> {{section}}</p>
           </div>  
           </div>
            <div class="card">
@@ -38,7 +42,7 @@
             <h1>Total Subjects</h1>
           </div>
           <div class="card-body">
-            <p> 5</p>
+            <p> {{subjects}}</p>
           </div>  
           </div>
         <!-- End loop -->

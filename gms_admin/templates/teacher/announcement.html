@@ -19,7 +19,9 @@
   <input type="Submit" value="Post">
 
 <br><br><br>
+{%for announcement in announcement%}
 <div class='post-card2'>
+
   <div class='img text-center'> 
   </div>
   <p class="p1"> {{announcement.subject_id.teacher_id.last_name}} {{announcement.subject_id.teacher_id.first_name}} </p>
@@ -27,12 +29,14 @@
   
     
     <p class="p3"> <a href = "/edit_announcement/{{announcement.id}} ">  {{announcement.title}}</p>
+    
 
   <p class="p4">{{announcement.content | safe}}</p>
- 
+   <p class="p4"> <a href = "/delete_announcement/{{announcement.id}} ">  Delete</p>
+
 </div>
  <button id="reply"> </button>
-    
+{%endfor%}
 {% endblock %}
 
 

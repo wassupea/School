@@ -4,11 +4,12 @@
     <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src = "{% static 'js/JQuery.js' %}"> </script>
 
   </head>
 {% block 'main-content'%}
- <select name="qtr" id="qtr">
+ <select name="qtr" id="qtr" class="form-control form-control-sm">
          <option value="0">Select Quarter</option>
           <option value="1">First Quarter</option>
           <option value="2">Second Quarter</option>

@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from ckeditor.fields import RichTextField
 from django.utils import timezone
+from django_cryptography.fields import encrypt
 # Create your models here.
 
 
@@ -22,7 +23,7 @@ class GMS_Admin(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     fname = models.CharField(max_length=100)
     lname = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
+    email = encrypt(models.CharField(max_length=100))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
@@ -41,6 +42,9 @@ class GradeLevel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
+
+    def __int__(self):
+        return self.gradeLevel_no
     
 class Teacher(models.Model):
     id = models.AutoField(primary_key =True)
@@ -63,6 +67,9 @@ class Classes(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
+
+    def __str__(self):
+        return self.class_name
 
 
 class Section(models.Model):
@@ -137,7 +144,7 @@ class Quizzes(models.Model):
     section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=100)
     raw_score = models.IntegerField()
-    score = models.IntegerField()
+    score = encrypt(models.DecimalField(max_digits=2,decimal_places=0))
     items = models.IntegerField()
     qtr = models.IntegerField()
     date = models.DateField(auto_now_add=True)
@@ -149,9 +156,9 @@ class Homework(models.Model):
     name = models.CharField(max_length=100)
     raw_score = models.IntegerField()
     items = models.IntegerField()
-    score = models.IntegerField()
+    score = encrypt(models.DecimalField(max_digits=2,decimal_places=0))
     qtr = models.IntegerField()
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
     objects = models.Manager()
 
 class Seatwork(models.Model):
@@ -160,9 +167,9 @@ class Seatwork(models.Model):
     name = models.CharField(max_length=100)
     raw_score = models.IntegerField()
     items = models.IntegerField()
-    score = models.IntegerField()
+    score = encrypt(models.DecimalField(max_digits=2,decimal_places=0))
     qtr = models.IntegerField()
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
     objects = models.Manager()
 
 class Examinations(models.Model):
@@ -171,7 +178,7 @@ class Examinations(models.Model):
     name = models.CharField(max_length=100)
     raw_score = models.IntegerField()
     items = models.IntegerField()
-    score = models.IntegerField()
+    score = encrypt(models.DecimalField(max_digits=2,decimal_places=0))
     qtr = models.IntegerField()
     date = models.DateField(auto_now_add=True)
     objects = models.Manager()
@@ -182,7 +189,7 @@ class Performance_Task (models.Model):
     name = models.CharField(max_length=100)
     raw_score = models.IntegerField()
     items = models.IntegerField()
-    score = models.IntegerField()
+    score = encrypt(models.DecimalField(max_digits=2,decimal_places=0))
     qtr = models.IntegerField()
     date = models.DateField(auto_now_add=True)
     objects = models.Manager()
@@ -193,6 +200,7 @@ class First_Qtr(models.Model):
     section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
     grade= models.IntegerField()
     objects = models.Manager()
+
 
 class Second_Qtr(models.Model):
     id = models.AutoField(primary_key =True)
@@ -217,7 +225,7 @@ class Announcements(models.Model):
     id = models.AutoField(primary_key =True)
     subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
     title = models.TextField()
-    content = RichTextField(blank=True,null=True)
+    content = encrypt(RichTextField(blank=True,null=True))
     date_added = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
@@ -228,7 +236,7 @@ class Msg(models.Model):
     id = models.AutoField(primary_key =True)
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sender')
     receiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='receiver')
-    body = models.TextField(max_length=1000, blank=True, null=True)
+    body = encrypt(models.TextField(max_length=1000, blank=True, null=True))
     date = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 

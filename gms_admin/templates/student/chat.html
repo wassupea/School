@@ -1,3 +1,4 @@
+  
 {%load static%}
 {%include 'student/base.html'%}
 <head>
@@ -8,8 +9,9 @@
 {%block 'main_content'%}
 
  <input class="button" type="submit" value="Send a Message" id='myBtn'>
-  <input class="button3" type="submit" value="SENT" id='sentBtn'>
-   <input class="button3" type="submit" value="INBOX" id='inboxBtn'>
+  <input class="btn btn-secondary" type="submit" value="SENT" id='sentBtn'>
+   <input class="btn btn-secondary" type="submit" value="INBOX" id='inboxBtn'>
+   <p></p>
 
 <div class="container card message-container " id='myModal'>
  <span class="close">&times;</span>
@@ -68,7 +70,7 @@
 <div class="container card message-container " id='replyModal'>
  <span class="close">&times;</span>
   <h1 class="message-title">Reply A Message</h1>
-  <form action="{%url 'send_message'%}" method="POST">
+  <form action="{%url 'student_send_message'%}" method="POST">
 {% csrf_token %}
 
 <input type='hidden' name='receiver' id='receive_ID'> </input>
@@ -93,23 +95,18 @@
 <script>
 var modal = document.getElementById("myModal");
 var replymodal = document.getElementById("replyModal");
- modal.style.display = "none";
-replymodal.style.display = "none";
+
 var sent = document.getElementById("container_sent");
 var receive = document.getElementById("container_receive");
- sent.style.display = "none";
+sent.style.display = "none";
+receive.style.display = "block";
+modal.style.display = "none";
+replymodal.style.display = "none";
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
 var replybtn = document.getElementById('replyID');
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
-}
 
 replybtn.onclick = function() {
     replymodal.style.display = "block";
@@ -130,19 +127,21 @@ window.onclick = function(event) {
 }
 
     $("#sentBtn").on('click',function(e){
-
-      e.preventDefault();
- 
     sent.style.display = "block";
     receive.style.display = "none";
 
       })
 
       $("#inboxBtn").on('click',function(e){
-
-      e.preventDefault();
     receive.style.display = "block";
     sent.style.display = "none";
+
+      })
+
+            $("#myBtn").on('click',function(e){
+    receive.style.display = "none";
+    sent.style.display = "none";
+     modal.style.display = "block";
 
       })
 

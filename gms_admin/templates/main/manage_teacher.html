@@ -2,6 +2,7 @@
 {% include  'main/base.html' %}
   <head>
      <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+          <link rel="stylesheet" href= "{% static 'css/messages.css' %}" type="text/css">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   </head>
@@ -29,6 +30,20 @@
   }
   </style>
 {% block 'main-content'%}
+
+{% if messages %}
+   <div class = "messages">
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% if message.tags == 'success'%}
+      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+{% endif %}
+
 <center>
 <div class="row" style="padding:10px;font-size:12px;">
 	<div class="col" style="padding:10px;font-size:12px;">
@@ -56,20 +71,37 @@
           <th scope="col">Last Name</th>
           <th scope="col">Address</th>
           <th scope="col">Last Login</th>
+          <th scope="col">Status</th>
           <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
         <tr>
           {%for teacher in teachers %}
+          {% if teacher.status is True%}
         <tr>
                
                       <td>{{ teacher.admin.first_name }}</td>
                       <td>{{teacher.admin.last_name }}</td>
                       <td>{{ teacher.address }}</td>
                       <td>{{ teacher.admin.last_login }}</td>
-                      <td> <a href = "/edit_teacher/{{teacher.admin.id}} "> Edit </a></td>
+                      <td>Active</td>
+                      <td> <a class="btn btn-info" href = "/edit_teacher/{{teacher.admin.id}} "> Edit </a></td>
         </tr>
+          {%endif%}
+
+             {% if teacher.status is False%}
+        <tr>
+               
+                      <td>{{ teacher.admin.first_name }}</td>
+                      <td>{{teacher.admin.last_name }}</td>
+                      <td>{{ teacher.address }}</td>
+                      <td>{{ teacher.admin.last_login }}</td>
+                      <td>Inactive</td>
+                      <td> <a class="btn btn-info" href = "/edit_teacher/{{teacher.admin.id}} "> Edit </a></td>
+        </tr>
+          {%endif%}
+          
         {% endfor %}
         </tr>
         <tbody>

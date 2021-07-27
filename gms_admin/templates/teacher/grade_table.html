@@ -4,6 +4,7 @@
 
      <link rel="stylesheet" href= "{% static 'css/table_of_grade.css' %}" type="text/css">
      <link rel="stylesheet" href= "{% static 'css/table_of_grade_style.css' %}" type="text/css">
+     <link rel="stylesheet" href= "{% static 'css/messages.css' %}" type="text/css">
      <script src = "{% static 'js/JQuery.js' %}"> </script>
      <script src = "{% static 'js/grade.js' %}"> </script>
 </head>
@@ -29,8 +30,22 @@
       <option value="4">Examination</option>
       <option value="5">Performance Task</option>
 </select>
+
+  {% if messages %}
+   <div class = "messages">
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% if message.tags == 'success'%}
+      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+   {% endif %}
 </div>
 
+<br><br><br><br><br>
 <!-- Add Homework -->
 <div class="container" id="container1">
  <div class="table-wrapper">
@@ -67,18 +82,6 @@
     </table> 
     <div class = 'footer'>
     </div>  
-    {% if messages %}
-   <div class = "messages">
-      {% for message in messages %}
-      {% if message.tags == 'error'%}
-      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
-      {% endif %}
-      {% if message.tags == 'success'%}
-      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
-      {% endif %}
-      {% endfor %}
-   </div>
-   {% endif %}
 </div>
 </form>
 </div>
@@ -258,10 +261,10 @@
         <tr>
          <th scope="col">Homework Name</th>
          <th scope="col">Raw Score</th>
-          <th scope="col">Percent Grade</th>
-          <th scope="col">Quarter</th>
-           <th scope="col">Date</th>
-           <th scope="col">Action</th>
+         <th scope="col">Percent Grade</th>
+         <th scope="col">Quarter</th>
+         <th scope="col">Date</th>
+         <th scope="col">Action</th>
         </tr>
         </thead>
   
@@ -286,15 +289,15 @@
     <div class="table-wrapper5">
     <div id ="exam" class="tab-style">
     </div>
-    <table class="fl-table" id='hw_table'>
+    <table class="fl-table" id='qz1_table'>
         <thead>
         <tr>
          <th scope="col">Quiz Name</th>
          <th scope="col">Raw Score</th>
-          <th scope="col">Percent Grade</th>
-          <th scope="col">Quarter</th>
-           <th scope="col">Date</th>
-           <th scope="col">Action</th>
+         <th scope="col">Percent Grade</th>
+         <th scope="col">Quarter</th>
+         <th scope="col">Date</th>
+         <th scope="col">Action</th>
         </tr>
         </thead>
   
@@ -423,7 +426,7 @@
 <div class="table-wrapper5">
     <div id ="exam" class="tab-style">
     </div>
-    <table class="fl-table" id='hw_table'>
+    <table class="fl-table" id='hw_table2'>
         <thead>
         <tr>
          <th scope="col">Homework Name</th>
@@ -796,18 +799,6 @@
     </table> 
     <div class = 'footer'>
     </div>  
-    {% if messages %}
-   <div class = "messages">
-      {% for message in messages %}
-      {% if message.tags == 'error'%}
-      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
-      {% endif %}
-      {% if message.tags == 'success'%}
-      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
-      {% endif %}
-      {% endfor %}
-   </div>
-   {% endif %}
 </div>
 </form>
 </div>

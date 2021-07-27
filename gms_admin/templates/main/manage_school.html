@@ -3,6 +3,7 @@
 <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
 <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
        <link rel="stylesheet" href= "{% static 'css/messages.css' %}" type="text/css">
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 {% block 'main_content' %}
 
@@ -61,13 +62,14 @@
 <div class="table-wrapper">
 
 <div class="table-wrapper3">
- <center> <caption> School Year </caption>
     <table class="fl-table">
+ <center> <caption> School Year </caption>
  <thead>
     <tr>
       <!--<th scope="col">#</th>-->
       <th scope="col">Start Date</th>
       <th scope="col">End Date</th>
+
       <th scope="col">Delete</th>
 
       
@@ -80,20 +82,24 @@
         <tr>
           <td> {{school_year.session_start_year}} </td>
           <td> {{school_year.session_end_year}} </td>
-            <td> <a href = "/delete_year/{{school_year.id}}"> Delete </a> </td>
+            <td> <a href = "/delete_year/{{school_year.id}}" class="btn btn-danger"> Delete </a> </td>
 
         </tr>
       {% endfor %}
     </table>
-
-  <br> <br>
+</div>
+</div>
+<div class="table-wrapper">
+  <div class="table-wrapper2">
+      <table class="fl-table">
  <center> <caption> Grade Levels </caption>
-    <table class="fl-table">
+
  <thead>
     <tr>
       <!--<th scope="col">#</th>-->
       <th scope="col">Grade Level</th>
       <th scope="col">Created at</th>
+      <th scope="col">Status</th>
        <th scope="col">Edit</th>
 
       
@@ -102,19 +108,29 @@
   <tbody>
 
       {% for gradelevel in gradelevels%}
-
+     {% if gradelevel.status is True%}
         <tr>
           <td> {{gradelevel.gradeLevel_no}} </td>
           <td> {{gradelevel.created_at}} </td>
-          <td> <a href = "/edit_gradelevel/{{gradelevel.id}}"> Edit </a> </td>
-  
+            <td> Active </td>
+          <td> <a href = "/edit_gradelevel/{{gradelevel.id}}" class="btn btn-info" > Edit </a> </td>
         </tr>
+      {%endif%}
+
+           {% if gradelevel.status is False%}
+        <tr>
+          <td> {{gradelevel.gradeLevel_no}} </td>
+          <td> {{gradelevel.created_at}} </td>
+            <td> Inactive </td>
+          <td> <a href = "/edit_gradelevel/{{gradelevel.id}}" class="btn btn-info" > Edit </a> </td>
+        </tr>
+      {%endif%}
       {% endfor %}
     </table>
+</div>
+</div>
 
-
-
-<br> <br>
+<div class="table-wrapper">
   <div class="table-wrapper2">
  
     <table class="fl-table">
@@ -124,6 +140,7 @@
       <th scope="col">Grade Level</th>
       <th scope="col">Section Name</th>
       <th scope="col">Advisor </th>
+                <th scope="col">Status</th>
       <th scope="col">Action </th>
        <th scope="col">Delete</th>
     </tr>
@@ -131,19 +148,31 @@
         <tbody>
         <tr>
         {% for class in classes%}
+        {% if class.status is True%}
         <tr>
           <td> {{class.gradelevel_id.gradeLevel_no}} </td>
           <td> {{class.class_name}} </td>
           <td> {{class.teacher_id.first_name}} {{class.teacher_id.last_name}} </td>
-          <td> <a href = "/edit_class/{{class.id}} "> Edit </a></td>
-          <td> <a href = "/delete_class/{{class.id}}"> Delete </a> </td>
-  
+          <td> Active </td>
+          <td> <a href = "/edit_class/{{class.id}} " class="btn btn-info"> Edit </a></td>
+          <td> <a href = "/delete_class/{{class.id}}" class="btn btn-danger"> Delete </a> </td>
         </tr>
+        {%endif%}
+        {% if class.status is False%}
+        <tr>
+          <td> {{class.gradelevel_id.gradeLevel_no}} </td>
+          <td> {{class.class_name}} </td>
+          <td> {{class.teacher_id.first_name}} {{class.teacher_id.last_name}} </td>
+          <td> Inactive </td>
+          <td> <a href = "/edit_class/{{class.id}} " class="btn btn-info"> Edit </a></td>
+          <td> <a href = "/delete_class/{{class.id}}" class="btn btn-danger"> Delete </a> </td>
+        </tr>
+        {%endif%}
       {% endfor %}
         </tr>
         <tbody>
     </table>
-
+</div>
 
 
 

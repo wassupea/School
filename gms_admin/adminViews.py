@@ -11,7 +11,11 @@ from django.core.mail import send_mail
 from .filters import *
 
 def admin_home(request):
-    return render(request, 'main/admin_dashboard.html')
+    teacher = Teacher.objects.count()
+    student = Students.objects.count()
+    classes = Classes.objects.count()
+    subjects = Subjects.objects.count()
+    return render(request, 'main/admin_dashboard.html', {'teacher':teacher, 'student':student, 'classes':classes, 'subjects':subjects})
     #return render (request,"main/sidebar")
 
 def admin_chat(request):
@@ -81,6 +85,7 @@ def save_teacher(request):
                 user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=2)
                 user.teacher.address = address
                 user.teacher.fname=first_name
+                user.teacher.lname = last_name
                 user.teacher.status = 1
                 user.save()        
                 messages.success(request,"Added Teacher")
@@ -124,7 +129,7 @@ def save_gradelevel(request):
                 print(grade_level)
                 gradelevel_model.save()
                 messages.success(request,"Added Grade Level")
-                return HttpResponseRedirect(reverse("add_gradelevel"))
+                return HttpResponseRedirect(reverse("manage_school"))
             except:
                 messages.error(request,"Invalid")
                 return HttpResponseRedirect(reverse("add_gradelevel"))
@@ -176,39 +181,42 @@ def save_student(request):
                 return HttpResponseRedirect("/add_student")
                 
             else:
-                user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
-                gradelevel_obj = GradeLevel.objects.get(id=gradelevel_id)
-                class_id = Classes.objects.get(id=class_id)
-                session_year = SessionYearModel.objects.get(id=session_year_id)
-                user.students.address = address
-                user.students.gradelevel_id=gradelevel_obj
-                user.students.class_id = class_id
-                user.students.gender=gender
-                user.students.session_year_id=session_year
-                user.students.status = 1
-                user.save()
+                try:
+                    user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
+                    gradelevel_obj = GradeLevel.objects.get(id=gradelevel_id)
+                    class_id = Classes.objects.get(id=class_id)
+                    session_year = SessionYearModel.objects.get(id=session_year_id)
+                    user.students.address = address
+                    user.students.gradelevel_id=gradelevel_obj
+                    user.students.class_id = class_id
+                    user.students.gender=gender
+                    user.students.session_year_id=session_year
+                    user.students.status = 1
+                    user.students.fname = first_name
+                    user.students.lname = last_name
+                    user.save()
 
-                print(class_id)
+                    print(class_id)
 
-                    #add to section
-                add_section = Section(class_id = class_id, student_id= user)
-                add_section.save()
+                        #add to section
+                    add_section = Section(class_id = class_id, student_id= user)
+                    add_section.save()
 
 
-                    #send an email
-                send_mail(
-                    'Account Credentials for ' + last_name + ', ' +first_name,
-                    'email: ' + email + ' password: ' +password,
-                    'hwngryjn@gmail.com',
-                    [email],
-                    fail_silently=False,
-                    )
+                        #send an email
+                    send_mail(
+                        'Account Credentials for ' + last_name + ', ' +first_name,
+                        'email: ' + email + ' password: ' +password,
+                        'hwngryjn@gmail.com',
+                        [email],
+                        fail_silently=False,
+                        )
 
-                messages.success(request,"Added Student")
-                return HttpResponseRedirect("manage_student")
-                #else:
-                    #messages.error(request,"Failed")
-                    #return HttpResponseRedirect("manage_student")
+                    messages.success(request,"Added Student")
+                    return HttpResponseRedirect("manage_student")
+                except:
+                    messages.error(request,"Failed")
+                    return HttpResponseRedirect("manage_student")
 
     
 
@@ -270,7 +278,7 @@ def save_subjects(request):
                 subject__in=Subjects(subject_name=subject,gradelevel_id=gradelevel, class_id=class_id,teacher_id=teacher_id, status=1)
                 subject__in.save()
                 messages.success(request,"Added Subject")
-                return HttpResponseRedirect("/add_subjects")
+                return HttpResponseRedirect(reverse("manage_subject"))
             except:
                 messages.error(request,"Failed")
                 return HttpResponseRedirect("manage_subject")
@@ -332,7 +340,7 @@ def save_class(request):
                 class2=Classes(teacher_id=teacher,gradelevel_id=gradelevel,class_name=class_name, status=1)
                 class2.save()
                 messages.success(request,"Successfully Added class")
-                return HttpResponseRedirect(reverse("add_class"))
+                return HttpResponseRedirect(reverse("manage_school"))
             except:
                 messages.error(request,"Failed")
                 return HttpResponseRedirect(reverse("add_class"))

@@ -1,4 +1,4 @@
-from gms_admin.models import Announcements, OTP
+from gms_admin.models import *
 from django.shortcuts import redirect, render
 import datetime
 from django.http import HttpResponseRedirect, HttpResponse
@@ -22,7 +22,9 @@ from django.utils import timezone
 import datetime
 
 def adminHome(request):
-    return render (request, 'main/admin_dashboard.html')
+    teacher = Teacher.objects.count()
+    print(teacher)
+    return render (request, 'main/admin_dashboard.html', {'teacher':teacher})
 
 
 def loginPage(request):
@@ -58,9 +60,13 @@ def doLogin(request):
                         elif user.user_type =='3':
                             return HttpResponseRedirect(reverse('student_home'))
 
+                    else:
+                        messages.error(request,"Invalid Credentials")
+                        return HttpResponseRedirect("/login")
+
             else:
                 messages.error(request,"Invalid Credentials")
-                return HttpResponseRedirect("/")
+                return HttpResponseRedirect("/login")
 
 
 def GetUser(request):

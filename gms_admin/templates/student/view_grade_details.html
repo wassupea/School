@@ -4,11 +4,12 @@
     <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src = "{% static 'js/JQuery.js' %}"> </script>
 
   </head>
 {% block 'main-content'%}
- <select name="qtr" id="qtr">
+ <select name="qtr" id="qtr" class="form-control form-control-sm">
          <option value="0">Select Activity</option>
           <option value="1">Homework</option>
           <option value="2">Quizzes</option>
@@ -26,13 +27,15 @@
       <tr>
           <th scope="col">Homework Name</th>
           <th scope="col">Grade</th>
-          <th scope="col">Qtr</th>
+          <th scope="col">Date</th>
+          <th scope="col">Quarter</th>
         </tr>
         </thead>
         {% for homework in homework %}
         <tbody>
           <td> {{ homework.name}} </td>
           <td> {{homework.score}} </td>
+          <td> {{homework.date}} </td>
           <td> {{homework.qtr}} </td>
         </tbody>
         {% endfor %}
@@ -48,13 +51,15 @@
       <tr>
           <th scope="col">Quiz Name</th>
           <th scope="col">Grade</th>
-          <th scope="col">Qtr</th>
+                    <th scope="col">Date</th>
+          <th scope="col">Quarter</th>
         </tr>
         </thead>
         {% for quizzes in quizzes %}
         <tbody>
           <td> {{ quizzes.name}} </td>
           <td> {{quizzes.score}} </td>
+                    <td> {{quizzes.date}} </td>
           <td> {{quizzes.qtr}} </td>
         </tbody>
         {% endfor %}
@@ -69,7 +74,8 @@
       <tr>
           <th scope="col">Seatwork Name</th>
           <th scope="col">Grade</th>
-          <th scope="col">Qtr</th>
+                              <th scope="col">Date</th>
+          <th scope="col">Quarter</th>
 
         </tr>
         </thead>
@@ -77,6 +83,7 @@
         <tbody>
            <td> {{ seatwork.name}} </td>
           <td> {{seatwork.score}} </td>
+                    <td> {{seatwork.date}} </td>
           <td> {{seatwork.qtr}} </td>
         </tbody>
         {% endfor %}
@@ -91,7 +98,8 @@
       <tr>
           <th scope="col">Performance Name</th>
           <th scope="col">Grade</th>
-          <th scope="col">Qtr</th>
+                              <th scope="col">Date</th>
+          <th scope="col">Quarter</th>
 
         </tr>
         </thead>
@@ -99,6 +107,7 @@
         <tbody>
            <td> {{ performance.name}} </td>
           <td> {{performance.score}} </td>
+                    <td> {{performance.date}} </td>
           <td> {{performance.qtr}} </td>
         </tbody>
         {% endfor %}
@@ -113,13 +122,15 @@
       <tr>
           <th scope="col">ExaminationName</th>
           <th scope="col">Grade</th>
-          <th scope="col">Qtr</th>
+                              <th scope="col">Date</th>
+          <th scope="col">Quarter</th>
         </tr>
         </thead>
         {% for exam in exams %}
         <tbody>
           <td> {{ exam.name}} </td>
           <td> {{exam.score}} </td>
+                    <td> {{exam.date}} </td>
           <td> {{exam.qtr}} </td>
         </tbody>
         {% endfor %}

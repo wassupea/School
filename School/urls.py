@@ -97,6 +97,7 @@ urlpatterns = [
     path('announcement', teacherViews.announcement, name='announcement'),
     path('edit_announcement/<str:announcement_id>', teacherViews.edit_announcement, name='edit_announcement'),
     path('save_announcement', teacherViews.save_announcement, name='save_announcement'),
+    path('delete_announcement/<str:announcement_id>', teacherViews.delete_announcement, name='delete_announcement'),
     path('save_editannouncement', teacherViews.save_editannouncement, name='save_editannouncement'),
 
     path('add_homework', teacherViews.add_homework, name='add_homework'),

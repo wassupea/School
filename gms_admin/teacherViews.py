@@ -15,7 +15,14 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 def teacher_home(request):
-    return render(request, 'main/teacher_dashboard.html')
+    current_user = request.user
+    admin_id = current_user.id
+    teacher = Teacher.objects.all().filter(admin_id=admin_id)
+    classes = Classes.objects.all().filter(teacher_id=admin_id)
+    subjects = Subjects.objects.all().filter(teacher_id=admin_id).count()
+    section = Section.objects.filter(class_id__in=classes).count()
+    print(teacher)
+    return render(request, 'main/teacher_dashboard.html', {'classes':classes, 'subjects':subjects, 'section':section,'teacher':teacher})
 
 def view_class(request):
     current_user = request.user
@@ -24,7 +31,7 @@ def view_class(request):
     classes = Classes.objects.all().filter(teacher_id=admin_id)
     section = Section.objects.filter(class_id__in=class_id)
     session_year = SessionYearModel.objects.all()
-    return render(request, 'teacher/html.html', {'section':section, 'classes':classes, 'session_year':session_year})
+    return render(request, 'teacher/html.html', {'section':section, 'classes':classes, 'session_year':session_year, 'current_user':current_user})
 
 def view_subjects(request):
     current_user = request.user
@@ -189,7 +196,7 @@ def announcement(request):
     subject_id = Subjects.objects.filter(teacher_id = id)
     print(subject_id)
     form = AddAnnouncement()
-    announcement = Announcements.objects.filter(subject_id__in = subject_id).last()
+    announcement = Announcements.objects.all().filter(subject_id__in = subject_id).order_by('-date_added')
     return render(request, 'teacher/announcement.html', {subjects:subjects,'form':form, 'announcement':announcement})
 
 def edit_announcement(request, announcement_id):
@@ -200,6 +207,15 @@ def edit_announcement(request, announcement_id):
     form.fields['title'].initial=announcement.title
     form.fields['content'].initial=announcement.content
     return render(request, 'teacher/edit_announcement.html', {'announcement':announcement, 'form':form, "id":announcement_id})
+
+def delete_announcement(request, announcement_id):
+    announcement = Announcements.objects.get(id=announcement_id)
+    try:
+        announcement.delete()
+        messages.success(request,"Deleted")
+    except:
+        messages.error(request, 'Failed to delete')
+    return HttpResponseRedirect(reverse("announcement"))
 
 def save_announcement(request):
     if request.method!="POST":
@@ -266,7 +282,7 @@ def send_message(request):
 
     message_send = Msg(sender=sender, receiver=receiver, body=body)
     message_send.save()
-    return redirect(request.META.get('HTTP_REFERER'))
+    return redirect('chat')
 
 def add_homework(request):
     if request.method == 'POST':
@@ -285,15 +301,26 @@ def add_homework(request):
         if Homework.objects.filter(name=hw1).filter(qtr=hw_qtr).filter(section_subject_id=student_subject).exists():
             messages.error(request,"Existing Homework")
             return redirect(request.META.get('HTTP_REFERER'))
+
+        if hw1_grade < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+           
                 
         else:
             if hw1_grade_max >= hw1_grade:
-                hw1_score = (hw1_grade / hw1_grade_max) * 100
-                homeworks=Homework(name=hw1,section_subject_id = student_subject,raw_score=hw1_grade, items=hw1_grade_max, score=hw1_score,qtr=hw_qtr,date=hw_date)
-              
-                homeworks.save()
-                messages.success(request,"Added Homework")
-                return redirect(request.META.get('HTTP_REFERER'))
+                try:
+                    hw1_score = (hw1_grade / hw1_grade_max) * 100
+                    homeworks=Homework(name=hw1,section_subject_id = student_subject,raw_score=hw1_grade, items=hw1_grade_max, score=hw1_score,qtr=hw_qtr,date=hw_date)
+                
+                    homeworks.save()
+                    messages.success(request,"Added Homework")
+                    return redirect(request.META.get('HTTP_REFERER'))
+
+                except:
+                    messages.error(request,"Invalid")
+                    return redirect(request.META.get('HTTP_REFERER'))
+
             else:
                 messages.error(request,"Invalid")
                 return redirect(request.META.get('HTTP_REFERER'))
@@ -318,14 +345,23 @@ def add_quiz(request):
         if Quizzes.objects.filter(name=qz1).filter(section_subject_id = student_subject).filter(qtr = qz_qtr).exists():
             messages.error(request,"Existing Quiz")
             return redirect(request.META.get('HTTP_REFERER'))
+
+        if qz1_grade < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+
         else:
             if qz1_grade_max >= qz1_grade:
-                qz1_score = (qz1_grade / qz1_grade_max) * 100
-                quizzes=Quizzes(name=qz1,section_subject_id = student_subject, raw_score =qz1_grade, items=qz1_grade_max, score=qz1_score,qtr=qz_qtr,date=date)
-             
-                quizzes.save()
-                messages.success(request,"Added Quiz")
-                return redirect(request.META.get('HTTP_REFERER'))
+                try:
+                    qz1_score = (qz1_grade / qz1_grade_max) * 100
+                    quizzes=Quizzes(name=qz1,section_subject_id = student_subject, raw_score =qz1_grade, items=qz1_grade_max, score=qz1_score,qtr=qz_qtr,date=date)
+                
+                    quizzes.save()
+                    messages.success(request,"Added Quiz")
+                    return redirect(request.META.get('HTTP_REFERER'))
+                except:
+                    messages.error(request,"Invalid")
+                    return redirect(request.META.get('HTTP_REFERER'))
             else:
                 messages.error(request,"Invalid")
                 return redirect(request.META.get('HTTP_REFERER'))
@@ -349,14 +385,22 @@ def add_seatwork(request):
         if Seatwork.objects.filter(name=sw1).filter(section_subject_id = student_subject).filter(qtr=sw_qtr).exists():
             messages.error(request,"Existing Seatwork")
             return redirect(request.META.get('HTTP_REFERER'))
+
+        if sw1_grade < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
         else:
             if sw1_grade_max >= sw1_grade:
-                sw1_score = (sw1_grade / sw1_grade_max) * 100
-                seatworks=Seatwork(name=sw1,section_subject_id = student_subject,raw_score=sw1_grade, items=sw1_grade_max,score=sw1_score,qtr=sw_qtr,date=date)
-                
-                seatworks.save()
-                messages.success(request,"Added Seatwork")
-                return redirect(request.META.get('HTTP_REFERER'))
+                try:
+                    sw1_score = (sw1_grade / sw1_grade_max) * 100
+                    seatworks=Seatwork(name=sw1,section_subject_id = student_subject,raw_score=sw1_grade, items=sw1_grade_max,score=sw1_score,qtr=sw_qtr,date=date)
+                    
+                    seatworks.save()
+                    messages.success(request,"Added Seatwork")
+                    return redirect(request.META.get('HTTP_REFERER'))
+                except:
+                    messages.error(request,"Invalid")
+                    return redirect(request.META.get('HTTP_REFERER'))
             else:
                 messages.error(request,"Invalid")
                 return redirect(request.META.get('HTTP_REFERER'))
@@ -380,14 +424,22 @@ def add_exam(request):
         if Examinations.objects.filter(name=exam).filter(section_subject_id = student_subject).filter(qtr=exam_qtr).exists():
             messages.error(request,"Existing Exam")
             return redirect(request.META.get('HTTP_REFERER'))
+
+        if exam_grade < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
         else:
             if exam_grade_max >= exam_grade:
-                exam_score = (exam_grade / exam_grade_max) * 100
-                exams=Examinations(name=exam,section_subject_id = student_subject, raw_score=exam_grade, items=exam_grade_max, score=exam_score,qtr=exam_qtr,date=date)
-               
-                exams.save()
-                messages.success(request,"Added Exam")
-                return redirect(request.META.get('HTTP_REFERER'))
+                try:
+                    exam_score = (exam_grade / exam_grade_max) * 100
+                    exams=Examinations(name=exam,section_subject_id = student_subject, raw_score=exam_grade, items=exam_grade_max, score=exam_score,qtr=exam_qtr,date=date)
+                
+                    exams.save()
+                    messages.success(request,"Added Exam")
+                    return redirect(request.META.get('HTTP_REFERER'))
+                except:
+                    messages.error(request,"Invalid")
+                    return redirect(request.META.get('HTTP_REFERER'))
             else:
                 messages.error(request,"Invalid")
                 return redirect(request.META.get('HTTP_REFERER'))
@@ -410,14 +462,23 @@ def add_performance(request):
         if Performance_Task.objects.filter(name=pf).filter(section_subject_id = student_subject).filter(qtr=pf_qtr).exists():
             messages.error(request,"Existing Seatwork")
             return redirect(request.META.get('HTTP_REFERER'))
+
+        if pf_grade < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+        
         else:
             if pf_grade_max >= pf_grade:
-                pf_score = (pf_grade / pf_grade_max) * 100
-                pfs=Performance_Task(name=pf,section_subject_id = student_subject,raw_score=pf_grade,items=pf_grade_max, score=pf_score,qtr=pf_qtr,date=date)
-                
-                pfs.save()
-                messages.success(request,"Added Performance Task")
-                return redirect(request.META.get('HTTP_REFERER'))
+                try:
+                    pf_score = (pf_grade / pf_grade_max) * 100
+                    pfs=Performance_Task(name=pf,section_subject_id = student_subject,raw_score=pf_grade,items=pf_grade_max, score=pf_score,qtr=pf_qtr,date=date)
+                    
+                    pfs.save()
+                    messages.success(request,"Added Performance Task")
+                    return redirect(request.META.get('HTTP_REFERER'))
+                except:
+                    messages.error(request,"Invalid")
+                    return redirect(request.META.get('HTTP_REFERER'))
             else:
                 messages.error(request,"Invalid")
                 return redirect(request.META.get('HTTP_REFERER'))
@@ -515,42 +576,46 @@ def save_grade(request):
 
         if qtr == 1:
             if First_Qtr.objects.filter(section_subject_id=student_subject).exists():
-                messages.error('Existing')
+                messages.error(request,'Existing')
                 return redirect(request.META.get('HTTP_REFERER'))
             else:
-                first_qtr = First_Qtr(section_subject_id = student_subject, grade=int_grade )
-                first_qtr.save()
-                messages.success('Added Grade')
-                return redirect(request.META.get('HTTP_REFERER'))
+                try:
+                    first_qtr = First_Qtr(section_subject_id = student_subject, grade=int_grade )
+                    first_qtr.save()
+                    messages.success(request, 'Added Grade')
+                    return redirect(request.META.get('HTTP_REFERER'))
+                except:
+                    messages.error(request,"Invalid")
+                    return redirect(request.META.get('HTTP_REFERER'))
 
         elif qtr == 2:
             if Second_Qtr.objects.filter(section_subject_id=student_subject).exists():
-                messages.error('Existing')
+                messages.error(request,'Existing')
                 return redirect(request.META.get('HTTP_REFERER'))
             else:
                 second_qtr = Second_Qtr(section_subject_id = student_subject, grade=int_grade )
                 second_qtr.save()
-                messages.success('Added Grade')
+                messages.success(request,'Added Grade')
                 return redirect(request.META.get('HTTP_REFERER'))
 
         elif qtr == 3:
             if Third_Qtr.objects.filter(section_subject_id=student_subject).exists():
-                messages.error('Existing')
+                messages.error(request,'Existing')
                 return redirect(request.META.get('HTTP_REFERER'))
             else:
                 third_qtr = Third_Qtr(section_subject_id = student_subject, grade=int_grade )
                 third_qtr.save()
-                messages.success('Added Grade')
+                messages.success(request,'Added Grade')
                 return redirect(request.META.get('HTTP_REFERER'))
 
         elif qtr == 4:
             if Fourth_Qtr.objects.filter(section_subject_id=student_subject).exists():
-                messages.error('Existing')
+                messages.error(request,'Existing')
                 return redirect(request.META.get('HTTP_REFERER'))
             else:
                 fourth_qtr = Fourth_Qtr(section_subject_id = student_subject, grade=int_grade )
                 fourth_qtr.save()
-                messages.success('Added Grade')
+                messages.success(request,'Added Grade')
                 return redirect(request.META.get('HTTP_REFERER'))
 
         else:
@@ -607,7 +672,7 @@ def save_edithomework(request):
             hws.date = hw_date
               
             hws.save()
-            messages.success(request,"Added Homework")
+            messages.success(request,"Updated Homework")
             return redirect(request.META.get('HTTP_REFERER'))
         else:
             messages.error(request,"Invalid")

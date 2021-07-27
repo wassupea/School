@@ -1,10 +1,17 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from gms_admin.models import*
 from django.shortcuts import redirect, render
 
 
 def student_home(request):
-    return render(request, 'main/student_dashboard.html')
+    current_user = request.user
+    admin_id = current_user.id
+    student = Students.objects.get(admin_id=admin_id)
+    student_section = CustomUser.objects.get(id=admin_id)
+    section = Section.objects.get(student_id = student_section)
+    print(section)
+    student_subjects = Section_subjects.objects.filter(student_id = admin_id).count()
+    return render(request, 'main/student_dashboard.html', {'student_subjects':student_subjects, 'student':student, 'section':section})
 
 
 def view_section(request):
@@ -94,7 +101,10 @@ def send_message(request):
     receiver = CustomUser.objects.get(id=receiver_id)
     body = request.POST.get('my_textarea')
     print(body)
-
-    message_send = Msg(sender=sender, receiver=receiver, body=body)
-    message_send.save()
-    return redirect(request.META.get('HTTP_REFERER'))
+    try:
+        message_send = Msg(sender=sender, receiver=receiver, body=body)
+        message_send.save()
+        return redirect('chat')
+    except:
+        messages.error(request, 'error')
+        return redirect('chat')

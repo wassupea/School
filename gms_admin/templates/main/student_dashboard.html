@@ -1,3 +1,56 @@
    {% load static %}
   <link rel="stylesheet" href= "{% static 'css/teacher_base.css' %}" type="text/css">
   {% include 'student/base.html'%}
+
+  
+
+ {% block main_content %}
+ 
+<div class="container">
+        <!-- Insert loop statement here -->
+
+                  <div class="card">
+        <div class="card-header">
+            <h1>Student Name</h1>
+          </div>
+          <div class="card-body">
+            <p>{{student.admin.last_name}}, {{student.admin.first_name}}</p>
+          </div>  
+          </div>
+        <div class="card">
+        <div class="card-header">
+            <h1>Total Subjects</h1>
+          </div>
+          <div class="card-body">
+            <p> {{student_subjects}}</p>
+          </div>  
+          </div>
+            <div class="card">
+        <div class="card-header">
+            <h1>Classes</h1>
+          </div>
+          <div class="card-body">
+            <p>{{section.class_id.gradelevel_id.gradeLevel_no}} - {{section.class_id.class_name}} </p>
+          </div>  
+          </div>
+ 
+        <div class="card">
+          <div class="card-header">
+            <h1>Class Advisor</h1>
+          </div>
+          <div class="card-body">
+            <p> {{section.class_id.teacher_id.last_name}}, {{section.class_id.teacher_id.first_name}}</p>
+        
+          </div>
+ 
+          
+        </div>
+      
+   
+        <!-- End loop -->
+      </div>
+    </div>
+  </div>
+ 
+ {% endblock main_content %}
+

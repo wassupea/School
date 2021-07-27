@@ -4,6 +4,7 @@
     <link rel="stylesheet" href= "{% static 'css/card.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   </head>
 {% block 'main-content'%}
@@ -29,7 +30,7 @@
                       <td>{{ subject.class_id.gradelevel_id_id }}</td>
                       <td>{{ subject.class_id.class_name }}</td>
                       <td>{{ subject.subject_name }}</td>
-                      <td><a href = "/view_grades/{{subject.id}} "> View </a></td>
+                      <td><a href = "/view_grades/{{subject.id}}" class="btn btn-info"> View </a></td>
         </tr>
         {% endfor %}
         </tr>

@@ -8,7 +8,7 @@ $(document).ready(function(){
   var review = document.getElementById('review');
   var select = document.getElementById('calculate_qtr');
   var activity = document.getElementById('select-id');
-  
+  $("#final_grade").prop('disabled', true);
   hwView.style.display ="None";
   quizView.style.display ="None";
   swView.style.display ="None";
@@ -246,7 +246,8 @@ $(document).ready(function(){
       $("#hw_calculate").click(function(e){
         e.preventDefault();
        
-        var table = document.getElementById('hw_table'), sumVal =0;
+        var table = document.getElementById('hw_table2'), sumVal =0;
+        console.log(table)
   
         for(var i =1; i < table.rows.length; i++) {
           sumVal = sumVal + parseInt(table.rows[i].cells[1].innerHTML);
@@ -257,6 +258,7 @@ $(document).ready(function(){
         document.getElementById('hw_ave_view').value = avg;
         
         document.getElementById('hw_ave').value = avg;
+        console.log(sumVal)
   
       });
   
@@ -387,6 +389,7 @@ $(document).ready(function(){
     subject_grade = written_grade + performance_grade + exam_grade
     console.log(subject_grade)
     $('#grade_view').first().append(subject_grade);
+    $("#final_grade").prop('disabled', false);
     document.getElementById('final_grade').value = subject_grade;
   }
   
