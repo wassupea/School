@@ -8,6 +8,7 @@ $(document).ready(function(){
   var review = document.getElementById('review');
   var select = document.getElementById('calculate_qtr');
   var activity = document.getElementById('select-id');
+  
   $("#final_grade").prop('disabled', true);
   hwView.style.display ="None";
   quizView.style.display ="None";
@@ -335,6 +336,11 @@ $(document).ready(function(){
     var qz_percent = $('#qz_percentage').val()
     var selectedVal = $('#written_qtr').val();
     var student = $('#student').val()
+    var hw_qtr = $('#calculate_qtr').val();
+    var qz_qtr = $('#quiz_qtr').val();
+    var sw_qtr = $('#sw_qtr').val();
+    var perf_qtr = $('#perf_qtr').val();
+    var exam_qtr = $('#exam_qtr').val();
   
    hw_percentage = hw_percent / 100;
    sw_percentage = sw_percent / 100;
@@ -342,21 +348,66 @@ $(document).ready(function(){
    
   
    total_percentage = parseInt(hw_percent)  +  parseInt(sw_percent)+ parseInt(qz_percent);
-   console.log(total_percentage);
+
+
+    var $foo = $(this);
+    if (!$foo.data('clicked')) {
+      if (hw_percent<0 || qz_percent < 0 || sw_percent <0){
+        alert('Invalid');}
+   
+       else {
+         if (total_percentage == 100) {
+           if (hw_qtr == qz_qtr == sw_qtr == perf_qtr == exam_qtr) {
+           hw_grade = hw_ave * hw_percentage;
+           sw_grade = sw_ave * sw_percentage;
+           qz_grade = qz_ave * qz_percentage;
+           written_grade = hw_grade + sw_grade + qz_grade
+           $('#written_ave_').first().append(written_grade);
+           document.getElementById('written_ave').value = written_grade;
+           }
+           else {
+             alert('Quarter must be the same');
+           }
+          }
+   
+           else if (total_percentage > 100 || total_percentage < 100) {
+             alert("total percentage must be 100")
+           }
+           
+       }
+   
+   
+   
+    } else {
+      $('#written_ave_').empty();
+      if (hw_percent<0 || qz_percent < 0 || sw_percent <0){
+        alert('Invalid');}
+   
+       else {
+        if (total_percentage == 100) {
+          if (hw_qtr == qz_qtr == sw_qtr == perf_qtr == exam_qtr) {
+          hw_grade = hw_ave * hw_percentage;
+          sw_grade = sw_ave * sw_percentage;
+          qz_grade = qz_ave * qz_percentage;
+          written_grade = hw_grade + sw_grade + qz_grade
+          $('#written_ave_').first().append(written_grade);
+          document.getElementById('written_ave').value = written_grade;
+          }
+          else {
+            alert('Quarter must be the same');
+          }
+         }
   
-  if (total_percentage == 100) {
-    hw_grade = hw_ave * hw_percentage;
-    sw_grade = sw_ave * sw_percentage;
-    qz_grade = qz_ave * qz_percentage;
-    written_grade = hw_grade + sw_grade + qz_grade
-    $('#written_ave_').first().append(written_grade);
-    document.getElementById('written_ave').value = written_grade;
-  }
-  
-  else if (total_percentage > 100 || total_percentage < 100) {
-    alert("total percentage must be 100")
-  }
-  
+          else if (total_percentage > 100 || total_percentage < 100) {
+            alert("total percentage must be 100")
+          }
+           
+       }   
+    }
+    $foo.data('clicked', true);
+
+ 
+ 
   
   });
   

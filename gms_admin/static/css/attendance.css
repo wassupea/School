@@ -27,7 +27,7 @@
   .grid-container {
     display: absolute;
     grid-gap: 4px;
-    /* background-color: #c4d3df; */
+  background-color: #d6d4d4;
     padding: 4px;
   }
 
@@ -45,7 +45,7 @@
   }
   
   .grid-container label {
-   font-family: Optima;
+   font-family: Verdana, Geneva, Tahoma, sans-serif;
    position: relative;
   }
 

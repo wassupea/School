@@ -5,6 +5,7 @@
     <link rel="stylesheet" href= "{% static 'css/attendance.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/base_style.css' %}" type="text/css">
     <link rel="stylesheet" href= "{% static 'css/table_style.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src = "{% static 'js/JQuery.js' %}"> </script>
 
   </head>
@@ -16,19 +17,19 @@
         {% for classes in classes %}
          <option value = "{{classes.id}}"> {{classes.class_name}}</option>
         {% endfor %}
-        </select>
+        </select> &nbsp;&nbsp;&nbsp;
       
-        <label for="session_year">School Year</label>
-       <select name="session_year" id="session_year">
+        <label for="session_year">School Year</label> 
+       <select name="session_year" id="session_year"> &nbsp;&nbsp;&nbsp;
         {% for session_year in session_year %}
          <option value = "{{session_year.id}}"> {{session_year.session_start_year}} to {{session_year.session_end_year}}</option>
         {% endfor %}
-        </select> 
+        </select>  &nbsp;&nbsp;&nbsp;
         
         <label for="attendance_date">Attendance Date</label>
         <input type='date' name='attendance_date' id='attendance_date'>
         <button type = 'button' id='fetch_student'> Fetch Student </button>  
-        <button type = 'button' id='clear'> Clear </button>  
+        &nbsp;&nbsp;&nbsp;
 </div>
     <div class="table-wrapper">
     <table class="fl-table">
@@ -53,23 +54,23 @@
         </tr> -->
         <tbody>
     </table>
- <button id='save_attendance' class='button' type='button'> Add Attendance </a>
+
     <div class = 'footer'>
 
  
     </div>
   
 </div>
-  
+  <center> <button id='save_attendance'class="btn btn-secondary" type='button'> Add Attendance </a>
  {% endblock 'main-content'%}
 
  {% block custom_js %}
  <script>
 $(document).ready(function(){
     $("#fetch_student").on('click',function(e){
+        $('table tbody' ).empty();
 
       e.preventDefault();
-       $("#fetch_student").attr("disabled", true);
       var classes = $('#classes').val()
 
       $.ajax({
@@ -80,7 +81,7 @@ $(document).ready(function(){
       })
 
       .done(function(response){
-        alert('fetched')
+       
         var json_data = JSON.parse(response);
 
         //var div = "<input type='date' name='attendance_date' id='attendance_date'>";
