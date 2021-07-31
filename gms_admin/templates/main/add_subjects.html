@@ -12,12 +12,6 @@
       <svg width="100%" height="100%">
          <path class="hidden" d="M0 0 H200 V200 H0 Z"></path>
       </svg>
-      <label for="gradelevel">Grade Level:</label>
-      <select name="gradelevel" id="gradelevel">
-         {% for gradelevel in GradeLevels %}
-         <option value = "{{gradelevel.id}}"> {{gradelevel.gradeLevel_no}} </option>
-         {% endfor %}
-      </select>
       <br>
       <br>
       <label for="subject" class="label2">Subject Name</label>

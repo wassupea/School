@@ -14,12 +14,12 @@
     <div class="container">
     <div class="wrapper2">
      
-      {% url 'save_admin' as action_execute%}
-      <form class="form-wrapper2" action= "{{action_execute}}" method="post">
+     
+      <form class="form-wrapper2" action= "{%url 'save_student2'%}" method="post">
       {% csrf_token %} 
         <fieldset class="section is-active" id='is-active'>
         <br> <br>
-          <h3>Teacher Details</h3>
+          <h3>Student Details</h3>
           <input type="text" name="fname" id="fname" placeholder="First Name">
           <input type="text" name="lname" id="lname" placeholder="Last Name">
           
@@ -27,7 +27,64 @@
           <br> <br>
           <input class="submit button" type="submit" id="Next" value='Next'>
         </fieldset>
-        <fieldset class="section is-next" id='is-next'>
+
+                <fieldset class="section is-next" id='is-next'>
+        <br> <br>
+          <h3>Student Details</h3>
+           <label > Gender </label>
+           <center>
+            <div class="select">
+            
+            <select name='gender'>
+                <option value='Male'>Male</option>
+                <option  value='Female'>Female</option>
+            </select> 
+            <span class="focus"></span>
+            </div>
+            <br>
+            <label > School Year </label>
+           <center>
+            <div class="select">
+
+            <select  name='school_year'>
+        {% for school_year in school_year %}
+         <option value = "{{school_year.id}}"> {{school_year.session_start_year}} - {{school_year.session_end_year}}</option>
+         {% endfor %}
+            </select> 
+            <span class="focus"></span>
+            </div>
+            <br>
+  <label > Grade Level </label>
+           <center>
+            <div class="select">
+
+            <select  name='gradelevel'>
+        {% for gradelevel in GradeLevels %}
+         <option value = "{{gradelevel.id}}"> {{gradelevel.gradeLevel_no}}</option>
+         {% endfor %}
+            </select> 
+            <span class="focus"></span>
+            </div>
+          <br>
+  <label > Class</label>
+           <center>
+            <div class="select">
+
+            <select  name='classes'>
+        {% for classes in classes %}
+         <option value = "{{classes.id}}"> {{classes.gradelevel_id.gradeLevel_no}} - {{classes.class_name}}</option>
+         {% endfor %}
+            </select> 
+            <span class="focus"></span>
+            </div>
+                <br>
+              <input class="submit button" type="submit" id="Next2" value='Next'>
+        </fieldset>
+     <fieldset class="section is-done" id='is-done'>
+        <br> <br>
+          <div class="button" id = 'reset'>Reset Form</div>
+        </fieldset>
+        <fieldset class="section is-next" id='is-next2'>
         <br> <br>
           <h3>Account Credentials</h3>
           <input type="email" name="email" id="email" placeholder="Email">
@@ -36,10 +93,7 @@
           <button id='generate' name='generate'> generate </button>
           <input class="submit button" type="submit" id="sign_up" value="Sign Up" onclick="return confirm('Do you really want to submit the form?');">
         </fieldset>
-     <fieldset class="section is-done" id='is-done'>
-        <br> <br>
-          <div class="button" id = 'reset'>Reset Form</div>
-        </fieldset>
+        
       </form>
 
     </div>
@@ -59,18 +113,28 @@
   <script>
   $(document).ready(function(){
     var isNext = document.getElementById('is-next');
+    var isNext2 = document.getElementById('is-next2');
     var isActive = document.getElementById('is-active');
     var isDone = document.getElementById('is-done');
     isNext.style.display = "none";
+    isNext2.style.display = "none";
     isDone.style.display = "none";
 
 
     $("#Next").click(function(e){
       isActive.style.display= "none";
-      isNext.style.display = "block"; 
+      isNext.style.display = "block";
+      isNext2.style.display = "none"; 
        e.preventDefault();
     });
 
+    
+    $("#Next2").click(function(e){
+      isActive.style.display= "none";
+      isNext.style.display = "none";
+      isNext2.style.display = "block"; 
+       e.preventDefault();
+    });
      $("#generate").click(function(e){
 
         var length = 8,

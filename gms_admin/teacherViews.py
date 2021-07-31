@@ -282,7 +282,7 @@ def send_message(request):
 
     message_send = Msg(sender=sender, receiver=receiver, body=body)
     message_send.save()
-    return redirect('chat')
+    return HttpResponseRedirect('chat')
 
 def add_homework(request):
     if request.method == 'POST':

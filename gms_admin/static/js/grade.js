@@ -385,6 +385,8 @@ $(document).ready(function(){
    
        else {
         if (total_percentage == 100) {
+
+
           if (hw_qtr == qz_qtr == sw_qtr == perf_qtr == exam_qtr) {
           hw_grade = hw_ave * hw_percentage;
           sw_grade = sw_ave * sw_percentage;
@@ -417,6 +419,8 @@ $(document).ready(function(){
     var written_percent = $('#written_percentage').val();
     var exam_ave = $('#exam_ave').val()
     var exam_percent = $('#exam_percentage').val();
+    var exam_qtr = $('#exam_qtr').val();
+    var perf_qtr = $('#perf_qtr').val();
     var performance_ave = $('#performance_ave').val()
     var performance_percent = $('#perf_percentage').val()
     var selectedVal = $('#all_qtr').val();
@@ -432,8 +436,11 @@ $(document).ready(function(){
   
    total_percentage = parseInt(written_percent)  +  parseInt(exam_percent)+ parseInt(performance_percent);
    console.log(total_percentage);
-  
-  if (total_percentage == 100) {
+  if (written_percent < 0 || exam_percent < 0 || performance_percent < 0 ) {
+    alert('Invalid percent grade'); }
+    else { 
+      if (total_percentage == 100) {
+        if (exam_qtr == perf_qtr) {
     written_grade = written_ave * written_percentage;
     exam_grade = exam_ave * exam_percentage;
     performance_grade = performance_ave * performance_percentage;
@@ -442,11 +449,19 @@ $(document).ready(function(){
     $('#grade_view').first().append(subject_grade);
     $("#final_grade").prop('disabled', false);
     document.getElementById('final_grade').value = subject_grade;
+        }
+        else {
+          alert('Quarter must be the same value');
+        }
   }
+  else {
+    alert('Invalid percent grade')
+  }
+}
+
+
   
-  else if (total_percentage > 100 || total_percentage < 100) {
-    alert("total percentage must be 100")
-  }
+
   
   
   });

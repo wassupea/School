@@ -17,18 +17,7 @@
 <div id="email_div" style="display: block;" >
     <label for="email">Email</label>
     <input type="text" name="email_otp" id="email_otp">
-    <button>Send OTP</button>
-</div>
-<div id="verify_text_div"></div>
-<div id="otp_div" style="display: none;" >
-
-    <label for="email">OTP</label>
-    <input type="text" name="otp" id="otp">
-    <button  onclick="verify_otp()">Verify</button>
-</div>
-</form>
-
-  </div>
+     <input class="underlineHover" type="submit" value="SEND OTP" id='myBtn'>
 </div>
 
    {% if messages %}
@@ -42,26 +31,6 @@
         {% endif %}
 </body>
 
-<script>
-     var otp_from_back="";
-     function showDiv() {
-         var verify = document.getElementById('verify_text_div')
-         verify.style.display = "block";
-     }
-    function verify_otp(){
-        var user_otp=document.getElementById("otp").value;
-        if (user_otp==otp_from_back){
-            document.getElementById("verify_text_div").style.color="green";            
-            document.getElementById("verify_text_div").innerHTML="OTP Verified";
-            document.getElementById("otp_div").style.display="none";
-            document.getElementById("form_div").style.display="block";
-        }
-        else{
-            document.getElementById("verify_text_div").style.color="red";
-            document.getElementById("verify_text_div").innerHTML="Try Again!!";
-        }
-    } 
- </script>
 
 </html>
 

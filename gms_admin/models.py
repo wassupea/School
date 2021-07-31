@@ -58,6 +58,9 @@ class Teacher(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
+    def __str__(self):
+        return self.lname + ', '+ self.fname
+
 class Classes(models.Model):
     id = models.AutoField(primary_key=True)
     gradelevel_id = models.ForeignKey(GradeLevel, on_delete=models.CASCADE)
@@ -82,7 +85,6 @@ class Section(models.Model):
 class Subjects(models.Model):
     id = models.AutoField(primary_key=True)
     subject_name = models.CharField(max_length=50)
-    gradelevel_id = models.ForeignKey(GradeLevel, on_delete=models.CASCADE, default=1)
     #section_id = models.ForeignKey(Section,blank=True, on_delete=models.CASCADE)
     class_id =  models.ForeignKey(Classes, on_delete=models.CASCADE)
     teacher_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

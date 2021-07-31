@@ -95,22 +95,28 @@ def verify_otp(request):
 def send_otp(request):
     if request.method == 'POST':
         email = request.POST.get('email_otp')
-        digits = "0123456789"
-        OTP2 = ""
-        for i in range(4) :
-            OTP2 += digits[math.floor(random.random() * 10)]
-        o=OTP2
-        otp = OTP(otp=o)
-        otp.save()
-        print(o)
-        send_mail(
-                    'Access Code ',
-                    'Code: ' + o,
-                    'hwngryjn@gmail.com',
-                    [email],
-                    fail_silently=False,
-        )
-        return HttpResponseRedirect("/login")
+
+        if CustomUser.objects.filter(email = email).exists():
+            digits = "0123456789"
+            OTP2 = ""
+            for i in range(4) :
+                OTP2 += digits[math.floor(random.random() * 10)]
+            o=OTP2
+            otp = OTP(otp=o)
+            otp.save()
+            print(o)
+            send_mail(
+                        'Access Code ',
+                        'Code: ' + o,
+                        'hwngryjn@gmail.com',
+                        [email],
+                        fail_silently=False,
+            )
+            return HttpResponseRedirect("/login")
+        else:
+            messages.error(request, 'Email not existing')
+            return HttpResponseRedirect("/")
+
 
 def confirm_otp(request):
     if request.method == 'POST':

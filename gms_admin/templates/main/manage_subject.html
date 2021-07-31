@@ -7,33 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   </head>
-  <style>
-  .button {
-  padding: 10px 20px;
-  font-size: 15px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: black;
-  background-color: #04AA6D;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-  font-family:sans-serif;
-  position: absolute;
-  bottom: 8px;
-  right: 16px;
 
-}
-
-.button:hover {background-color: #3e8e41}
-
-.button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-  </style>
 {% block 'main-content'%}
 
 {% if messages %}
@@ -74,6 +48,7 @@
       <th scope="col">Subject Name</th>
       <th scope="col">Section</th>
       <th scope="col">Teacher</th>
+      <th scope="col">Status</th>
       <th scope="col">Action </th>
       <th scope="col">Delete </th>
     </tr>
@@ -82,10 +57,11 @@
 
       {% for subject in subjects%}
         <tr>
-          <td> {{subject.gradelevel_id.gradeLevel_no}} </td>
+          <td> {{subject.class_id.gradelevel_id.gradeLevel_no}} </td>
           <td> {{subject.subject_name}} </td>
           <td> {{subject.class_id.class_name}} </td>
           <td> {{subject.teacher_id.last_name}}, {{subject.teacher_id.first_name}} </td>
+           <td> {{subject.status}} </td>
           <td> <a href = "/edit_subject/{{subject.id}} " class="btn btn-info"> Edit </a></td>
           <td> <a href = "/delete_subject/{{subject.id}} " class="btn btn-danger"> Delete </a></td>
         </tr>
@@ -94,5 +70,5 @@
         <tbody>
     </table>
 </div>
-<a href= "add_subjects" class="button"> Add a Subject </a>
+<a href= "add_subjects"  class="btn btn-outline-primary"> Add a Subject </a>
  {% endblock 'main-content'%}

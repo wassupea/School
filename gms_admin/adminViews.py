@@ -78,33 +78,39 @@ def save_teacher(request):
             messages.error(request,"Invalid Name Format")
             return HttpResponseRedirect(reverse('add_teacher'))
             
-
+        if not last_name.isalpha():
+            messages.error(request, 'Name cannot contain other characters')
+            return HttpResponseRedirect(reverse("manage_teacher"))
             
         else:
-            try:
-                user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=2)
-                user.teacher.address = address
-                user.teacher.fname=first_name
-                user.teacher.lname = last_name
-                user.teacher.status = 1
-                user.save()        
-                messages.success(request,"Added Teacher")
+            if first_name.isalpha():
+                try:
+                    user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=2)
+                    user.teacher.address = address
+                    user.teacher.fname=first_name
+                    user.teacher.lname = last_name
+                    user.teacher.status = 1
+                    user.save()        
+                    messages.success(request,"Added Teacher")
 
-                    #send an email
-                send_mail(
-                        'Account Credentials for ' + last_name + ', ' +first_name,
-                        'email: ' + email + ' password: ' + password,
-                        'hwngryjn@gmail.com',
-                        [email],
-                        fail_silently=False,
-                    )
+                        #send an email
+                    send_mail(
+                            'Account Credentials for ' + last_name + ', ' +first_name,
+                            'email: ' + email + ' password: ' + password,
+                            'hwngryjn@gmail.com',
+                            [email],
+                            fail_silently=False,
+                        )
 
 
 
-                return HttpResponseRedirect(reverse("manage_teacher"))
-            except:
-                messages.error(request, 'Failed')
-                return HttpResponseRedirect(reverse("manage_teacher"))
+                    return HttpResponseRedirect(reverse("manage_teacher"))
+                except:
+                    messages.error(request, 'Failed')
+                    return HttpResponseRedirect(reverse("manage_teacher"))
+            else:
+                messages.error(request, 'Name cannot contain other characters')
+                return HttpResponseRedirect(reverse("manage_teacher")) 
            
 def add_gradelevel(request):
     gradelevels = GradeLevel.objects.all()
@@ -136,10 +142,92 @@ def save_gradelevel(request):
 
 def add_student(request):
     GradeLevels = GradeLevel.objects.all()
+    school_year = SessionYearModel.objects.all()
+    classes = Classes.objects.all()
     #students = Students.objects.all()
     #sections = Sections.objects.all()
     form = AddStudentForm()
-    return render(request, 'main/addstudent.html',{'GradeLevels':GradeLevels,'form':form})
+    return render(request, 'main/addstudent_template.html',{'GradeLevels':GradeLevels,'school_year':school_year,'classes':classes,'form':form})
+
+def save_student2(request):
+    if request.method!="POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        first_name=request.POST.get("fname")
+        last_name=request.POST.get("lname")
+        gender = request.POST.get("gender")
+        gradelevel = request.POST.get("gradelevel")
+        school_year = request.POST.get("school_year")
+        classes = request.POST.get("classes")
+        username=request.POST.get("username")
+        email=request.POST.get("email")
+        password=request.POST.get("password")
+        address=request.POST.get("address")
+        SpecialSym=['$','@','#']
+
+        gradelevel_id = GradeLevel.objects.get(id=gradelevel)
+        class_id = Classes.objects.get(id=classes)
+        session_year_id = SessionYearModel.objects.get(id=school_year)
+
+ 
+
+        if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists():
+            messages.error(request,"Failed to Add Student")
+            return HttpResponseRedirect(reverse('add_teacher'))
+
+        if CustomUser.objects.filter(email = email).exists() and CustomUser.objects.filter(username = username).exists():
+            messages.error(request,"Failed to Add Student")
+            return HttpResponseRedirect(reverse('add_student'))
+
+        if (len(password) < 8 ):
+            messages.error(request,"Password too short")
+            return HttpResponseRedirect(reverse('add_student'))
+            
+        if not any(char in SpecialSym for char in password):
+            messages.error(request,"Please provide special characters on your password")
+            return HttpResponseRedirect(reverse('add_student'))
+
+        if first_name[0].islower() or last_name[0].islower():
+            messages.error(request,"Invalid Name Format")
+            return HttpResponseRedirect(reverse('add_student'))
+            
+        if not last_name.isalpha():
+            messages.error(request, 'Name cannot contain other characters')
+            return HttpResponseRedirect(reverse("manage_teacher"))
+            
+        else:
+            if first_name.isalpha():
+                try:
+                    user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
+                    user.students.address = address
+                    user.students.fname=first_name
+                    user.students.lname = last_name
+                    user.students.gradelevel_id = gradelevel_id
+                    user.students.gender = gender
+                    user.students.class_id = class_id
+                    user.students.session_year_id = session_year_id
+                    user.students.status = 1
+                    user.save()        
+                    messages.success(request,"Added Student")
+
+                        #send an email
+                    send_mail(
+                            'Account Credentials for ' + last_name + ', ' +first_name,
+                            'email: ' + email + ' password: ' + password,
+                            'hwngryjn@gmail.com',
+                            [email],
+                            fail_silently=False,
+                        )
+
+
+
+                    return HttpResponseRedirect(reverse("manage_student"))
+                except:
+                    messages.error(request, 'Failed')
+                    return HttpResponseRedirect(reverse("manage_student"))
+            else:
+                messages.error(request, 'Name cannot contain other characters')
+                return HttpResponseRedirect(reverse("manage_student")) 
 
 def save_student(request):
     if request.method!="POST":
@@ -178,6 +266,14 @@ def save_student(request):
 
             if first_name[0].islower() or last_name[0].islower():
                 messages.error(request,"Invalid Name Format")
+                return HttpResponseRedirect("/add_student")
+
+            if not last_name.isalpha():
+                messages.error(request, 'Name cannot contain other characters')
+                return HttpResponseRedirect("/add_student")
+
+            if not first_name.isalpha():
+                messages.error(request, 'Name cannot contain other characters')
                 return HttpResponseRedirect("/add_student")
                 
             else:
@@ -246,11 +342,10 @@ def manage_subject(request):
     return render(request, 'main/manage_subject.html',{"GradeLevels":GradeLevels, "teachers":teachers,'subjects':subjects, 'myFilter':myFilter})
 
 def add_subjects(request):
-    GradeLevels = GradeLevel.objects.all()
     classes = Classes.objects.all()
     sections = Section.objects.all()
     teacher = Teacher.objects.all()   
-    return render(request, 'main/add_subjects.html', {"GradeLevels":GradeLevels, "classes":classes, 'teacher':teacher, 'sections':sections})
+    return render(request, 'main/add_subjects.html', {"classes":classes, 'teacher':teacher, 'sections':sections})
 
 def save_subjects(request):
     if request.method!="POST":
@@ -258,8 +353,6 @@ def save_subjects(request):
     
     else:
         subject=request.POST.get("subject")
-        gradelevel_id=request.POST.get("gradelevel")
-        gradelevel=GradeLevel.objects.get(id=gradelevel_id)
         classes_id = request.POST.get("class_id")
         class_id=Classes.objects.get(id=classes_id)
         #sections_id = request.POST.get("section_id")
@@ -275,7 +368,7 @@ def save_subjects(request):
         else:
             
             try:
-                subject__in=Subjects(subject_name=subject,gradelevel_id=gradelevel, class_id=class_id,teacher_id=teacher_id, status=1)
+                subject__in=Subjects(subject_name=subject, class_id=class_id,teacher_id=teacher_id, status=1)
                 subject__in.save()
                 messages.success(request,"Added Subject")
                 return HttpResponseRedirect(reverse("manage_subject"))
@@ -530,9 +623,10 @@ def save_editsubject(request):
 
 def edit_class(request, class_id):
     classes = Classes.objects.get(id=class_id)
-    gradelevels = GradeLevel.objects.all()
+    gradelevels = classes.gradelevel_id
+    gradelevel = GradeLevel.objects.get(id=gradelevels)
     teachers = CustomUser.objects.filter(user_type=2)
-    return render (request, 'main/edit_class.html/',{"classes":classes, "gradelevels": gradelevels, "teachers":teachers}) 
+    return render (request, 'main/edit_class.html/',{"classes":classes, "gradelevel": gradelevel, "teachers":teachers}) 
 
 def save_editclass(request):
     if request.method!="POST":
@@ -693,3 +787,71 @@ def get_section(request):
         print(list_data)
 
     return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
+
+
+def add_admin(request):
+    return render (request, 'main/addparents.html')
+
+def save_admin(request):
+    if request.method!="POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        first_name=request.POST.get("fname")
+        last_name=request.POST.get("lname")
+        #gender = request.POST.get("gender")
+        username=request.POST.get("username")
+        email=request.POST.get("email")
+        password=request.POST.get("password")
+        SpecialSym=['$','@','#']
+
+ 
+
+        if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists():
+            messages.error(request,"Failed to Add Teacher")
+            return HttpResponseRedirect(reverse('add_teacher'))
+
+        if CustomUser.objects.filter(email = email).exists() and CustomUser.objects.filter(username = username).exists():
+            messages.error(request,"Failed to Add Teacher")
+            return HttpResponseRedirect(reverse('add_teacher'))
+
+        if (len(password) < 8 ):
+            messages.error(request,"Password too short")
+            return HttpResponseRedirect(reverse('add_teacher'))
+            
+        if not any(char in SpecialSym for char in password):
+            messages.error(request,"Please provide special characters on your password")
+            return HttpResponseRedirect(reverse('add_teacher'))
+
+        if first_name[0].islower() or last_name[0].islower():
+            messages.error(request,"Invalid Name Format")
+            return HttpResponseRedirect(reverse('add_teacher'))
+            
+        if not last_name.isalpha():
+            messages.error(request, 'Name cannot contain other characters')
+            return HttpResponseRedirect(reverse("manage_teacher"))
+            
+        else:
+            if first_name.isalpha():
+                try:
+                    user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=1)
+                    user.save()        
+                    messages.success(request,"Added Teacher")
+
+                        #send an email
+                    send_mail(
+                            'Account Credentials for ' + last_name + ', ' +first_name,
+                            'email: ' + email + ' password: ' + password,
+                            'hwngryjn@gmail.com',
+                            [email],
+                            fail_silently=False,
+                        )
+
+
+
+                    return HttpResponseRedirect(reverse("manage_teacher"))
+                except:
+                    messages.error(request, 'Failed')
+                    return HttpResponseRedirect(reverse("manage_teacher"))
+            else:
+                messages.error(request, 'Name cannot contain other characters')
+                return HttpResponseRedirect(reverse("manage_teacher")) 

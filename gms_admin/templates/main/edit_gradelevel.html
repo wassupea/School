@@ -17,16 +17,7 @@
         <input type ="hidden" name="gradelevel_id" value={{gradelevel.id}}>
      <label for="grade_level"><b>Grade Level</b></label>
        <select name="grade_level" id="grade_level">
-         <option value='1'> 1 </option>
-          <option value='2'> 2 </option>
-           <option value='3'> 3 </option>
-            <option value='4'> 4 </option>
-             <option value='5'> 5 </option>
-              <option value='6'> 6 </option>
-               <option value='7'> 7 </option>
-                <option value='8'> 8 </option>
-                 <option value='9'> 9 </option>
-                  <option value='10'> 10 </option>
+        <option value = "{{gradelevel.id}}" {%if gradelevel.id == classes.gradelevel_id.id %} selected {% endif %}> {{ gradelevel.gradeLevel_no}} </option>
 
       </select>  
      <br> <br>
@@ -37,7 +28,7 @@
           <option value = "0"> Inactive </option>
       </select>
       <br>
-    <button type="submit" onclick="return confirm('Do you really want to submit the form?');">Send!</button>
+    <button type="submit" onclick="return confirm('Do you really want to submit the form?');">Edit</button>
   </form>
 </div>
 

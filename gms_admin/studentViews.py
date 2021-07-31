@@ -1,4 +1,6 @@
 from django.contrib import admin, messages
+from django.http.response import HttpResponseRedirect
+from django.urls.base import reverse
 from gms_admin.models import*
 from django.shortcuts import redirect, render
 
@@ -104,7 +106,7 @@ def send_message(request):
     try:
         message_send = Msg(sender=sender, receiver=receiver, body=body)
         message_send.save()
-        return redirect('chat')
+        return HttpResponseRedirect(reverse('student_chat'))
     except:
         messages.error(request, 'error')
-        return redirect('chat')
+        return HttpResponseRedirect('chat')
