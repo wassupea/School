@@ -143,7 +143,7 @@ def save_gradelevel(request):
 def add_student(request):
     GradeLevels = GradeLevel.objects.all()
     school_year = SessionYearModel.objects.all()
-    classes = Classes.objects.all()
+    classes = Classes.objects.filter(status=1)
     #students = Students.objects.all()
     #sections = Sections.objects.all()
     form = AddStudentForm()
@@ -342,9 +342,9 @@ def manage_subject(request):
     return render(request, 'main/manage_subject.html',{"GradeLevels":GradeLevels, "teachers":teachers,'subjects':subjects, 'myFilter':myFilter})
 
 def add_subjects(request):
-    classes = Classes.objects.all()
+    classes = Classes.objects.filter(status=1) 
     sections = Section.objects.all()
-    teacher = Teacher.objects.all()   
+    teacher = Teacher.objects.filter(status=1)   
     return render(request, 'main/add_subjects.html', {"classes":classes, 'teacher':teacher, 'sections':sections})
 
 def save_subjects(request):
@@ -410,7 +410,7 @@ def save_section(request):
             
 
 def add_class(request):
-    GradeLevels = GradeLevel.objects.all()
+    GradeLevels = GradeLevel.objects.filter(status=1)
     teachers = CustomUser.objects.filter(user_type=2)
     return render(request, 'main/addclass.html', {"GradeLevels":GradeLevels,  "teachers":teachers})
 
@@ -443,7 +443,7 @@ def add_sectionsubjects(request, student_id):
     class_id = Students.objects.filter(admin_id=student_id).values_list('class_id')
     #classes = class_id.class_id
     print(class_id)
-    subjects = Subjects.objects.filter(class_id__in=class_id)
+    subjects = Subjects.objects.filter(class_id__in=class_id).filter(status=1)
     return render(request, 'main/add_class_subjects.html', {"student":student,"subjects":subjects})
 
 
@@ -601,7 +601,6 @@ def save_editsubject(request):
         subject_id=request.POST.get("subject_id")
         subject_name=request.POST.get("subject_name")
         teacher_id=request.POST.get("teacher")
-        gradelevel_id=request.POST.get("grade_level")
         status = request.POST.get("status")
         try:
 
@@ -609,8 +608,6 @@ def save_editsubject(request):
             subject.subject_name=subject_name
             teacher=CustomUser.objects.get(id=teacher_id)
             subject.teacher_id=teacher
-            gradelevel=GradeLevel.objects.get(id=gradelevel_id)
-            subject.gradelevel_id=gradelevel
             subject.status = status
             subject.save()
             messages.success(request,"Successfully Edited Subject")
@@ -770,7 +767,7 @@ def save_sessionyear(request):
 
 def sections(request):
     sections = Section.objects.all()
-    classes = Classes.objects.all()
+    classes = Classes.objects.filter(status=1)
     session_year = SessionYearModel.objects.all()
     return render (request, 'main/section.html', {'sections':sections, 'classes':classes,'session_year':session_year})
 

@@ -106,7 +106,6 @@ $(document).ready(function(){
           data: {selectedVal:selectedVal, student:student},
         })
           .done(function(response){
-            alert('fetched')
             var json_data = JSON.parse(response);
         
     
@@ -138,7 +137,6 @@ $(document).ready(function(){
           data: {selectedVal:selectedVal, student:student},
         })
           .done(function(response){
-            alert('fetched')
             var json_data = JSON.parse(response);
     
           var tr;
@@ -168,7 +166,6 @@ $(document).ready(function(){
           data: {selectedVal:selectedVal, student:student},
         })
           .done(function(response){
-            alert('fetched');
             var json_data = JSON.parse(response);
           var tr;
           for (i in json_data) {
@@ -227,7 +224,6 @@ $(document).ready(function(){
           data: {selectedVal:selectedVal, student:student},
         })
           .done(function(response){
-            alert('fetched');
             var json_data = JSON.parse(response);
           var tr;
           for (i in json_data) {
@@ -349,32 +345,34 @@ $(document).ready(function(){
   
    total_percentage = parseInt(hw_percent)  +  parseInt(sw_percent)+ parseInt(qz_percent);
 
-
     var $foo = $(this);
     if (!$foo.data('clicked')) {
       if (hw_percent<0 || qz_percent < 0 || sw_percent <0){
         alert('Invalid');}
+
+      if ((hw_qtr == qz_qtr) && (qz_qtr ==sw_qtr)) {
+        if (total_percentage == 100) {
+          hw_grade = hw_ave * hw_percentage;
+          sw_grade = sw_ave * sw_percentage;
+          qz_grade = qz_ave * qz_percentage;
+          written_grade = hw_grade + sw_grade + qz_grade
+          $('#written_ave_').first().append(written_grade);
+          document.getElementById('written_ave').value = written_grade;
+        }
+      }
    
-       else {
-         if (total_percentage == 100) {
-           if (hw_qtr == qz_qtr == sw_qtr == perf_qtr == exam_qtr) {
-           hw_grade = hw_ave * hw_percentage;
-           sw_grade = sw_ave * sw_percentage;
-           qz_grade = qz_ave * qz_percentage;
-           written_grade = hw_grade + sw_grade + qz_grade
-           $('#written_ave_').first().append(written_grade);
-           document.getElementById('written_ave').value = written_grade;
-           }
-           else {
+  
+  
+           else if ((hw_qtr !=qz_qtr) && (qz_qtr !=sw_qtr)) {
              alert('Quarter must be the same');
            }
-          }
+          
    
            else if (total_percentage > 100 || total_percentage < 100) {
              alert("total percentage must be 100")
            }
            
-       }
+       
    
    
    
@@ -387,7 +385,7 @@ $(document).ready(function(){
         if (total_percentage == 100) {
 
 
-          if (hw_qtr == qz_qtr == sw_qtr == perf_qtr == exam_qtr) {
+          if ((hw_qtr == qz_qtr) && (qz_qtr ==sw_qtr)) {
           hw_grade = hw_ave * hw_percentage;
           sw_grade = sw_ave * sw_percentage;
           qz_grade = qz_ave * qz_percentage;
@@ -425,7 +423,7 @@ $(document).ready(function(){
     var performance_percent = $('#perf_percentage').val()
     var selectedVal = $('#all_qtr').val();
     var student = $('#student').val()
-    console.log(written_ave,written_percent,exam_ave,exam_percent, performance_ave,performance_percent);
+    var final_qtr = $('#final_qtr').val()
     
   var written_ave_pp = parseInt(written_ave)
   var exam_ave = parseInt(exam_ave)
@@ -435,7 +433,8 @@ $(document).ready(function(){
    performance_percentage = performance_percent / 100;
   
    total_percentage = parseInt(written_percent)  +  parseInt(exam_percent)+ parseInt(performance_percent);
-   console.log(total_percentage);
+   document.getElementById('final_qtr').value = perf_qtr;
+   console.log(perf_qtr)
   if (written_percent < 0 || exam_percent < 0 || performance_percent < 0 ) {
     alert('Invalid percent grade'); }
     else { 

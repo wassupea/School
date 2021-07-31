@@ -571,7 +571,7 @@ def save_grade(request):
         grade = request.POST.get('final_grade')
         float_grade = float(grade)
         int_grade = int(float_grade)
-        print(int_grade)
+        print(qtr)
         qtr = int(qtr)
 
         if qtr == 1:
@@ -657,7 +657,10 @@ def save_edithomework(request):
         raw = int(hw_raw)
         item =int(hw_item)
         qtr = int(hw_qtr)
-
+                
+        if raw < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
         if item>=raw:
             score = (raw/item) * 100
             print(hws)
@@ -696,6 +699,10 @@ def save_editquiz(request):
         item =int(qz_item)
         qtr = int(qz_qtr)
 
+        if raw < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+
         if item>=raw:
             score = (raw/item) * 100
             print(qzs)
@@ -732,6 +739,10 @@ def save_editseatwork(request):
         raw = int(sw_raw)
         item =int(sw_item)
         qtr = int(sw_qtr)
+
+        if raw < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
 
         if item>=raw:
             score = (raw/item) * 100
@@ -770,6 +781,10 @@ def save_editexam(request):
         item =int(exam_item)
         qtr = int(exam_qtr)
 
+        if raw < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+
         if item>=raw:
             score = (raw/item) * 100
             print(sws)
@@ -807,6 +822,10 @@ def save_editperformance(request):
         item =int(exam_item)
         qtr = int(exam_qtr)
 
+        if raw < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+
         if item>=raw:
             score = (raw/item) * 100
             print(sws)
@@ -830,6 +849,9 @@ def save_editperformance(request):
 def view_grades(request, subject_id):
     section = Section_subjects.objects.filter(subject_id__in = subject_id)
     first = First_Qtr.objects.filter(section_subject_id__in = section)
-    return render(request, 'teacher/view_grade.html', {'first':first})
+    second = Second_Qtr.objects.filter(section_subject_id__in = section)
+    third = Third_Qtr.objects.filter(section_subject_id__in = section)
+    fourth = Fourth_Qtr.objects.filter(section_subject_id__in = section)
+    return render(request, 'teacher/view_grade.html', {'first':first,'second':second,'third':third,'fourth':fourth})
 
 

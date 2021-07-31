@@ -32,4 +32,76 @@
         <tbody>
     </table>
 </div>
+
+  <div class="table-wrapper">
+    <br> <center>
+<caption> Second Qtr Grades for {{second.section_subject_id.subject_id.subject_name}} </caption>
+<br>
+    <table class="fl-table">
+        <thead>
+        <tr>
+         <th scope="col">Student Name</th>
+         <th scope="col">Grade</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          {%for second in second %}
+        <tr>
+                      <td>{{ second.section_subject_id.student_id.last_name }}</td>
+                      <td>{{ second.grade }}</td>
+        </tr>
+        {% endfor %}
+        </tr>
+        <tbody>
+    </table>
+</div>
+
+  <div class="table-wrapper">
+    <br> <center>
+<caption> Third Qtr Grades for {{third.section_subject_id.subject_id.subject_name}} </caption>
+<br>
+    <table class="fl-table">
+        <thead>
+        <tr>
+         <th scope="col">Student Name</th>
+         <th scope="col">Grade</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          {%for third in third %}
+        <tr>
+                      <td>{{ third.section_subject_id.student_id.last_name }}</td>
+                      <td>{{ third.grade }}</td>
+        </tr>
+        {% endfor %}
+        </tr>
+        <tbody>
+    </table>
+</div>
+
+  <div class="table-wrapper">
+    <br> <center>
+<caption> Fourth Qtr Grades for {{fourth.section_subject_id.subject_id.subject_name}} </caption>
+<br>
+    <table class="fl-table">
+        <thead>
+        <tr>
+         <th scope="col">Student Name</th>
+         <th scope="col">Grade</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          {%for fourth in fourth %}
+        <tr>
+                      <td>{{ fourth.section_subject_id.student_id.last_name }}</td>
+                      <td>{{ fourth.grade }}</td>
+        </tr>
+        {% endfor %}
+        </tr>
+        <tbody>
+    </table>
+</div>
  {% endblock 'main-content'%}
