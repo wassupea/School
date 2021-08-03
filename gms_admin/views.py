@@ -96,7 +96,15 @@ def send_otp(request):
     if request.method == 'POST':
         email = request.POST.get('email_otp')
 
-        if CustomUser.objects.filter(email = email).exists():
+        user = CustomUser.objects.get(email=email)
+        
+
+        if not user.is_active:
+            messages.error(request, 'Inactive user')
+            return HttpResponseRedirect("/")
+
+
+        if CustomUser.objects.filter(email = email).filter(is_active=1).exists():
             digits = "0123456789"
             OTP2 = ""
             for i in range(4) :

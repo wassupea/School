@@ -73,6 +73,7 @@
           <th scope="col">Last Login</th>
           <th scope="col">Status</th>
           <th scope="col">Action</th>
+           <th scope="col">Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -87,6 +88,7 @@
                       <td>{{ teacher.admin.last_login }}</td>
                       <td>Active</td>
                       <td> <a class="btn btn-info" href = "/edit_teacher/{{teacher.admin.id}} "> Edit </a></td>
+                      <td> <a class="btn btn-danger" href = "/delete_teacher/{{teacher.admin.id}} "> Delete </a></td>
         </tr>
           {%endif%}
 
@@ -99,6 +101,7 @@
                       <td>{{ teacher.admin.last_login }}</td>
                       <td>Inactive</td>
                       <td> <a class="btn btn-info" href = "/edit_teacher/{{teacher.admin.id}} "> Edit </a></td>
+                      <td> <a class="btn btn-danger" href = "/delete_teacher/{{teacher.admin.id}} "> Delete </a></td>
         </tr>
           {%endif%}
           

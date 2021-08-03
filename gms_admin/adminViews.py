@@ -11,10 +11,10 @@ from django.core.mail import send_mail
 from .filters import *
 
 def admin_home(request):
-    teacher = Teacher.objects.count()
-    student = Students.objects.count()
-    classes = Classes.objects.count()
-    subjects = Subjects.objects.count()
+    teacher = Teacher.objects.filter(status=1).count()
+    student = Students.objects.filter(status=1).count()
+    classes = Classes.objects.filter(status=1).count()
+    subjects = Subjects.objects.filter(status=1).count()
     return render(request, 'main/admin_dashboard.html', {'teacher':teacher, 'student':student, 'classes':classes, 'subjects':subjects})
     #return render (request,"main/sidebar")
 
@@ -58,7 +58,7 @@ def save_teacher(request):
 
  
 
-        if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists():
+        if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists() or CustomUser.objects.filter(email=email).exists():
             messages.error(request,"Failed to Add Teacher")
             return HttpResponseRedirect(reverse('add_teacher'))
 
@@ -163,7 +163,7 @@ def save_student2(request):
         email=request.POST.get("email")
         password=request.POST.get("password")
         address=request.POST.get("address")
-        SpecialSym=['$','@','#']
+        SpecialSym=['$','@','#','!']
 
         gradelevel_id = GradeLevel.objects.get(id=gradelevel)
         class_id = Classes.objects.get(id=classes)
@@ -171,7 +171,7 @@ def save_student2(request):
 
  
 
-        if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists():
+        if CustomUser.objects.filter(last_name = last_name).filter(first_name = first_name).exists()  or CustomUser.objects.filter(email=email).exists():
             messages.error(request,"Failed to Add Student")
             return HttpResponseRedirect(reverse('add_teacher'))
 
@@ -503,10 +503,10 @@ def save_editteacher(request):
             user.last_name=last_name
             user.email=email
             user.username=username
+            user.is_active = status
             user.save()
 
             teacher_model=Teacher.objects.get(admin=teacher_id)
-            print(teacher_id)
             teacher_model.address=address
             teacher_model.status=status
             teacher_model.save()
@@ -523,68 +523,52 @@ def save_editteacher(request):
 def edit_student(request, student_id):
     request.session['student_id']=student_id
     student = Students.objects.get(admin=student_id)
-    form = EditStudentForm()
-    form.fields['email'].initial=student.admin.email
-    form.fields['fname'].initial=student.admin.first_name
-    form.fields['lname'].initial=student.admin.last_name
-    form.fields['username'].initial=student.admin.username
-    form.fields['address'].initial=student.address
-    form.fields['grade_level'].initial=student.gradelevel_id.id
-    form.fields['gender'].initial=student.gender
-    form.fields['session_year_id'].initial=student.session_year_id.id
-    return render(request, "main/editstudent.html/", {"form":form, "id":student_id, "username":student.admin.username})
+    gradelevel = GradeLevel.objects.all()
+    classes =Classes.objects.filter(status=1)
+    school_year = SessionYearModel.objects.all()
+    return render(request, "main/editstudent_template.html/", {'student':student,'gradelevel':gradelevel,'classes':classes,'school_year':school_year})
 
-
-def save_editstudent(request):
+def save_editstudent2(request):
 
     if request.method!="POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
     else:
-        student_id=request.session.get("student_id")
-        if student_id==None:
-            return HttpResponseRedirect("/manage_student")
-        form = EditStudentForm(request.POST)
-        if form.is_valid():
-            gradelevel_id = form.cleaned_data["grade_level"]
-            first_name=form.cleaned_data["fname"]
-            last_name=form.cleaned_data["lname"]
-            gender = form.cleaned_data["gender"]
-            username=form.cleaned_data["username"]
-            email=form.cleaned_data["email"]
-            address=form.cleaned_data["address"]
-            session_year_id=form.cleaned_data["session_year_id"]
+        student_id=request.POST.get("student_id")
+        first_name=request.POST.get("first_name")
+        last_name=request.POST.get("last_name")
+        email=request.POST.get("email")
+        username=request.POST.get("username")
+        address=request.POST.get("address")
+        status = request.POST.get("status")
+        class_id = request.POST.get("classes")
+        gradelevel_id = request.POST.get("gradelevel")
+        school_year_id = request.POST.get("school_year")
+        classes = Classes.objects.get(id=class_id)
+        gradelevel = GradeLevel.objects.get(id=gradelevel_id)
+        school_year =SessionYearModel.objects.get(id=school_year_id)
+        try:
+            user=CustomUser.objects.get(id=student_id)
+            user.first_name=first_name
+            user.last_name=last_name
+            user.email=email
+            user.username=username
+            user.save()
 
+            student_model=Students.objects.get(admin_id=student_id)
+            student_model.address=address
+            student_model.status=status
+            student_model.class_id=classes
+            student_model.gradelevel_id=gradelevel
+            student_model.session_year_id=school_year
+            student_model.save()
 
-            try:
-                user=CustomUser.objects.get(id=student_id)
-                user.first_name=first_name
-                user.last_name=last_name
-                user.email=email
-                user.username=username
-                user.save()
-
-                student_model=Students.objects.get(admin=student_id)
-                student_model.address=address
-                session_year = SessionYearModel.objects.get(id=session_year_id)
-                student_model.session_year_id = session_year
-                student_model.gender=gender
-
-                gradelevel = GradeLevel.objects.get(id=gradelevel_id)
-                student_model.gradelevel_id = gradelevel
-
-                student_model.save()
-                del request.session['student_id']
-                messages.success(request,"Successfully Edited Student")
-                return HttpResponseRedirect(reverse("manage_student"))
-                
-            except:
-                messages.error(request,"Failed to Edit Student")
-                return HttpResponseRedirect(reverse("edit_student",kwargs={"student_id":student_id}))
+            messages.success(request,"Successfully Edited Student")
+            return HttpResponseRedirect(reverse("manage_student"))
         
-        else:
-            form = EditStudentForm(request.POST)
-            student =Students.objects.get(admin=student_id)
-            return render(request, "main/editstudent.html/", {"form":form, "id":student_id, "username":student.admin.username})
+        except:
+        
+            messages.error(request,"Failed to Edit Staff")
+            return HttpResponseRedirect(reverse("edit_student"))
 
 
 def edit_subject(request, subject_id):

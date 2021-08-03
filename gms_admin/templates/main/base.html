@@ -12,16 +12,15 @@
     <div class="sidebar">
         <h2>Admin</h2>
         <ul>
-            <li><a href="/admin_home"><i class="fas fa-home"></i>Home</a></li>
-            {% url 'add_teacher' as add_teacher %}
-            <li><a href= "{% url 'manage_teacher'%}" ><i class="fas fa-subjects"></i>Manage Teacher</a></li>
-             <li><a href= "{% url 'manage_school'%}" ><i class="fas fa-subjects"></i>Manage School</a></li>
-            <li><a href= "{% url 'manage_student'%}" ><i class="fas fa-subjects"></i>Manage Students</a></li>
-            <li><a href= "{% url 'manage_subject'%}" ><i class="fas fa-subjects"></i>Manage Subjects</a></li>
-             <li><a href= "{% url 'view_section'%}" ><i class="fas fa-grade_level"></i>Sections</a></li>
-                 <li><a href= "{% url 'admin_chat'%}" ><i class="fas fa-grade_level"></i>Inbox</a></li>
-                 <li><a href= "{% url 'add_admin'%}" ><i class="fas fa-grade_level"></i>Admin</a></li>
-            <li><a href=" {% url 'logout' %}"><i class="fas fa-logout"></i>Logout</a></li>
+            <li><a href="/admin_home"><i class="fas fa-home"><img src ="{%static 'images/cottage_black_36dp.svg'%}"></i>Home</a></li>
+            <li><a href= "{% url 'manage_teacher'%}" ><i class="fas fa-subjects"><img src ="{%static 'images/assignment_ind_black_36dp.svg'%}"style="vertical-align:middle;"></i>Manage Teacher</a></li>
+             <li><a href= "{% url 'manage_school'%}" ><i class="fas fa-subjects"><img src ="{%static 'images/school_black_36dp.svg'%}"style="vertical-align:middle;"></i>Manage School</a></li>
+            <li><a href= "{% url 'manage_student'%}" ><i class="fas fa-subjects"><img src ="{%static 'images/face_black_36dp.svg'%}"style="vertical-align:middle;"></i>Manage Students</a></li>
+            <li><a href= "{% url 'manage_subject'%}" ><i class="fas fa-subjects"><img src ="{%static 'images/book_black_36dp.svg'%}"style="vertical-align:middle;"></i>Manage Subjects</a></li>
+             <li><a href= "{% url 'view_section'%}" ><i class="fas fa-grade_level"><img src ="{%static 'images/fact_check_black_36dp.svg'%}"style="vertical-align:middle;"></i>Sections</a></li>
+                 <li><a href= "{% url 'admin_chat'%}" ><i class="fas fa-grade_level"><img src ="{%static 'images/email_black_36dp.svg'%}" style="vertical-align:middle;"></i>Inbox</a></li>
+                 <li><a href= "{% url 'add_admin'%}" ><i class="fas fa-grade_level"><img src ="{%static 'images/supervisor_account_black_36dp.svg'%}" style="vertical-align:middle;"></i>Admin</a></li>
+            <li><a href=" {% url 'logout' %}"><i class="fas fa-logout"><img src ="{%static 'images/logout_black_36dp.svg'%}" style="vertical-align:middle;"></i>Logout</a></li>
         </ul> 
     </div>
     <div class="main_content">

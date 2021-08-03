@@ -7,7 +7,7 @@
      <link rel="stylesheet" href= "{% static 'css/messages.css' %}" type="text/css">
           <link rel="stylesheet" href= "{% static 'css/review.css' %}" type="text/css">
      <script src = "{% static 'js/JQuery.js' %}"> </script>
-     <script src = "{% static 'js/grade.js' %}"> </script>
+     <script src = "{% static 'js/c.js' %}"> </script>
 </head>
 
 {%block 'main_content'%}
@@ -380,11 +380,14 @@
           <th scope="col">Percent Grade</th>
         </tr>
         </thead>
-  
+          {% for homework in homework%}
          <tbody id="dito" name="dito">
 
+         <td> {{homework.name}}</td>
+         <td> {{homework.score}}</td>
+
         </tbody>
-          
+                  {%endfor%} 
     </table>
     <div class = 'footer'>
     </div>
@@ -395,13 +398,7 @@
     </div>
     <table class="fl-table">
         <tbody>
-        <td> <center> <select name="homework_qtr" id="calculate_qtr">
-       <option value="0">Select Quarter</option>
-      <option value="1">First Quarter</option>
-      <option value="2">Second Quarter</option>
-      <option value="3">Third Quarter</option>
-      <option value="4">Fourth Quarter</option>
-    </select> </td>
+        <td> <center>  </td>
         <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
         <td> <label> Average <input type='text' id='hw_ave_view' disabled></label></td>
         <td> <input type="submit" id="hw_calculate"> </td>
@@ -424,10 +421,14 @@
         </tr>
         </thead>
 
+        {% for quiz in quiz%}
          <tbody id="dito2" name="dito">
 
+         <td> {{quiz.name}}</td>
+         <td> {{quiz.score}}</td>
+
         </tbody>
-      
+                  {%endfor%} 
             
     </table>
     <div class = 'footer'>
@@ -441,13 +442,7 @@
     </div>
     <table class="fl-table">
         <tbody>
-        <td>  <select name="quiz_qtr" id="quiz_qtr">
-       <option value="0">Select Quarter</option>
-      <option value="1">First Quarter</option>
-      <option value="2">Second Quarter</option>
-      <option value="3">Third Quarter</option>
-      <option value="4">Fourth Quarter</option>
-    </select> </td>
+        <td>   </td>
         <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
         <td> <label> Average <input type='text' id='qz_ave_view' disabled></label></td>
         <td> <input type="submit" id="quiz_average"> </td>
@@ -471,9 +466,15 @@
           <th scope="col">Percent Grade</th>
         </tr>
         </thead>
+         
+        {% for sw in sw%}
          <tbody id="dito3" name="dito">
 
+         <td> {{sw.name}}</td>
+         <td> {{sw.score}}</td>
+
         </tbody>
+                  {%endfor%}
   
     </table>
 </div>
@@ -485,13 +486,7 @@
     </div>
     <table class="fl-table">
         <tbody>
-        <td>  <select name="sw_qtr" id="sw_qtr">
-       <option value="0">Select Quarter</option>
-      <option value="1">First Quarter</option>
-      <option value="2">Second Quarter</option>
-      <option value="3">Third Quarter</option>
-      <option value="4">Fourth Quarter</option>
-    </select> </td>
+        <td>   </td>
         <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
         <td> <label> Average <input type='text' id='sw_ave_view' disabled></label></td>
         <td> <input type="submit" id="calculate_sw_btn"> </td>
@@ -516,9 +511,14 @@
           <th scope="col">Percent Grade</th>
         </tr>
         </thead>
-         <tbody id="performance_view" name="performance_view">
+        {% for performance in performance%}
+         <tbody id="performance_view" name="dito">
+
+         <td> {{performance.name}}</td>
+         <td> {{performance.score}}</td>
 
         </tbody>
+                  {%endfor%}
     </table>
     <div class = 'footer'>
     </div>
@@ -531,13 +531,7 @@
     </div>
     <table class="fl-table">
         <tbody>
-        <td>  <select name="perf_qtr" id="perf_qtr">
-       <option value="0">Select Quarter</option>
-      <option value="1">First Quarter</option>
-      <option value="2">Second Quarter</option>
-      <option value="3">Third Quarter</option>
-      <option value="4">Fourth Quarter</option>
-    </select> </td>
+        <td>   </td>
         <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
         <td> <label> Average <input type='text' id='perf_ave_view' disabled></label></td>
         <td> <input type="submit" id="calculate_perf_btn"> </td>
@@ -562,9 +556,14 @@
           <th scope="col">Percent Grade</th>
         </tr>
         </thead>
-         <tbody id="exam_view" name="exam_view">
+    {% for exam in exam%}
+         <tbody id="exam_view" name="dito">
+
+         <td> {{exam.name}}</td>
+         <td> {{exam.score}}</td>
 
         </tbody>
+                  {%endfor%}
     <div class = 'footer'>
     </div>
     </form>
@@ -577,13 +576,7 @@
     </div>
     <table class="fl-table">
         <tbody>
-        <td>  <select id="exam_qtr">
-       <option value="0">Select Quarter</option>
-      <option value="1">First Quarter</option>
-      <option value="2">Second Quarter</option>
-      <option value="3">Third Quarter</option>
-      <option value="4">Fourth Quarter</option>
-    </select> </td>
+        <td>  </td>
         <td> <input type="hidden" name='student_subject_id' value={{student_subject.id}}></td>
         <td> <label> Score <input type='text' id='exam_ave_view' disabled></label></td>
         <td> <input type="submit" id="calculate_exam_btn"> </td>
@@ -707,7 +700,7 @@
     </div>
     <table class="fl-table">
         <thead>
-        <form action="{% url 'save_grade'%}" method="POST">
+        <form action="{% url 'save_editfourth'%}" method="POST">
         {% csrf_token %}
         <tr>
           <th scope="col">Final Grade</th>
@@ -721,7 +714,7 @@
         <td> <input type="submit" name="grade_button"> </td>
         </tbody>
           <tbody>
-        <td>  <input type="hidden" name='student_subject_id' value={{student_subject.id}}> </td>
+        <td>  <input type="hidden" name='student_subject_id' value={{first.id}}> </td>
         <td><label>  <input type="hidden"> </td>
         <td> </td>
         </tbody>

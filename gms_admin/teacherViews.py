@@ -1,3 +1,4 @@
+from typing import final
 from django.forms.models import ModelForm
 from django.http import request
 from django.urls.base import reverse
@@ -36,7 +37,7 @@ def view_class(request):
 def view_subjects(request):
     current_user = request.user
     teacher_id = current_user.id
-    subjects = Subjects.objects.filter(teacher_id=teacher_id)
+    subjects = Subjects.objects.filter(teacher_id=teacher_id).filter(status=1)
     return render(request, 'teacher/subjects.html', {'subjects':subjects})
 
 
@@ -145,7 +146,7 @@ def grade(request):
     current_user = request.user
     admin_id = current_user.id
     class_id = Classes.objects.all().filter(teacher_id = admin_id)
-    subjects = Subjects.objects.all().filter(teacher_id=admin_id)
+    subjects = Subjects.objects.all().filter(teacher_id=admin_id).filter(status=1)
     subject_id= request.POST.get('subject')
     section_subjects = Section_subjects.objects.all().filter(id=subject_id)
     print(section_subjects)
@@ -193,7 +194,7 @@ def announcement(request):
     id = request.user.id
     print(id)
     subjects = Subjects.objects.all()
-    subject_id = Subjects.objects.filter(teacher_id = id)
+    subject_id = Subjects.objects.filter(teacher_id = id).filter(status=1)
     print(subject_id)
     form = AddAnnouncement()
     announcement = Announcements.objects.all().filter(subject_id__in = subject_id).order_by('-date_added')
@@ -297,7 +298,12 @@ def add_homework(request):
    
         hw1_grade = int(hw1_grade)
         hw1_grade_max = int(hw1_grade_max)
-        
+        test1 = (hw1_grade + hw1_grade_max)/2
+        print(test1)
+        test2 = round(test1)
+        print(test2)
+        test3 = int(test1)
+        print(test3)
         if Homework.objects.filter(name=hw1).filter(qtr=hw_qtr).filter(section_subject_id=student_subject).exists():
             messages.error(request,"Existing Homework")
             return redirect(request.META.get('HTTP_REFERER'))
@@ -615,6 +621,23 @@ def save_grade(request):
             else:
                 fourth_qtr = Fourth_Qtr(section_subject_id = student_subject, grade=int_grade )
                 fourth_qtr.save()
+
+                first = First_Qtr.objects.get(section_subject_id = student_subject)
+                third = Third_Qtr.objects.get(section_subject_id = student_subject)
+                second = Second_Qtr.objects.get(section_subject_id = student_subject)
+
+                first_score = first.grade
+                second_score = second.grade
+                third_score = third.grade
+                first_grade = int(first_score)
+                second_grade = int(second_score)
+                third_grade = int(third_score)
+                final_grade = (first_score + second_grade + third_grade + int_grade) / 4
+                f_grade = round(final_grade)
+                print(f_grade)
+
+                final = Final_Grade(section_subject_id = student_subject, grade=final_grade )
+                final.save()
                 messages.success(request,'Added Grade')
                 return redirect(request.META.get('HTTP_REFERER'))
 
@@ -662,21 +685,25 @@ def save_edithomework(request):
             messages.error(request,"Invalid Input")
             return redirect(request.META.get('HTTP_REFERER'))
         if item>=raw:
-            score = (raw/item) * 100
-            print(hws)
-            student = Section_subjects.objects.get(id=student)
-            print(student)
-            hws.name =hw_name
-            hws.raw_score = raw
-            hws.section_subject_id = student
-            hws.items = item
-            hws.score = score
-            hws.qtr = qtr
-            hws.date = hw_date
-              
-            hws.save()
-            messages.success(request,"Updated Homework")
-            return redirect(request.META.get('HTTP_REFERER'))
+            try:
+                score = (raw/item) * 100
+                print(hws)
+                student = Section_subjects.objects.get(id=student)
+                print(student)
+                hws.name =hw_name
+                hws.raw_score = raw
+                hws.section_subject_id = student
+                hws.items = item
+                hws.score = score
+                hws.qtr = qtr
+                hws.date = hw_date
+                
+                hws.save()
+                messages.success(request,"Updated Homework")
+                return redirect(request.META.get('HTTP_REFERER'))
+            except:
+                messages.error(request,"Invalid")
+                return redirect(request.META.get('HTTP_REFERER'))
         else:
             messages.error(request,"Invalid")
             return redirect(request.META.get('HTTP_REFERER'))
@@ -840,7 +867,7 @@ def save_editperformance(request):
             sws.date = exam_date
               
             sws.save()
-            messages.success(request,"Updated Performance Task")
+            messages.success(request,"Updated Grade")
             return redirect(request.META.get('HTTP_REFERER'))
         else:
             messages.error(request,"Invalid")
@@ -852,6 +879,176 @@ def view_grades(request, subject_id):
     second = Second_Qtr.objects.filter(section_subject_id__in = section)
     third = Third_Qtr.objects.filter(section_subject_id__in = section)
     fourth = Fourth_Qtr.objects.filter(section_subject_id__in = section)
-    return render(request, 'teacher/view_grade.html', {'first':first,'second':second,'third':third,'fourth':fourth})
+    final = Final_Grade.objects.filter(section_subject_id__in = section)
+    return render(request, 'teacher/view_grade.html', {'first':first,'second':second,'third':third,'fourth':fourth, 'final':final})
+
+def edit_first(request, first_id):
+    first = First_Qtr.objects.get(id = first_id)
+    id_first = first.section_subject_id
+    homework = Homework.objects.filter(section_subject_id=id_first).filter(qtr=1)
+    quiz = Quizzes.objects.filter(section_subject_id=id_first, qtr=1)
+    sw = Seatwork.objects.filter(section_subject_id=id_first, qtr=1)
+    exam = Examinations.objects.filter(section_subject_id=id_first, qtr=1)
+    performance = Performance_Task.objects.filter(section_subject_id=id_first, qtr=1)
+    return render(request, 'teacher/edit_first.html',{'first':first,'homework':homework,'quiz':quiz,'sw':sw,'exam':exam,'performance':performance})
+
+def save_editfirst(request):
+    if request.method!="POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        student = request.POST.get('student_subject_id')
+        grade = request.POST.get('final_grade')
+        float_grade = float(grade)
+        int_grade = round(float_grade)
+        qtr = 1
+        
+
+        if int_grade < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        else:
+            
+            first_grade = First_Qtr.objects.get(id=student)
+            print(first_grade)
+            first_grade.grade = int_grade
+            first_grade.qtr = qtr
+            first_grade.save()
+              
+            
+            messages.success(request,"Updated Grade")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+
+def edit_second(request, second_id):
+    first = Second_Qtr.objects.get(id = second_id)
+    id_first = first.section_subject_id
+    homework = Homework.objects.filter(section_subject_id=id_first).filter(qtr=2)
+    quiz = Quizzes.objects.filter(section_subject_id=id_first, qtr=2)
+    sw = Seatwork.objects.filter(section_subject_id=id_first, qtr=2)
+    exam = Examinations.objects.filter(section_subject_id=id_first, qtr=2)
+    performance = Performance_Task.objects.filter(section_subject_id=id_first, qtr=2)
+    return render(request, 'teacher/editsecond.html',{'first':first,'homework':homework,'quiz':quiz,'sw':sw,'exam':exam,'performance':performance})
+
+def save_editsecond(request):
+    if request.method!="POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        student = request.POST.get('student_subject_id')
+        grade = request.POST.get('final_grade')
+        float_grade = float(grade)
+        int_grade = round(float_grade)
+        qtr = 2
+        
+
+        if int_grade < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        else:
+            
+            first_grade = Second_Qtr.objects.get(id=student)
+            print(first_grade)
+            first_grade.grade = int_grade
+            first_grade.qtr = qtr
+            first_grade.save()
+              
+            
+            messages.success(request,"Updated Grade")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+def edit_third(request, third_id):
+    first = Third_Qtr.objects.get(id = third_id)
+    id_first = first.section_subject_id
+    homework = Homework.objects.filter(section_subject_id=id_first).filter(qtr=3)
+    quiz = Quizzes.objects.filter(section_subject_id=id_first, qtr=3)
+    sw = Seatwork.objects.filter(section_subject_id=id_first, qtr=3)
+    exam = Examinations.objects.filter(section_subject_id=id_first, qtr=3)
+    performance = Performance_Task.objects.filter(section_subject_id=id_first, qtr=3)
+    return render(request, 'teacher/edit_third.html',{'first':first,'homework':homework,'quiz':quiz,'sw':sw,'exam':exam,'performance':performance})
+
+def save_editthird(request):
+    if request.method!="POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        student = request.POST.get('student_subject_id')
+        grade = request.POST.get('final_grade')
+        float_grade = float(grade)
+        int_grade = round(float_grade)
+        qtr = 3
+        
+
+        if int_grade < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        else:
+            
+            first_grade = Third_Qtr.objects.get(id=student)
+            print(first_grade)
+            first_grade.grade = int_grade
+            first_grade.qtr = qtr
+            first_grade.save()
+              
+            
+            messages.success(request,"Updated Grade")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+def edit_fourth(request, fourth_id):
+    first = Fourth_Qtr.objects.get(id = fourth_id)
+    id_first = first.section_subject_id
+    homework = Homework.objects.filter(section_subject_id=id_first).filter(qtr=4)
+    quiz = Quizzes.objects.filter(section_subject_id=id_first, qtr=4)
+    sw = Seatwork.objects.filter(section_subject_id=id_first, qtr=4)
+    exam = Examinations.objects.filter(section_subject_id=id_first, qtr=4)
+    performance = Performance_Task.objects.filter(section_subject_id=id_first, qtr=4)
+    return render(request, 'teacher/edit_fourth.html',{'first':first,'homework':homework,'quiz':quiz,'sw':sw,'exam':exam,'performance':performance})
+
+def save_editfourth(request):
+    if request.method!="POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        student = request.POST.get('student_subject_id')
+        grade = request.POST.get('final_grade')
+        float_grade = float(grade)
+        int_grade = round(float_grade)
+        qtr = 4
+        
+
+        if int_grade < 0:
+            messages.error(request,"Invalid Input")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        else:
+            
+            first_grade = Fourth_Qtr.objects.get(id=student)
+            print(first_grade)
+            first_grade.grade = int_grade
+            first_grade.qtr = qtr
+            first_grade.save()
+
+            student_subject = first_grade.section_subject_id
+
+            first_qtr = First_Qtr.objects.get(section_subject_id = student_subject)
+            third_qtr = Third_Qtr.objects.get(section_subject_id = student_subject)
+            second_qtr = Second_Qtr.objects.get(section_subject_id = student_subject)
+
+            first_score = first_qtr.grade
+            second_score = second_qtr.grade
+            third_score = third_qtr.grade
+            first_grade = round(first_score)
+            second_grade = round(second_score)
+            third_grade = round(third_score)
+            final_grade = (first_score + second_grade + third_grade + int_grade) / 4
+            f_grade = round(final_grade)
+            print(f_grade)
+
+            final = Final_Grade.objects.get(section_subject_id = student_subject)
+            final.grade = final_grade
+            final.save()
+              
+            
+            messages.success(request,"Updated Grade")
+            return redirect(request.META.get('HTTP_REFERER'))
 
 

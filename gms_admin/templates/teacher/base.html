@@ -19,14 +19,14 @@
             {% url 'teacher_home' as teacher_home %}
             {% url 'view_subjects' as view_subjects %}
              {% url 'attendance' as attendance %}
-            <li><a href={{teacher_home}}><i class="fas fa-home"></i>Home</a></li>
-            <li><a href={{view_subjects}}><i class="fas fa-home"></i>Subjects</a></li>
-            <li><a href={{attendance}}><i class="fas fa-home"></i>Attendance</a></li>
-            <li><a href={% url 'update_attendance'%}><i class="fas fa-home"></i>Update Attendance</a></li>
-            <li><a href= {% url 'grade'%}><i class="fas fa-home"></i>Grades</a></li>
-            <li><a href= {% url 'announcement'%}><i class="fas fa-home"></i>Announcement</a></li>
-            <li><a href= {% url 'chat'%}><i class="fas fa-home"></i>Inbox</a></li>
-            <li><a href= "/"><i class="fas fa-home"></i>Logout</a></li>
+            <li><a href={{teacher_home}}><i class="fas fa-home"> <img src ="{%static 'images/home_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>Home</a></li>
+            <li><a href={{view_subjects}}><i class="fas fa-home"><img src ="{%static 'images/book_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>Subjects</a></li>
+            <li><a href={{attendance}}><i class="fas fa-home"><img src ="{%static 'images/fact_check_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>Attendance</a></li>
+            <li><a href={% url 'update_attendance'%}><i class="fas fa-home"><img src ="{%static 'images/update_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>Update Attendance</a></li>
+            <li><a href= {% url 'grade'%}><i class="fas fa-home"><img src ="{%static 'images/home_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>Grades</a></li>
+            <li><a href= {% url 'announcement'%}><i class="fas fa-home"><img src ="{%static 'images/campaign_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>Announcement</a></li>
+            <li><a href= {% url 'chat'%}><i class="fas fa-home"><img src ="{%static 'images/email_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>Inbox</a></li>
+            <li><a href= "/"><i class="fas fa-home"><img src ="{%static 'images/logout_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>Logout</a></li>
         </ul> 
     </div>
     <div class="main_content">

@@ -242,7 +242,12 @@ class Msg(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-
+class Final_Grade(models.Model):
+    id = models.AutoField(primary_key =True)
+    section_subject_id = models.ForeignKey(Section_subjects, on_delete=models.DO_NOTHING)
+    grade= models.IntegerField()
+    objects = models.Manager()
+    
 class Message(models.Model):
 	user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user')
 	sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='from_user')

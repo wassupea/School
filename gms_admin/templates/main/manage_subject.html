@@ -56,15 +56,29 @@
   <tbody>
 
       {% for subject in subjects%}
+
+      {% if subject.status is True%}
         <tr>
           <td> {{subject.class_id.gradelevel_id.gradeLevel_no}} </td>
           <td> {{subject.subject_name}} </td>
           <td> {{subject.class_id.class_name}} </td>
           <td> {{subject.teacher_id.last_name}}, {{subject.teacher_id.first_name}} </td>
-           <td> {{subject.status}} </td>
+           <td> Active</td>
           <td> <a href = "/edit_subject/{{subject.id}} " class="btn btn-info"> Edit </a></td>
           <td> <a href = "/delete_subject/{{subject.id}} " class="btn btn-danger"> Delete </a></td>
         </tr>
+      {%endif%}
+            {% if subject.status is False%}
+        <tr>
+          <td> {{subject.class_id.gradelevel_id.gradeLevel_no}} </td>
+          <td> {{subject.subject_name}} </td>
+          <td> {{subject.class_id.class_name}} </td>
+          <td> {{subject.teacher_id.last_name}}, {{subject.teacher_id.first_name}} </td>
+           <td> Inactive</td>
+          <td> <a href = "/edit_subject/{{subject.id}} " class="btn btn-info"> Edit </a></td>
+          <td> <a href = "/delete_subject/{{subject.id}} " class="btn btn-danger"> Delete </a></td>
+        </tr>
+      {%endif%}
       {% endfor %}
         </tr>
         <tbody>

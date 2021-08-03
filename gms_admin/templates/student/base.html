@@ -4,6 +4,8 @@
   <title>{% block title %}Sample High School{% endblock title %}</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 
   {% load static %}
       <link rel="stylesheet" href= "{% static 'css/teacher_base.css' %}" type="text/css">
@@ -16,13 +18,14 @@
     <div class="sidebar">
         <h2>STUDENT</h2>
         <ul>
-            <li><a href="{%url 'student_home'%}"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="{%url 'view_attendance'%}"><i class="fas fa-students"></i>View Attendance</a></li>
-            <li><a href="{%url 'view_grades'%}"><i class="fas fa-sections"></i>View Grades</a></li>
-            <li><a href="{%url 'student_subjects'%}"><i class="fas fa-grade_level"></i>View Subjects</a></li>
-            <li><a href="{%url 'view_announcements'%}"><i class="fas fa-grade_level"></i>Announcements</a></li>
-            <li><a href="{%url 'student_chat'%}"><i class="fas fa-grade_level"></i>Inbox</a></li>
-            <li><a href="/logout"><i class="fas fa-subjects"></i>Logout</a></li>
+       
+            <li><a href="{%url 'student_home'%}"><i class="fas fa-students"><img src ="{%static 'images/home_black_36dp.svg'%}"style="vertical-align:middle;"></img></i> &nbsp;Home</a></li>
+            <li><a href="{%url 'view_attendance'%}"> <i class="fas fa-students"><img src ="{%static 'images/visibility_black_36dp.svg'%}"style="vertical-align:middle;"></img> </i>View Attendance</a></li>
+            <li><a href="{%url 'view_grades'%}"><i class="fas fa-sections"><img src ="{%static 'images/calculate_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>  &nbsp;View Grades</a></li>
+            <li><a href="{%url 'student_subjects'%}"><i class="fas fa-grade_level"><img src ="{%static 'images/calculate_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>  &nbsp;View Subjects</a></li>
+            <li><a href="{%url 'view_announcements'%}"><i class="fas fa-grade_level"><img src ="{%static 'images/campaign_black_36dp.svg'%}"style="vertical-align:middle;"></img></i> &nbsp;Announcements</a></li>
+            <li><a href="{%url 'student_chat'%}"><i class="fas fa-grade_level"><img src ="{%static 'images/email_black_36dp.svg'%}"style="vertical-align:middle;"></img></i>&nbsp;   Inbox</a></li>
+            <li><a href="/logout"><i class="fas fa-subjects"><img src ="{%static 'images/logout_black_36dp.svg'%}"style="vertical-align:middle;"></img></i></i>  &nbsp;Logout</a></li>
         </ul> 
     </div>
     <div class="main_content">

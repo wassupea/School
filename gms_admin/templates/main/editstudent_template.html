@@ -1,0 +1,57 @@
+{% load static%}
+{% include  'main/base.html' %}
+<link rel="stylesheet" href= "{% static 'css/edit_teacher.css' %}" type="text/css">
+<script src = "{% static 'js/JQuery.js' %}"> </script>
+{% block main_content %}
+
+
+<div class="container">  
+  <form id="contact" action="{%url 'save_editstudent2'%}" method="POST">
+  {% csrf_token %}
+   <center> <h3>Edit Student</h3> </center>
+   <input type ="hidden" name="student_id" value={{student.admin.id}}>
+    <fieldset>
+      <p> First Name   <input type="text" class="form-control" name="first_name" placeholder="First Name *" value="{{student.admin.first_name}}" /> </p>
+    </fieldset>
+    <fieldset>
+     <p> Last Name   <input type="text" class="form-control"  name="last_name"placeholder="Last Name *" value="{{student.admin.last_name}}" /> </p>
+    </fieldset>
+    <fieldset>
+      <p>Username <input type="text" class="form-control"   name="username" placeholder="Username *" value="{{student.admin.username}}" /> </p>
+    </fieldset>
+    <fieldset>
+    <p> Email  <input type="email" class="form-control" name="email" placeholder="Your Email *" value="{{student.admin.email}}" /> </p>
+    </fieldset>
+    <fieldset>
+     <p> Address <input type="text" name="address" maxlength="340" name="txtEmpPhone" class="form-control" placeholder="Address *" value="{{student.address}}" /> </p>
+    </fieldset>
+      <fieldset>
+           <p> School Year   <select name="school_year">
+        {% for school_year in school_year %}
+         <option value = "{{school_year.id}}"> {{school_year.session_start_year}} - {{school_year.session_end_year}}</option>
+         {% endfor %}
+      </select> </p>
+           <p> Grade Level   <select name="gradelevel">
+        {% for gradelevel in gradelevel %}
+         <option value = "{{gradelevel.id}}"> {{gradelevel.gradeLevel_no}}</option>
+         {% endfor %}
+            </select> 
+      </select> </p>
+           <p> Class   <select name="classes">
+        {% for classes in classes %}
+         <option value = "{{classes.id}}">{{classes.gradelevel_id.gradeLevel_no}} - {{classes.class_name}}</option>
+         {% endfor %}
+      </select> </p>
+     <p> Status   <select name="status">
+         <option value = "1"> Active </option>
+          <option value = "0"> Inactive </option>
+      </select> </p>
+    </fieldset>
+    <fieldset>
+      <button name="submit" type="submit" id="contact-submit" onclick="return confirm('Do you really want to submit the form?');">Submit</button>
+    </fieldset>
+  </form>
+</div>
+
+
+{% endblock main_content %}

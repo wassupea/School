@@ -18,6 +18,7 @@
         <tr>
          <th scope="col">Student Name</th>
          <th scope="col">Grade</th>
+         <th scope="col">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
         <tr>
                       <td>{{ first.section_subject_id.student_id.last_name }}</td>
                       <td>{{ first.grade }}</td>
+                      <td><a href = "/edit_first/{{first.id}} "> Edit </a></td>
         </tr>
         {% endfor %}
         </tr>
@@ -42,6 +44,7 @@
         <tr>
          <th scope="col">Student Name</th>
          <th scope="col">Grade</th>
+         <th scope="col">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -50,6 +53,7 @@
         <tr>
                       <td>{{ second.section_subject_id.student_id.last_name }}</td>
                       <td>{{ second.grade }}</td>
+                           <td><a href = "/edit_second/{{second.id}} "> Edit </a></td>
         </tr>
         {% endfor %}
         </tr>
@@ -66,6 +70,7 @@
         <tr>
          <th scope="col">Student Name</th>
          <th scope="col">Grade</th>
+         <th scope="col">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -74,6 +79,7 @@
         <tr>
                       <td>{{ third.section_subject_id.student_id.last_name }}</td>
                       <td>{{ third.grade }}</td>
+                                            <td><a href = "/edit_third/{{third.id}} "> Edit </a></td>
         </tr>
         {% endfor %}
         </tr>
@@ -90,6 +96,7 @@
         <tr>
          <th scope="col">Student Name</th>
          <th scope="col">Grade</th>
+         <th scope="col">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -98,6 +105,30 @@
         <tr>
                       <td>{{ fourth.section_subject_id.student_id.last_name }}</td>
                       <td>{{ fourth.grade }}</td>
+                       <td><a href = "/edit_fourth/{{fourth.id}} "> Edit </a></td>
+        </tr>
+        {% endfor %}
+        </tr>
+        <tbody>
+    </table>
+</div>
+  <div class="table-wrapper">
+    <br> <center>
+<caption> Final Grades for {{final.section_subject_id.subject_id.subject_name}} </caption>
+<br>
+    <table class="fl-table">
+        <thead>
+        <tr>
+         <th scope="col">Student Name</th>
+         <th scope="col">Grade</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          {%for final in final %}
+        <tr>
+                      <td>{{ final.section_subject_id.student_id.last_name }}</td>
+                      <td>{{ final.grade }}</td>
         </tr>
         {% endfor %}
         </tr>

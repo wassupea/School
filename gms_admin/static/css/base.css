@@ -34,7 +34,7 @@ body{
 }
 
 .wrapper .sidebar ul li{
-  padding: 15px;
+  padding: 10px;
   border-bottom: 1px solid #bdb8d7;
   border-bottom: 1px solid rgba(0,0,0,0.05);
   border-top: 1px solid rgba(255,255,255,0.05);
@@ -159,4 +159,11 @@ body{
 
 @media (min-width: 1200px) {
   .container { grid-template-columns: repeat(4, 1fr); }
+}
+.image {
+  width: 50%;
+  height: 48%;
+  position: fixed;
+  left:32%;
+  top:40%;
 }

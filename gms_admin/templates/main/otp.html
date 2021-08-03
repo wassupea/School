@@ -10,14 +10,13 @@
   <div class="wrapper fadeInDown">
   <div id="formContent">
     <!-- Tabs Titles -->
-    <h2 class="active"> Sign In </h2>
+    <h2 class="active"> ACCESS CODE </h2>
 
 <form action="{%url 'send_otp'%}"method='POST'>   
 {%csrf_token%} 
 <div id="email_div" style="display: block;" >
-    <label for="email">Email</label>
-    <input type="text" name="email_otp" id="email_otp">
-     <input class="underlineHover" type="submit" value="SEND OTP" id='myBtn'>
+    <input type="text" name="email_otp" id="email_otp" placeholder="Email">
+     <center><input class="underlineHover" type="submit" value="SEND OTP" id='myBtn'>
 </div>
 
    {% if messages %}

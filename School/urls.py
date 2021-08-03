@@ -52,7 +52,7 @@ urlpatterns = [
     path('edit_teacher/<str:teacher_id>', adminViews.edit_teacher),
     path('save_editteacher', adminViews.save_editteacher, name="save_editteacher"),
     path('edit_student/<str:student_id>', adminViews.edit_student, name='edit_student'),
-    path('save_editstudent', adminViews.save_editstudent, name='save_editstudent'),
+     path('save_editstudent2', adminViews.save_editstudent2, name='save_editstudent2'),
     path('edit_subject/<str:subject_id>', adminViews.edit_subject, name="edit_subject"),
     path('save_editsubject', adminViews.save_editsubject, name='save_editsubject'),
     path('edit_class/<str:class_id>', adminViews.edit_class, name='edit_class'),
@@ -73,6 +73,7 @@ urlpatterns = [
     path('save_sessionyear', adminViews.save_sessionyear, name='save_sessionyear'),
     path('add_sectionsubjects/<str:student_id>', adminViews.add_sectionsubjects, name='add_sectionsubjects'), 
     path('save_sectionsubjects', adminViews.save_sectionsubjects, name='save_sectionsubjects'),
+    path('edit_first/<str:first_id>', teacherViews.edit_first, name='edit_first'),
     path('djrichtextfield/', include('djrichtextfield.urls')),
     path('admin_chat', adminViews.admin_chat, name='admin_chat'),
     path('admin_send_message', adminViews.adminsend_message, name='admin_send_message'),
@@ -129,6 +130,13 @@ urlpatterns = [
     path('save_editexam', teacherViews.save_editexam, name='save_editexam'),
     path('save_editperformance', teacherViews.save_editperformance, name='save_editperformance'),
     path('chat', teacherViews.chat, name='chat'),
+    path('save_editfirst', teacherViews.save_editfirst, name='save_editfirst'),
+    path('edit_second/<str:second_id>', teacherViews.edit_second, name='edit_second'),
+     path('save_editsecond', teacherViews.save_editsecond, name='save_editsecond'),
+    path('edit_third/<str:third_id>', teacherViews.edit_third, name='edit_third'),
+    path('save_editthird', teacherViews.save_editthird, name='save_editthird'),
+        path('edit_fourth/<str:fourth_id>', teacherViews.edit_fourth, name='edit_fourth'),
+    path('save_editfourth', teacherViews.save_editfourth, name='save_editfourth'),
     #path('inbox/',include('gms_admin.urls')),
     #path("send_otp",views.send_otp,name="send otp"),
     #STUDENT
@@ -140,6 +148,7 @@ urlpatterns = [
     path('view_grades', studentViews.view_grades, name='view_grades'),
     path('view_grades_details/<str:section_subject_id>', studentViews.view_grades_details, name='view_grades_details'),
     path('view_activities/<str:section_subject_id>', studentViews.view_activities, name='view_activities'),
+
     path('student_chat', studentViews.chat, name='student_chat'),
     path('student_send_message', studentViews.send_message, name='student_send_message'),
 

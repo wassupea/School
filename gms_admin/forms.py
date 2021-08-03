@@ -1,3 +1,4 @@
+from django.http import request
 from gms_admin.models import *
 from django import forms
 from ckeditor.fields import RichTextField
@@ -116,7 +117,7 @@ class EditStudentForm(forms.Form):
 class AddAnnouncement(forms.Form):
     subject_list =[]
     try:
-        subjectlist = Subjects.objects.all()
+        subjectlist = Subjects.objects.filter(status=1)
         
         for subject in subjectlist:
             small_subjectlist=(subject.id, str(subject.class_id_id)+"-"+str(subject.subject_name)+ "-" +str(subject.class_id.class_name))
