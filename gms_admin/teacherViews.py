@@ -576,8 +576,66 @@ def save_grade(request):
         student_subject = Section_subjects.objects.get(id=student)
         grade = request.POST.get('final_grade')
         float_grade = float(grade)
-        int_grade = int(float_grade)
-        print(qtr)
+        if float_grade < 41 :
+            int_grade = 70
+        if float_grade <= 44:
+            int_grade = 71
+        if float_grade <= 48:
+            int_grade = 72
+        if float_grade <= 52:
+            int_grade = 73
+        if float_grade <= 56:
+            int_grade = 74
+        if float_grade >= 60 and float_grade <= 61.59:
+            int_grade = 75
+        if float_grade >= 61.60 and float_grade <= 63.19:
+            int_grade = 76
+        if float_grade >= 63.20 and float_grade <= 64.79:
+            int_grade = 77
+        if float_grade >= 64.80 and float_grade <= 66.39:
+            int_grade = 78
+        if float_grade >= 66.40 and float_grade <= 69.59:
+            int_grade = 80
+        if float_grade >= 69.60 and float_grade <= 71.19:
+            int_grade = 81
+        if float_grade >= 71.20 and float_grade <= 72.79:
+            int_grade = 82
+        if float_grade >= 72.80 and float_grade <= 74.39:
+            int_grade = 83
+        if float_grade >= 74.40 and float_grade <= 75.99:
+            int_grade = 84
+        if float_grade >= 76 and float_grade <= 77.59:
+            int_grade = 85
+        if float_grade >= 77.60 and float_grade <= 79.19:
+            int_grade = 86
+        if float_grade >= 79.20 and float_grade <= 80.79:
+            int_grade = 87
+        if float_grade >= 80.80 and float_grade <= 82.39:
+            int_grade = 88        
+        if float_grade >= 82.40 and float_grade <= 83.99:
+            int_grade = 89  
+        if float_grade >= 84 and float_grade <= 85.59:
+            int_grade = 90   
+        if float_grade >= 85.60 and float_grade <= 87.19:
+            int_grade = 91   
+        if float_grade >= 87.20 and float_grade <= 88.79:
+            int_grade = 92   
+        if float_grade >= 88.80 and float_grade <= 90.39:
+            int_grade = 93   
+        if float_grade >= 90.40 and float_grade <= 91.99:
+            int_grade = 94   
+        if float_grade >= 92.00 and float_grade <= 93.59:
+            int_grade = 95   
+        if float_grade >= 93.6 and float_grade <= 95.19:
+            int_grade = 96
+        if float_grade >= 95.2 and float_grade <= 96.79:
+            int_grade = 97
+        if float_grade >= 96.80 and float_grade <= 98.39:
+            int_grade = 98
+        if float_grade >= 98.4 and float_grade <= 99.99:
+            int_grade = 99
+        if float_grade == 100:
+            int_grade = 100 
         qtr = int(qtr)
 
         if qtr == 1:
@@ -633,10 +691,68 @@ def save_grade(request):
                 second_grade = int(second_score)
                 third_grade = int(third_score)
                 final_grade = (first_score + second_grade + third_grade + int_grade) / 4
-                f_grade = round(final_grade)
-                print(f_grade)
+                if final_grade < 41 :
+                    final_score = 70
+                if final_grade <= 44:
+                    final_score = 71
+                if final_grade <= 48:
+                    final_score = 72
+                if final_grade <= 52:
+                    final_score = 73
+                if final_grade <= 56:
+                    final_score = 74
+                if final_grade >= 60 and final_grade <= 61.59:
+                    final_score = 75
+                if final_grade >= 61.60 and final_grade <= 63.19:
+                    final_score = 76
+                if final_grade >= 63.20 and final_grade <= 64.79:
+                    final_score = 77
+                if final_grade >= 64.80 and final_grade <= 66.39:
+                    final_score = 78
+                if final_grade >= 66.40 and final_grade <= 69.59:
+                    final_score = 80
+                if final_grade >= 69.60 and final_grade <= 71.19:
+                    final_score = 81
+                if final_grade >= 71.20 and final_grade <= 72.79:
+                    final_score = 82
+                if final_grade >= 72.80 and final_grade <= 74.39:
+                    final_score = 83
+                if final_grade >= 74.40 and final_grade <= 75.99:
+                    final_score = 84
+                if final_grade >= 76 and final_grade <= 77.59:
+                    final_score = 85
+                if final_grade >= 77.60 and final_grade <= 79.19:
+                    final_score = 86
+                if final_grade >= 79.20 and final_grade <= 80.79:
+                    final_score = 87
+                if final_grade >= 80.80 and final_grade <= 82.39:
+                    final_score = 88        
+                if final_grade >= 82.40 and final_grade <= 83.99:
+                    final_score = 89  
+                if final_grade >= 84 and final_grade <= 85.59:
+                    final_score = 90   
+                if final_grade >= 85.60 and final_grade <= 87.19:
+                    final_score = 91   
+                if final_grade >= 87.20 and final_grade <= 88.79:
+                    final_score = 92   
+                if final_grade >= 88.80 and final_grade <= 90.39:
+                    final_score = 93   
+                if final_grade >= 90.40 and final_grade <= 91.99:
+                    final_score = 94   
+                if final_grade >= 92.00 and final_grade <= 93.59:
+                    final_score = 95   
+                if final_grade >= 93.6 and final_grade <= 95.19:
+                    final_score = 96
+                if final_grade >= 95.2 and final_grade <= 96.79:
+                    final_score = 97
+                if final_grade >= 96.80 and final_grade <= 98.39:
+                    final_score = 98
+                if final_grade >= 98.4 and final_grade <= 99.99:
+                    final_score = 99
+                if final_grade == 100:
+                    final_score = 100 
 
-                final = Final_Grade(section_subject_id = student_subject, grade=final_grade )
+                final = Final_Grade(section_subject_id = student_subject, grade=final_score )
                 final.save()
                 messages.success(request,'Added Grade')
                 return redirect(request.META.get('HTTP_REFERER'))
@@ -899,8 +1015,67 @@ def save_editfirst(request):
         student = request.POST.get('student_subject_id')
         grade = request.POST.get('final_grade')
         float_grade = float(grade)
-        int_grade = round(float_grade)
         qtr = 1
+        if float_grade < 41 :
+            int_grade = 70
+        if float_grade <= 44:
+            int_grade = 71
+        if float_grade <= 48:
+            int_grade = 72
+        if float_grade <= 52:
+            int_grade = 73
+        if float_grade <= 56:
+            int_grade = 74
+        if float_grade >= 60 and float_grade <= 61.59:
+            int_grade = 75
+        if float_grade >= 61.60 and float_grade <= 63.19:
+            int_grade = 76
+        if float_grade >= 63.20 and float_grade <= 64.79:
+            int_grade = 77
+        if float_grade >= 64.80 and float_grade <= 66.39:
+            int_grade = 78
+        if float_grade >= 66.40 and float_grade <= 69.59:
+            int_grade = 80
+        if float_grade >= 69.60 and float_grade <= 71.19:
+            int_grade = 81
+        if float_grade >= 71.20 and float_grade <= 72.79:
+            int_grade = 82
+        if float_grade >= 72.80 and float_grade <= 74.39:
+            int_grade = 83
+        if float_grade >= 74.40 and float_grade <= 75.99:
+            int_grade = 84
+        if float_grade >= 76 and float_grade <= 77.59:
+            int_grade = 85
+        if float_grade >= 77.60 and float_grade <= 79.19:
+            int_grade = 86
+        if float_grade >= 79.20 and float_grade <= 80.79:
+            int_grade = 87
+        if float_grade >= 80.80 and float_grade <= 82.39:
+            int_grade = 88        
+        if float_grade >= 82.40 and float_grade <= 83.99:
+            int_grade = 89  
+        if float_grade >= 84 and float_grade <= 85.59:
+            int_grade = 90   
+        if float_grade >= 85.60 and float_grade <= 87.19:
+            int_grade = 91   
+        if float_grade >= 87.20 and float_grade <= 88.79:
+            int_grade = 92   
+        if float_grade >= 88.80 and float_grade <= 90.39:
+            int_grade = 93   
+        if float_grade >= 90.40 and float_grade <= 91.99:
+            int_grade = 94   
+        if float_grade >= 92.00 and float_grade <= 93.59:
+            int_grade = 95   
+        if float_grade >= 93.6 and float_grade <= 95.19:
+            int_grade = 96
+        if float_grade >= 95.2 and float_grade <= 96.79:
+            int_grade = 97
+        if float_grade >= 96.80 and float_grade <= 98.39:
+            int_grade = 98
+        if float_grade >= 98.4 and float_grade <= 99.99:
+            int_grade = 99
+        if float_grade == 100:
+            int_grade = 100 
         
 
         if int_grade < 0:
@@ -937,8 +1112,67 @@ def save_editsecond(request):
         student = request.POST.get('student_subject_id')
         grade = request.POST.get('final_grade')
         float_grade = float(grade)
-        int_grade = round(float_grade)
         qtr = 2
+        if float_grade < 41 :
+            int_grade = 70
+        if float_grade <= 44:
+            int_grade = 71
+        if float_grade <= 48:
+            int_grade = 72
+        if float_grade <= 52:
+            int_grade = 73
+        if float_grade <= 56:
+            int_grade = 74
+        if float_grade >= 60 and float_grade <= 61.59:
+            int_grade = 75
+        if float_grade >= 61.60 and float_grade <= 63.19:
+            int_grade = 76
+        if float_grade >= 63.20 and float_grade <= 64.79:
+            int_grade = 77
+        if float_grade >= 64.80 and float_grade <= 66.39:
+            int_grade = 78
+        if float_grade >= 66.40 and float_grade <= 69.59:
+            int_grade = 80
+        if float_grade >= 69.60 and float_grade <= 71.19:
+            int_grade = 81
+        if float_grade >= 71.20 and float_grade <= 72.79:
+            int_grade = 82
+        if float_grade >= 72.80 and float_grade <= 74.39:
+            int_grade = 83
+        if float_grade >= 74.40 and float_grade <= 75.99:
+            int_grade = 84
+        if float_grade >= 76 and float_grade <= 77.59:
+            int_grade = 85
+        if float_grade >= 77.60 and float_grade <= 79.19:
+            int_grade = 86
+        if float_grade >= 79.20 and float_grade <= 80.79:
+            int_grade = 87
+        if float_grade >= 80.80 and float_grade <= 82.39:
+            int_grade = 88        
+        if float_grade >= 82.40 and float_grade <= 83.99:
+            int_grade = 89  
+        if float_grade >= 84 and float_grade <= 85.59:
+            int_grade = 90   
+        if float_grade >= 85.60 and float_grade <= 87.19:
+            int_grade = 91   
+        if float_grade >= 87.20 and float_grade <= 88.79:
+            int_grade = 92   
+        if float_grade >= 88.80 and float_grade <= 90.39:
+            int_grade = 93   
+        if float_grade >= 90.40 and float_grade <= 91.99:
+            int_grade = 94   
+        if float_grade >= 92.00 and float_grade <= 93.59:
+            int_grade = 95   
+        if float_grade >= 93.6 and float_grade <= 95.19:
+            int_grade = 96
+        if float_grade >= 95.2 and float_grade <= 96.79:
+            int_grade = 97
+        if float_grade >= 96.80 and float_grade <= 98.39:
+            int_grade = 98
+        if float_grade >= 98.4 and float_grade <= 99.99:
+            int_grade = 99
+        if float_grade == 100:
+            int_grade = 100 
         
 
         if int_grade < 0:
@@ -974,7 +1208,66 @@ def save_editthird(request):
         student = request.POST.get('student_subject_id')
         grade = request.POST.get('final_grade')
         float_grade = float(grade)
-        int_grade = round(float_grade)
+        if float_grade < 41 :
+            int_grade = 70
+        if float_grade <= 44:
+            int_grade = 71
+        if float_grade <= 48:
+            int_grade = 72
+        if float_grade <= 52:
+            int_grade = 73
+        if float_grade <= 56:
+            int_grade = 74
+        if float_grade >= 60 and float_grade <= 61.59:
+            int_grade = 75
+        if float_grade >= 61.60 and float_grade <= 63.19:
+            int_grade = 76
+        if float_grade >= 63.20 and float_grade <= 64.79:
+            int_grade = 77
+        if float_grade >= 64.80 and float_grade <= 66.39:
+            int_grade = 78
+        if float_grade >= 66.40 and float_grade <= 69.59:
+            int_grade = 80
+        if float_grade >= 69.60 and float_grade <= 71.19:
+            int_grade = 81
+        if float_grade >= 71.20 and float_grade <= 72.79:
+            int_grade = 82
+        if float_grade >= 72.80 and float_grade <= 74.39:
+            int_grade = 83
+        if float_grade >= 74.40 and float_grade <= 75.99:
+            int_grade = 84
+        if float_grade >= 76 and float_grade <= 77.59:
+            int_grade = 85
+        if float_grade >= 77.60 and float_grade <= 79.19:
+            int_grade = 86
+        if float_grade >= 79.20 and float_grade <= 80.79:
+            int_grade = 87
+        if float_grade >= 80.80 and float_grade <= 82.39:
+            int_grade = 88        
+        if float_grade >= 82.40 and float_grade <= 83.99:
+            int_grade = 89  
+        if float_grade >= 84 and float_grade <= 85.59:
+            int_grade = 90   
+        if float_grade >= 85.60 and float_grade <= 87.19:
+            int_grade = 91   
+        if float_grade >= 87.20 and float_grade <= 88.79:
+            int_grade = 92   
+        if float_grade >= 88.80 and float_grade <= 90.39:
+            int_grade = 93   
+        if float_grade >= 90.40 and float_grade <= 91.99:
+            int_grade = 94   
+        if float_grade >= 92.00 and float_grade <= 93.59:
+            int_grade = 95   
+        if float_grade >= 93.6 and float_grade <= 95.19:
+            int_grade = 96
+        if float_grade >= 95.2 and float_grade <= 96.79:
+            int_grade = 97
+        if float_grade >= 96.80 and float_grade <= 98.39:
+            int_grade = 98
+        if float_grade >= 98.4 and float_grade <= 99.99:
+            int_grade = 99
+        if float_grade == 100:
+            int_grade = 100 
         qtr = 3
         
 
@@ -1011,7 +1304,66 @@ def save_editfourth(request):
         student = request.POST.get('student_subject_id')
         grade = request.POST.get('final_grade')
         float_grade = float(grade)
-        int_grade = round(float_grade)
+        if float_grade < 41 :
+            int_grade = 70
+        if float_grade <= 44:
+            int_grade = 71
+        if float_grade <= 48:
+            int_grade = 72
+        if float_grade <= 52:
+            int_grade = 73
+        if float_grade <= 56:
+            int_grade = 74
+        if float_grade >= 60 and float_grade <= 61.59:
+            int_grade = 75
+        if float_grade >= 61.60 and float_grade <= 63.19:
+            int_grade = 76
+        if float_grade >= 63.20 and float_grade <= 64.79:
+            int_grade = 77
+        if float_grade >= 64.80 and float_grade <= 66.39:
+            int_grade = 78
+        if float_grade >= 66.40 and float_grade <= 69.59:
+            int_grade = 80
+        if float_grade >= 69.60 and float_grade <= 71.19:
+            int_grade = 81
+        if float_grade >= 71.20 and float_grade <= 72.79:
+            int_grade = 82
+        if float_grade >= 72.80 and float_grade <= 74.39:
+            int_grade = 83
+        if float_grade >= 74.40 and float_grade <= 75.99:
+            int_grade = 84
+        if float_grade >= 76 and float_grade <= 77.59:
+            int_grade = 85
+        if float_grade >= 77.60 and float_grade <= 79.19:
+            int_grade = 86
+        if float_grade >= 79.20 and float_grade <= 80.79:
+            int_grade = 87
+        if float_grade >= 80.80 and float_grade <= 82.39:
+            int_grade = 88        
+        if float_grade >= 82.40 and float_grade <= 83.99:
+            int_grade = 89  
+        if float_grade >= 84 and float_grade <= 85.59:
+            int_grade = 90   
+        if float_grade >= 85.60 and float_grade <= 87.19:
+            int_grade = 91   
+        if float_grade >= 87.20 and float_grade <= 88.79:
+            int_grade = 92   
+        if float_grade >= 88.80 and float_grade <= 90.39:
+            int_grade = 93   
+        if float_grade >= 90.40 and float_grade <= 91.99:
+            int_grade = 94   
+        if float_grade >= 92.00 and float_grade <= 93.59:
+            int_grade = 95   
+        if float_grade >= 93.6 and float_grade <= 95.19:
+            int_grade = 96
+        if float_grade >= 95.2 and float_grade <= 96.79:
+            int_grade = 97
+        if float_grade >= 96.80 and float_grade <= 98.39:
+            int_grade = 98
+        if float_grade >= 98.4 and float_grade <= 99.99:
+            int_grade = 99
+        if float_grade == 100:
+            int_grade = 100 
         qtr = 4
         
 
@@ -1040,11 +1392,70 @@ def save_editfourth(request):
             second_grade = round(second_score)
             third_grade = round(third_score)
             final_grade = (first_score + second_grade + third_grade + int_grade) / 4
-            f_grade = round(final_grade)
-            print(f_grade)
+            if final_grade < 41 :
+                final_score = 70
+            if final_grade <= 44:
+                final_score = 71
+            if final_grade <= 48:
+                final_score = 72
+            if final_grade <= 52:
+                final_score = 73
+            if final_grade <= 56:
+                final_score = 74
+            if final_grade >= 60 and final_grade <= 61.59:
+                final_score = 75
+            if final_grade >= 61.60 and final_grade <= 63.19:
+                final_score = 76
+            if final_grade >= 63.20 and final_grade <= 64.79:
+                final_score = 77
+            if final_grade >= 64.80 and final_grade <= 66.39:
+                final_score = 78
+            if final_grade >= 66.40 and final_grade <= 69.59:
+                final_score = 80
+            if final_grade >= 69.60 and final_grade <= 71.19:
+                final_score = 81
+            if final_grade >= 71.20 and final_grade <= 72.79:
+                final_score = 82
+            if final_grade >= 72.80 and final_grade <= 74.39:
+                final_score = 83
+            if final_grade >= 74.40 and final_grade <= 75.99:
+                final_score = 84
+            if final_grade >= 76 and final_grade <= 77.59:
+                final_score = 85
+            if final_grade >= 77.60 and final_grade <= 79.19:
+                final_score = 86
+            if final_grade >= 79.20 and final_grade <= 80.79:
+                final_score = 87
+            if final_grade >= 80.80 and final_grade <= 82.39:
+                final_score = 88        
+            if final_grade >= 82.40 and final_grade <= 83.99:
+                final_score = 89  
+            if final_grade >= 84 and final_grade <= 85.59:
+                final_score = 90   
+            if final_grade >= 85.60 and final_grade <= 87.19:
+                final_score = 91   
+            if final_grade >= 87.20 and final_grade <= 88.79:
+                final_score = 92   
+            if final_grade >= 88.80 and final_grade <= 90.39:
+                final_score = 93   
+            if final_grade >= 90.40 and final_grade <= 91.99:
+                final_score = 94   
+            if final_grade >= 92.00 and final_grade <= 93.59:
+                final_score = 95   
+            if final_grade >= 93.6 and final_grade <= 95.19:
+                final_score = 96
+            if final_grade >= 95.2 and final_grade <= 96.79:
+                final_score = 97
+            if final_grade >= 96.80 and final_grade <= 98.39:
+                final_score = 98
+            if final_grade >= 98.4 and final_grade <= 99.99:
+                final_score = 99
+            if final_grade == 100:
+                final_score = 100 
+                print(final_score)
 
             final = Final_Grade.objects.get(section_subject_id = student_subject)
-            final.grade = final_grade
+            final.grade = final_score
             final.save()
               
             

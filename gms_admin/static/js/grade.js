@@ -424,6 +424,9 @@ $(document).ready(function(){
     var selectedVal = $('#all_qtr').val();
     var student = $('#student').val()
     var final_qtr = $('#final_qtr').val()
+    var hw_qtr = $('#calculate_qtr').val();
+    var qz_qtr = $('#quiz_qtr').val();
+    var sw_qtr = $('#sw_qtr').val();
     
   var written_ave_pp = parseInt(written_ave)
   var exam_ave = parseInt(exam_ave)
@@ -439,7 +442,7 @@ $(document).ready(function(){
     alert('Invalid percent grade'); }
     else { 
       if (total_percentage == 100) {
-        if (exam_qtr == perf_qtr) {
+        if ((exam_qtr == perf_qtr) && (perf_qtr == hw_qtr) && (hw_qtr == qz_qtr) && (qz_qtr = sw_qtr) ){
     written_grade = written_ave * written_percentage;
     exam_grade = exam_ave * exam_percentage;
     performance_grade = performance_ave * performance_percentage;
