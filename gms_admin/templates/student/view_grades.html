@@ -15,6 +15,7 @@
           <option value="2">Second Quarter</option>
           <option value="3">Third Quarter</option>
           <option value="4">Fourth Quarter</option>
+          <option value="5">Final Grade</option>
          </select>
     <div class="table-wrapper" id='first_qtr'>
         <br> <center>
@@ -96,6 +97,26 @@
         {% endfor %}
     </table>
 </div>
+
+
+    <div class="table-wrapper" id='final_qtr'>
+        <br> <center>
+<caption> Final Grade for {{user.last_name}} , {{user.first_name}}  </caption>
+    <table class="fl-table">
+        <thead>
+      <tr>
+          <th scope="col">Subject</th>
+          <th scope="col">Grade</th>
+        </tr>
+        </thead>
+        {% for final_qtr in final_qtr %}
+        <tbody>
+          <td> {{final_qtr.section_subject_id.subject_id.subject_name}} </td>
+          <td> {{final_qtr.grade}} </td>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
  {% endblock 'main-content'%}
 
  <script>
@@ -104,11 +125,12 @@
       var second_qtr = document.getElementById('second_qtr');
       var third_qtr = document.getElementById('third_qtr');
       var fourth_qtr = document.getElementById('fourth_qtr');
-
+      var final_qtr = document.getElementById('final_qtr');
       first_qtr.style.display ="None";
       second_qtr.style.display ="None";
       third_qtr.style.display ="None";
       fourth_qtr.style.display ="None";
+       final_qtr.style.display ="None";
   $("#qtr").change(function(e){
     
 
@@ -120,12 +142,14 @@
         second_qtr.style.display ="None";
         third_qtr.style.display ="None";
         fourth_qtr.style.display ="None";
+        final_qtr.style.display ="None";
       }
       else if (selectedVal ==2 ) {
         first_qtr.style.display ="None";
         second_qtr.style.display ="Block";
         third_qtr.style.display ="None";
         fourth_qtr.style.display ="None";
+        final_qtr.style.display ="None";
       }
       else if (selectedVal ==3 ) {
         
@@ -133,12 +157,21 @@
         second_qtr.style.display ="None";
         third_qtr.style.display ="Block";
         fourth_qtr.style.display ="None";
+        final_qtr.style.display ="None";
       }
       else if (selectedVal ==4 ) {
          first_qtr.style.display ="None";
          second_qtr.style.display ="None";
          third_qtr.style.display ="None";
          fourth_qtr.style.display ="Block";
+         final_qtr.style.display ="None";
+      }
+          else if (selectedVal ==5 ) {
+         first_qtr.style.display ="None";
+         second_qtr.style.display ="None";
+         third_qtr.style.display ="None";
+         fourth_qtr.style.display ="None";
+         final_qtr.style.display ="Block";
       }
   });
  });

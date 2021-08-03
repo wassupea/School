@@ -61,8 +61,9 @@ def view_grades(request):
     second_qtr = Second_Qtr.objects.filter(section_subject_id__in = student)
     third_qtr = Third_Qtr.objects.filter(section_subject_id__in = student)
     fourth_qtr = Fourth_Qtr.objects.filter(section_subject_id__in = student)
+    final_qtr = Final_Grade.objects.filter(section_subject_id__in = student)
     print(first_qtr, second_qtr,third_qtr,fourth_qtr)
-    return render(request, 'student/view_grades.html', {'student_subject':student_subject, 'first_qtr':first_qtr,'second_qtr':second_qtr,'third_qtr':third_qtr,'fourth_qtr':fourth_qtr})
+    return render(request, 'student/view_grades.html', {'student_subject':student_subject, 'first_qtr':first_qtr,'second_qtr':second_qtr,'third_qtr':third_qtr,'fourth_qtr':fourth_qtr,'final_qtr':final_qtr})
 
 
 def view_grades_details(request):
@@ -75,7 +76,8 @@ def view_grades_details(request):
     second_qtr = Second_Qtr.objects.filter(section_subject_id__in = student)
     third_qtr = Third_Qtr.objects.filter(section_subject_id__in = student)
     fourth_qtr = Fourth_Qtr.objects.filter(section_subject_id__in = student)
-    return render(request, 'student/view_grades.html', {'student_subject':student_subject, 'first_qtr':first_qtr,'second_qtr':second_qtr,'third_qtr':third_qtr,'fourth_qtr':fourth_qtr})
+    final_qtr = Final_Grade.objects.filter(section_subject_id__in = student)
+    return render(request, 'student/view_grades.html', {'student_subject':student_subject, 'first_qtr':first_qtr,'second_qtr':second_qtr,'third_qtr':third_qtr,'fourth_qtr':fourth_qtr, 'final_qtr':final_qtr})
 
 def view_activities(request,section_subject_id):
     current_user = request.user
