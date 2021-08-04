@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^=$f8wwvx9=@69$m&k8l)q$_1c91*s5e#^*ev58^sbw@=5i((g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['basic-grading-system.herokuapp.com']
 
 
 # Application definition
@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -150,6 +151,11 @@ STATICFILES_DIR = [
 os.path.join(BASE_DIR, 'static')
 ]
 STATIC_URL = '/static/'
+
+STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
+import dj_database_url
+prod_db=dj_database_url.url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)
 
 AUTH_USER_MODEL = 'gms_admin.CustomUser'
 AUTHENTICATION_BACKENDS =['gms_admin.accounts_backend.EmailBackEnd']
