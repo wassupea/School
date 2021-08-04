@@ -77,6 +77,8 @@ urlpatterns = [
     path('djrichtextfield/', include('djrichtextfield.urls')),
     path('admin_chat', adminViews.admin_chat, name='admin_chat'),
     path('admin_send_message', adminViews.adminsend_message, name='admin_send_message'),
+    path('reply/<str:reply_id>', adminViews.reply, name='reply'),
+    path('admin_reply', adminViews.admin_reply, name='admin_reply'),
     
     
     #TEACHER
@@ -151,7 +153,7 @@ urlpatterns = [
 
     path('student_chat', studentViews.chat, name='student_chat'),
     path('student_send_message', studentViews.send_message, name='student_send_message'),
-
+    path('student_reply/<str:reply_id>', studentViews.student_reply, name='student_reply'),
 
 
     #PARENT

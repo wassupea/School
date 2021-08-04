@@ -112,3 +112,9 @@ def send_message(request):
     except:
         messages.error(request, 'error')
         return HttpResponseRedirect('chat')
+
+def student_reply(request,reply_id):
+    user = request.user.id
+    all_users = CustomUser.objects.all()
+    msg = Msg.objects.get(id=reply_id)
+    return render(request, 'student/reply.html', {'all_users':all_users,'msg':msg})

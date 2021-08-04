@@ -260,7 +260,7 @@
   <thead>
          <th scope="col">Homework Name</th>
          <th scope="col">Raw Score</th>
-         <th scope="col">Percent Grade</th>
+         <th scope="col">Weighted Grade</th>
          <th scope="col">Quarter</th>
          <th scope="col">Date</th>
          <th scope="col">Action</th>
@@ -283,7 +283,7 @@
   <thead>
           <th scope="col">Quiz Name</th>
          <th scope="col">Raw Score</th>
-         <th scope="col">Percent Grade</th>
+         <th scope="col">Weighted Grade</th>
          <th scope="col">Quarter</th>
          <th scope="col">Date</th>
          <th scope="col">Action</th>
@@ -304,7 +304,7 @@
   <thead>
          <th scope="col">Seatwork Name</th>
          <th scope="col">Raw Score</th>
-          <th scope="col">Percent Grade</th>
+          <th scope="col">Weighted Grade</th>
           <th scope="col">Quarter</th>
            <th scope="col">Date</th>
            <th scope="col">Action</th>
@@ -325,7 +325,7 @@
   <thead>
          <th scope="col">Examination Name</th>
          <th scope="col">Raw Score</th>
-          <th scope="col">Percent Grade</th>
+          <th scope="col">Weighted Grade</th>
           <th scope="col">Quarter</th>
            <th scope="col">Date</th>
            <th scope="col">Action</th>
@@ -346,7 +346,7 @@
   <thead>
          <th scope="col">Performance Name</th>
          <th scope="col">Raw Score</th>
-          <th scope="col">Percent Grade</th>
+          <th scope="col">Weighted Grade</th>
           <th scope="col">Quarter</th>
            <th scope="col">Date</th>
            <th scope="col">Action</th>
@@ -377,7 +377,7 @@
         <thead>
         <tr>
          <th scope="col">Homework Name</th>
-          <th scope="col">Percent Grade</th>
+          <th scope="col">Weighted Grade</th>
         </tr>
         </thead>
   
@@ -420,7 +420,7 @@
         <thead>
         <tr>
          <th scope="col">Quiz Name</th>
-          <th scope="col">Percent Grade</th>
+          <th scope="col">Weighted Grade</th>
         </tr>
         </thead>
 
@@ -468,7 +468,7 @@
         <thead>
         <tr>
          <th scope="col">Seatwork</th>
-          <th scope="col">Percent Grade</th>
+          <th scope="col">Weighted Grade</th>
         </tr>
         </thead>
          <tbody id="dito3" name="dito">
@@ -513,7 +513,7 @@
         <thead>
         <tr>
          <th scope="col">Performance Task</th>
-          <th scope="col">Percent Grade</th>
+          <th scope="col">Weighted Grade</th>
         </tr>
         </thead>
          <tbody id="performance_view" name="performance_view">
@@ -559,7 +559,7 @@
         <thead>
         <tr>
          <th scope="col">Examination</th>
-          <th scope="col">Percent Grade</th>
+          <th scope="col">Weighted Grade</th>
         </tr>
         </thead>
          <tbody id="exam_view" name="exam_view">
@@ -608,7 +608,7 @@
         <tr>
          <th scope="col">Written Task</th>
           <th scope="col">Average</th>
-           <th scope="col">Percent Percentage</th>
+           <th scope="col"> Percentage</th>
         </tr>
         </thead>
          <tbody id="hw_total_ave" name="dito">
@@ -660,7 +660,7 @@
         <tr>
          <th scope="col">Activity Name</th>
           <th scope="col">Average</th>
-           <th scope="col">Percent Percentage</th>
+           <th scope="col"> Percentage</th>
         </tr>
         </thead>
          <tbody id="written_total_ave" name="dito">
@@ -718,7 +718,7 @@
         <tbody>
         <td> <input type="hidden" name='qtr' id='final_qtr'></td>
         <td> <input type="text" name="final_grade" id="final_grade"> </td>
-        <td> <input type="submit" name="grade_button"> </td>
+        <td> <input type="submit" name="grade_button" onclick="return confirm('Do you really want to submit the form?');"> </td>
         </tbody>
           <tbody>
         <td>  <input type="hidden" name='student_subject_id' value={{student_subject.id}}> </td>

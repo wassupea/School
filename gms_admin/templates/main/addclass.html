@@ -6,6 +6,18 @@
 </head>
 
 {% block main_content%}
+{% if messages %}
+   <div class = "messages">
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% if message.tags == 'success'%}
+      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+{% endif %}
 <div class="container">
 {% url 'save_class' as action_path %}
   <form action= "{{action_path}}" method ="POST">
@@ -31,18 +43,7 @@
   </form>
 </div>
 
-{% if messages %}
-   <div class = "messages">
-      {% for message in messages %}
-      {% if message.tags == 'error'%}
-      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
-      {% endif %}
-      {% if message.tags == 'success'%}
-      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
-      {% endif %}
-      {% endfor %}
-   </div>
-{% endif %}
+
 
 {% endblock main_content%}
 

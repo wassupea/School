@@ -1,5 +1,5 @@
 <head>
-  <title>{% block title %}Sample High School{% endblock title %}</title>
+  <title>{% block title %}Basic Education Grading System{% endblock title %}</title>
 
   {% load static %}
       <link rel="stylesheet" href= "{% static 'css/base.css' %}" type="text/css">
@@ -17,14 +17,15 @@
              <li><a href= "{% url 'manage_school'%}" ><i class="fas fa-subjects"><img src ="{%static 'images/school_black_36dp.svg'%}"style="vertical-align:middle;"></i>Manage School</a></li>
             <li><a href= "{% url 'manage_student'%}" ><i class="fas fa-subjects"><img src ="{%static 'images/face_black_36dp.svg'%}"style="vertical-align:middle;"></i>Manage Students</a></li>
             <li><a href= "{% url 'manage_subject'%}" ><i class="fas fa-subjects"><img src ="{%static 'images/book_black_36dp.svg'%}"style="vertical-align:middle;"></i>Manage Subjects</a></li>
-             <li><a href= "{% url 'view_section'%}" ><i class="fas fa-grade_level"><img src ="{%static 'images/fact_check_black_36dp.svg'%}"style="vertical-align:middle;"></i>Sections</a></li>
                  <li><a href= "{% url 'admin_chat'%}" ><i class="fas fa-grade_level"><img src ="{%static 'images/email_black_36dp.svg'%}" style="vertical-align:middle;"></i>Inbox</a></li>
                  <li><a href= "{% url 'add_admin'%}" ><i class="fas fa-grade_level"><img src ="{%static 'images/supervisor_account_black_36dp.svg'%}" style="vertical-align:middle;"></i>Admin</a></li>
             <li><a href=" {% url 'logout' %}"><i class="fas fa-logout"><img src ="{%static 'images/logout_black_36dp.svg'%}" style="vertical-align:middle;"></i>Logout</a></li>
         </ul> 
     </div>
     <div class="main_content">
-        <div class="header">Sample High School.</div>  
+        <div class="header">
+        <i class="fas fa-subjects"><img src ="{%static 'images/school.svg'%}"style="vertical-align:middle;height:2%;"></i> &nbsp;Basic Education Grading System
+        </div>  
     
   </body>
 </html>

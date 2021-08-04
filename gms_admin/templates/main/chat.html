@@ -59,7 +59,7 @@
     <li class="list-group-item"> From {{receive.sender.last_name}}, {{receive.sender.first_name}}</li>
     <li class="list-group-item">{{receive.date}}</li>
     <li class="list-group-item">{{receive.body}} </li>
-     <a href="#" data-target="#replyModal" data-toggle="modal" id="replyID" data-sender = " {{receive.sender.last_name}}, {{receive.sender.first_name}}" data-id="{{receive.sender.id}}" data-body="{{receive.body}}"> Reply </a> 
+    <a href = "/reply/{{receive.id}}"> Reply </a>
      </ul>
 </div>
 {%endfor%}

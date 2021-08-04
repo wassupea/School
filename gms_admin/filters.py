@@ -46,10 +46,10 @@ class StudentFilter(django_filters.FilterSet):
 
     fname = django_filters.CharFilter(field_name="fname",lookup_expr='iexact', label='First Name')
     class_id = filters.ModelChoiceFilter(queryset=classes,label='Class')
-    
+    lname = django_filters.CharFilter(field_name="lname",lookup_expr='iexact', label='Last Name')
     status = django_filters.ChoiceFilter(choices=Status_Choices,label='Status')
 
     class Meta:
         model = Students
-        fields = ['fname','class_id','gender','lname','status']
+        fields = ['fname','lname','class_id','gender','status']
         exclude = ['admin','class_id', 'session_year_id','address', 'created_at', 'updated_at']

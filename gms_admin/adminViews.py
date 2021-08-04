@@ -29,6 +29,7 @@ def adminsend_message(request):
     user_id = request.user.id
     sender = CustomUser.objects.get(id=user_id)
     receiver_id = request.POST.get('receiver')
+    print(receiver_id)
     receiver = CustomUser.objects.get(id=receiver_id)
     body = request.POST.get('my_textarea')
     print(body)
@@ -36,6 +37,19 @@ def adminsend_message(request):
     message_send = Msg(sender=sender, receiver=receiver, body=body)
     message_send.save()
     return redirect(request.META.get('HTTP_REFERER'))
+
+def admin_reply(request):
+    user_id = request.user.id
+    sender = CustomUser.objects.get(id=user_id)
+    receiver_id = request.POST.get('receiver')
+    print(receiver_id)
+    receiver = CustomUser.objects.get(id=receiver_id)
+    body = request.POST.get('my_textarea')
+    print(body)
+
+    message_send = Msg(sender=sender, receiver=receiver, body=body)
+    message_send.save()
+    return HttpResponseRedirect('admin_chat')
 
 
 def add_teacher(request):
@@ -197,34 +211,36 @@ def save_student2(request):
             
         else:
             if first_name.isalpha():
-                try:
-                    user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
-                    user.students.address = address
-                    user.students.fname=first_name
-                    user.students.lname = last_name
-                    user.students.gradelevel_id = gradelevel_id
-                    user.students.gender = gender
-                    user.students.class_id = class_id
-                    user.students.session_year_id = session_year_id
-                    user.students.status = 1
-                    user.save()        
-                    messages.success(request,"Added Student")
+                #try:
+                user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
+                user.students.address = address
+                user.students.fname=first_name
+                user.students.lname = last_name
+                user.students.gradelevel_id = gradelevel_id
+                user.students.gender = gender
+                user.students.class_id = class_id
+                user.students.session_year_id = session_year_id
+                user.students.status = 1
+                user.save()        
+                messages.success(request,"Added Student")
 
                         #send an email
-                    send_mail(
+                send_mail(
                             'Account Credentials for ' + last_name + ', ' +first_name,
                             'email: ' + email + ' password: ' + password,
                             'hwngryjn@gmail.com',
                             [email],
                             fail_silently=False,
                         )
+                print(user.id)
+                add_section = Section(class_id = class_id, student_id= user)
+                add_section.save()
 
 
-
-                    return HttpResponseRedirect(reverse("manage_student"))
-                except:
-                    messages.error(request, 'Failed')
-                    return HttpResponseRedirect(reverse("manage_student"))
+                return HttpResponseRedirect(reverse("manage_student"))
+                #except:
+                    #messages.error(request, 'Failed')
+                    #return HttpResponseRedirect(reverse("manage_student"))
             else:
                 messages.error(request, 'Name cannot contain other characters')
                 return HttpResponseRedirect(reverse("manage_student")) 
@@ -562,6 +578,12 @@ def save_editstudent2(request):
             student_model.session_year_id=school_year
             student_model.save()
 
+            section = Section.objects.get(student_id=student_id)
+            section.class_id = classes
+            section.save()
+
+
+
             messages.success(request,"Successfully Edited Student")
             return HttpResponseRedirect(reverse("manage_student"))
         
@@ -836,3 +858,9 @@ def save_admin(request):
             else:
                 messages.error(request, 'Name cannot contain other characters')
                 return HttpResponseRedirect(reverse("manage_teacher")) 
+
+def reply(request,reply_id):
+    user = request.user.id
+    all_users = CustomUser.objects.all()
+    msg = Msg.objects.get(id=reply_id)
+    return render(request, 'main/reply.html', {'all_users':all_users,'msg':msg})

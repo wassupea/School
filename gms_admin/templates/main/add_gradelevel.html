@@ -3,10 +3,23 @@
 
 <head>
 <link rel="stylesheet" href= "{% static 'css/admin/add_gradelevel.css' %}" type="text/css">
+<link rel="stylesheet" href= "{% static 'css/admin/messages.css' %}" type="text/css">
 
 </head>
 
 {% block main_content%}
+{% if messages %}
+   <div class = "messages">
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% if message.tags == 'success'%}
+      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
+      {% endif %}
+      {% endfor %}
+   </div>
+{% endif %}
 <div class="container11">
 {% url 'save_gradelevel' as action_path %}
   <form action= "{{action_path}}" method ="POST">
@@ -26,26 +39,14 @@
                 <option value='8'> 8 </option>
                  <option value='9'> 9 </option>
                   <option value='10'> 10 </option>
-\
       </select>  
      <br>
-    <button type="submit" onclick="return confirm('Do you really want to submit the form?');">Send!</button>
+    <button type="submit" onclick="return confirm('Do you really want to submit the form?');">Add</button>
   </form>
 </div>
 
 
-{% if messages %}
-   <div class = "messages">
-      {% for message in messages %}
-      {% if message.tags == 'error'%}
-      <div class="alert alert_error"> <button aria-hidden="true" data-dismiss="alert" class="close" onClick="window.location.reload()" type="button">×</button> <strong>{{message}}</strong> </div>
-      {% endif %}
-      {% if message.tags == 'success'%}
-      <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" onClick="window.location.reload()" class="close" type="button">×</button> <strong>{{message}}</strong> </div>
-      {% endif %}
-      {% endfor %}
-   </div>
-{% endif %}
+
 {% endblock main_content%}
 
 

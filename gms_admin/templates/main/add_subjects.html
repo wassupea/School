@@ -36,7 +36,7 @@
          <option value = "{{teacher.admin.id}}"> {{teacher.admin.last_name}} {{teacher.admin.first_name}}</option>
          {% endfor %}
       </select>
-      <button type="submit" class='button3'>Add</button>
+      <button type="submit" class='button3' onclick="return confirm('Do you really want to submit the form?');">Add</button>
    </form>
 
  

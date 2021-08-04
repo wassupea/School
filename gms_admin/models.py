@@ -125,7 +125,7 @@ class Attendance(models.Model):
     class_id = models.ForeignKey(Classes, on_delete=models.CASCADE)
     #section_id = models.ForeignKey(Section, on_delete=models.DO_NOTHING)
     session_year_id = models.ForeignKey(SessionYearModel, on_delete=models.CASCADE)
-    attendance_date = models.DateField(auto_now_add=True)
+    attendance_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()

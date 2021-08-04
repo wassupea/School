@@ -80,6 +80,7 @@ body{
 
 .wrapper .main_content{
   width: 100%;
+  
   margin-left: 200px;
 }
 .wrapper .main_content{
@@ -162,8 +163,8 @@ body{
 }
 .image {
   width: 50%;
-  height: 48%;
-  position: fixed;
+  height: 20%;
+  position: absolute;
   left:32%;
-  top:40%;
+  margin-top: 20%;
 }

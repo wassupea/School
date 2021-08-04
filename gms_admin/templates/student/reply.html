@@ -1,0 +1,32 @@
+{%load static%}
+{%include 'student/base.html'%}
+<head>
+     <link rel="stylesheet" href= "{% static 'css/teacher_chat.css' %}" type="text/css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+     <script src = "{% static 'js/JQuery.js' %}"> </script>
+</head>
+{%block 'main_content'%}
+
+<div class="container card message-container ">
+  <h1 class="message-title">Reply A Message</h1>
+  <form action="{%url 'student_send_message'%}" method="POST">
+{% csrf_token %}
+    <label for="subject" class="subject">From</label>
+    <input type='hidden' value="{{msg.sender.id}}" name='receiver'> {{msg.sender.last_name}}, {{msg.sender.first_name}} </input>
+    <label for="subject" class="subject">Message</label>
+    <input type='text'  value="{{msg.body}}" disabled> </input>
+    <label for="message" class="message">Reply</label>
+    <textarea name="my_textarea" cols="100" rows="8" required maxlength="500"></textarea>
+
+
+
+    <p class="button-container">
+      <input class="button2" type="submit" value="Send">
+    </p>
+  </form>
+  </div>
+
+
+{%endblock%}
+
+
