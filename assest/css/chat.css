@@ -1,0 +1,13 @@
+*{
+	box-sizing:border-box;
+}
+
+.container_sent{
+	position: relative;
+	width: 80%;
+	margin: 0 auto;
+	max-width: 100%;
+	margin-left: 10%;
+	background-color: #e5e5e5;
+	top:35%;
+}

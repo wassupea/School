@@ -1,0 +1,146 @@
+/*   $.ajax({
+        type: "GET",
+        url: "{% url 'add_quiz %}",
+        data: {
+            "result": result,
+        },
+        dataType: "json",
+        success: function (data) {
+            // any process in data
+            alert("successfull")
+        },
+        failure: function () {
+            alert("failure");
+        }
+    }); */
+
+
+  hw1_name = request.POST.get("hw1")
+        hw2_name = request.POST.get("hw2")
+        hw3_name = request.POST.get("hw3")
+        hw4_name = request.POST.get("hw4")
+        hw5_name = request.POST.get("hw5")
+        hw_percentage = request.POST.get("hw_percentage")
+        hw1_grade = request.POST.get("hw1_grade")
+        hw2_grade = request.POST.get("hw2_grade")
+        hw3_grade = request.POST.get("hw3_grade")
+        hw4_grade = request.POST.get("hw4_grade")
+        hw5_grade = request.POST.get("hw5_grade")
+
+        hw1_grade_max = request.POST.get("hw1_grade_max")
+        hw2_grade_max = request.POST.get("hw2_grade_max")
+        hw3_grade_max = request.POST.get("hw3_grade_max")
+        hw4_grade_max = request.POST.get("hw4_grade_max")
+        hw5_grade_max = request.POST.get("hw5_grade_max")
+        
+        hw1_grade = int(hw1_grade)
+        print(hw1_grade)
+        hw2_grade = int(hw2_grade)
+        hw3_grade = int(hw3_grade)
+        hw4_grade = int(hw4_grade)
+        hw5_grade = int(hw5_grade)
+
+        
+        hw1_grade_max = int(hw1_grade_max)
+        hw2_grade_max = int(hw2_grade_max)
+        hw3_grade_max = int(hw3_grade_max)
+        hw4_grade_max = int(hw4_grade_max)
+        hw5_grade_max = int(hw5_grade_max)
+
+        hw1_total = float((hw1_grade / hw1_grade_max) * 100)
+        print(hw1_total)
+        
+        percentage = int(hw_percentage)
+
+
+              e.preventDefault();
+
+      var student = $('#student_subject_id').val()
+      console.log(student)
+      $.ajax({
+
+        url: "{% url 'get_homework'%}",
+        type: 'POST',
+        data:{student:student},
+      })
+
+      .done(function(response){
+        alert('fetched')
+        var json_data = JSON.parse(response);
+        console.log = (json_data)
+  
+      var tr;
+      for (i in json_data) {
+      tr = $('<tr/>');
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<td>" + json_data[i].score + "</td>");
+      $('table').first().append(tr);
+    } 
+
+    })
+      .fail(function(){
+        alert("Error")
+      })
+
+
+
+  $("#calculate_btn").click(function(e){
+      e.preventDefault();
+
+      var student = $('#student').val()
+      console.log(student)
+      $.ajax({
+
+        url: "/calculate",
+        type: 'POST',
+        data:{student:student},
+      })
+
+      .done(function(response){
+        alert('fetched')
+        var json_data = JSON.parse(response);
+        console.log = (json_data)
+  
+      var tr;
+      for (i in json_data) {
+      tr = $('<tr/>');
+      tr.append("<td>" + json_data[i].name + "</td>");
+      tr.append("<td>" + json_data[i].score + "</td>");
+      $('table').first().append(tr);
+    } 
+
+    })
+      .fail(function(){
+        alert("Error")
+      })
+    });
+      
+
+            e.preventDefault();
+      var selectedVal = $(this).children("option:selected").val();
+      var student = $('#student').val()
+      console.log(selectedVal, student)
+      $.ajax({
+        type: "POST",
+        url: "/calculate",
+        data: {selectedVal:selectedVal, student:student},
+      })
+        .done(function(response){
+          alert('fetched')
+          var json_data = JSON.parse(response);
+          console.log(json_data)
+  
+  
+        var tr;
+        for (i in json_data) {
+        tr = $('<tr/>');
+        tr.append("<td>" + json_data[i].name + "</td>");
+        tr.append("<td>" + json_data[i].score+ "</td>");
+        $('#dito3').first().append(tr);
+      } 
+  
+  
+      })
+        .fail(function(){
+          alert("Error")
+        })
